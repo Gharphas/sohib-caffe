@@ -1745,4 +1745,71 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
     renderProductCatalog();
     renderCart();
+
+    // ----------------------------------------------------------------------
+    // 15. AUTH USER SESSION SYNC & LOGOUT (From login.html)
+    // ----------------------------------------------------------------------
+    function performLogout(userName) {
+        const nameToDisplay = userName || 'staf';
+        if (confirm(`Apakah Anda yakin ingin logout dari akun ${nameToDisplay} dan kembali ke halaman Login?`)) {
+            try {
+                localStorage.removeItem('sohib_active_user');
+            } catch (e) {}
+            showToast('Berhasil logout. Mengarahkan ke Login...', 'info');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 400);
+        }
+    }
+
+    function syncAuthUser() {
+        let currentUserName = 'M. Ikhsan Anggara';
+        try {
+            const rawUser = localStorage.getItem('sohib_active_user');
+            if (rawUser) {
+                const user = JSON.parse(rawUser);
+                currentUserName = user.name || currentUserName;
+
+                // Desktop Header Profile Elements
+                const cashierNameEl = document.querySelector('.cashier-name');
+                const cashierAvatarEl = document.querySelector('.cashier-avatar');
+                const cashierRoleEl = document.querySelector('.cashier-role');
+
+                if (cashierNameEl && user.name) cashierNameEl.textContent = user.name;
+                if (cashierAvatarEl && user.avatar) cashierAvatarEl.textContent = user.avatar;
+                if (cashierRoleEl && user.roleBadge) {
+                    cashierRoleEl.innerHTML = `<i class="ri-vip-crown-fill" style="color: #f59e0b; font-size: 0.65rem;"></i> ${user.roleBadge}`;
+                }
+
+                // Mobile Menu Profile Elements
+                const mMenuAvatar = document.getElementById('mMenuAvatar');
+                const mMenuUserName = document.getElementById('mMenuUserName');
+                const mMenuUserRole = document.getElementById('mMenuUserRole');
+
+                if (mMenuAvatar && user.avatar) mMenuAvatar.textContent = user.avatar;
+                if (mMenuUserName && user.name) mMenuUserName.textContent = user.name;
+                if (mMenuUserRole && user.role) {
+                    mMenuUserRole.innerHTML = `<i class="ri-vip-crown-fill" style="color: #f59e0b;"></i> ${user.role} • Online`;
+                }
+            }
+        } catch (e) {}
+
+        // Bind Desktop Header Logout Button
+        document.getElementById('btnLogoutHeader')?.addEventListener('click', () => {
+            performLogout(currentUserName);
+        });
+
+        // Bind Mobile Logout Actions
+        document.getElementById('btnMobileUserLogout')?.addEventListener('click', () => {
+            performLogout(currentUserName);
+        });
+
+        document.getElementById('mMenuLogout')?.addEventListener('click', () => {
+            closeModal('modalMobileMenu');
+            performLogout(currentUserName);
+        });
+    }
+    syncAuthUser();
 });
+
+

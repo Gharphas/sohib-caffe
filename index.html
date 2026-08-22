@@ -24,7 +24,7 @@
                 </div>
                 <div class="brand-title">
                     <div class="brand-heading-row">
-                        <h1 class="arabic-styled-name">Sohib Coffe & Resto</h1>
+                        <h1 class="arabic-styled-name">Sohib Caffe & Resto</h1>
                         <span class="pro-badge" style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 100%); color: #FDF6EE; border: 1px solid rgba(212, 163, 115, 0.35);">Arabian Resto</span>
                     </div>
                     <span class="brand-owner-text"><i class="ri-user-star-fill" style="color: #f59e0b; font-size: 0.75rem;"></i> Owner: <b>Muhammad Ikhsan Anggara</b></span>
@@ -77,13 +77,19 @@
             </button>
 
             <!-- Cashier & Owner Profile -->
-            <div class="cashier-badge" title="Owner: Muhammad Ikhsan Anggara">
+            <div class="cashier-badge" id="headerCashierBadge" title="Profil Pengguna Aktif">
                 <div class="cashier-avatar">MIA</div>
                 <div class="cashier-details">
                     <span class="cashier-name">M. Ikhsan Anggara</span>
                     <span class="cashier-role"><i class="ri-vip-crown-fill" style="color: #f59e0b; font-size: 0.65rem;"></i> Owner</span>
                 </div>
             </div>
+
+            <!-- Header Logout Button -->
+            <button class="btn-header-logout" id="btnLogoutHeader" title="Keluar / Logout Akun">
+                <i class="ri-logout-box-r-line"></i>
+                <span>Logout</span>
+            </button>
         </div>
     </header>
 
@@ -399,10 +405,10 @@
             <div class="modal-body-scroll">
                 <div class="thermal-receipt-paper" id="printReceiptArea">
                     <div class="receipt-header-center">
-                        <h4>SOHIB COFFE & RESTO</h4>
+                        <h4>SOHIB CAFFE & RESTO</h4>
                         <p style="font-weight: 700; color: #111; margin-bottom: 2px;">Owner: Muhammad Ikhsan Anggara</p>
                         <p>Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</p>
-                        <p>Telp/WA: +62 895-3254-80299 | IG: @sohibcoffeeresto</p>
+                        <p>Telp/WA: +62 895-3254-80299 | IG: @sohibcafferesto</p>
                     </div>
 
                     <div class="receipt-meta-info">
@@ -800,11 +806,14 @@
             </div>
             <div class="modal-body-scroll">
                 <div class="mobile-menu-user-card">
-                    <div class="cashier-avatar" style="width: 46px; height: 46px; font-size: 1.1rem;">MIA</div>
+                    <div class="cashier-avatar" id="mMenuAvatar" style="width: 46px; height: 46px; font-size: 1.1rem;">MIA</div>
                     <div class="mobile-menu-user-info">
-                        <h4>Muhammad Ikhsan Anggara</h4>
-                        <span class="user-status-text"><i class="ri-vip-crown-fill" style="color: #f59e0b;"></i> Pemilik (Owner) • Shift 1 Online</span>
+                        <h4 id="mMenuUserName">Muhammad Ikhsan Anggara</h4>
+                        <span class="user-status-text" id="mMenuUserRole"><i class="ri-vip-crown-fill" style="color: #f59e0b;"></i> Pemilik (Owner) • Shift 1 Online</span>
                     </div>
+                    <button class="btn-mobile-user-logout" id="btnMobileUserLogout" title="Logout Akun">
+                        <i class="ri-logout-box-r-line"></i>
+                    </button>
                 </div>
 
                 <div class="mobile-menu-grid">
@@ -832,11 +841,17 @@
                         </div>
                         <span>Ganti Tema</span>
                     </button>
+                    <button class="mobile-menu-tile logout-tile" id="mMenuLogout">
+                        <div class="tile-icon" style="background: rgba(225, 29, 72, 0.15); color: #f43f5e;">
+                            <i class="ri-logout-box-r-line"></i>
+                        </div>
+                        <span style="color: #f43f5e; font-weight: 700;">Logout Akun</span>
+                    </button>
                 </div>
 
                 <!-- Mobile Store Address & Contact Card -->
                 <div class="mobile-store-contact-card">
-                    <h5><i class="ri-store-2-fill"></i> Sohib Coffe & Resto</h5>
+                    <h5><i class="ri-store-2-fill"></i> Sohib Caffe & Resto</h5>
                     <div class="contact-entry">
                         <i class="ri-map-pin-2-fill"></i>
                         <span>Jl. Pangeran sidong ing kenayan. 24, kel 36 ilir. kec. gandus,Kota Palembang Sumatera Selatan</span>
@@ -880,7 +895,7 @@
                     <div class="maps-info-header">
                         <div class="maps-store-icon"><i class="ri-cup-fill"></i></div>
                         <div>
-                            <h4>Sohib Coffe & Resto</h4>
+                            <h4>Sohib Caffe & Resto</h4>
                             <p class="maps-owner-sub">Owner: Muhammad Ikhsan Anggara</p>
                         </div>
                     </div>
@@ -904,7 +919,7 @@
                 <div class="google-maps-frame-wrap">
                     <iframe 
                         id="gmapIframe"
-                        title="Peta Lokasi Sohib Coffe & Resto Palembang"
+                        title="Peta Lokasi Sohib Caffe & Resto Palembang"
                         src="https://maps.google.com/maps?q=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24,+36+Ilir,+Gandus,+Kota+Palembang,+Sumatera+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed"
                         loading="lazy" 
                         allowfullscreen>

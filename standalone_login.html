@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohib Caffe & Resto — Portal Login Mandiri</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #0e0a08;
+            --bg-card: rgba(26, 19, 15, 0.78);
+            --bg-card-border: rgba(220, 165, 110, 0.2);
+            --primary-amber: #e59843;
+            --primary-hover: #f3a958;
+            --accent-crema: #fdf5eb;
+            --text-primary: #fcf8f5;
+            --text-secondary: #c4b5a8;
+            --text-muted: #8b7a6d;
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-border: rgba(220, 165, 110, 0.22);
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 24px 16px;
+        }
+
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-gradient-mesh {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(138, 77, 28, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(200, 122, 42, 0.22) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(20, 14, 11, 0.9) 0%, #0e0a08 100%);
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.45;
+            animation: floatOrb 12s infinite alternate ease-in-out;
+        }
+
+        .orb-1 { width: 380px; height: 380px; background: radial-gradient(circle, #e59843, transparent 70%); top: -100px; left: -50px; }
+        .orb-2 { width: 450px; height: 450px; background: radial-gradient(circle, #8a481d, transparent 70%); bottom: -120px; right: -80px; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 30px) scale(1.08); }
+        }
+
+        .steam-particle-container { position: absolute; inset: 0; }
+        .steam-particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(243, 169, 88, 0.4) 0%, transparent 75%);
+            border-radius: 50%;
+            filter: blur(12px);
+            animation: riseUp 8s infinite linear;
+        }
+
+        @keyframes riseUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-100px) scale(1.6); opacity: 0; }
+        }
+
+        .login-master-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(229, 152, 67, 0.12);
+            overflow: hidden;
+        }
+
+        .brand-hero-panel {
+            background: linear-gradient(145deg, rgba(37, 24, 17, 0.85) 0%, rgba(17, 12, 9, 0.92) 100%);
+            padding: 44px 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid rgba(220, 165, 110, 0.12);
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(229, 152, 67, 0.12);
+            border: 1px solid rgba(229, 152, 67, 0.3);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary-amber);
+            width: fit-content;
+        }
+
+        .logo-mark { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+        .logo-icon-ring {
+            width: 58px; height: 58px;
+            background: linear-gradient(135deg, #e59843, #8a481d);
+            border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: #fff;
+            box-shadow: 0 8px 20px rgba(229, 152, 67, 0.3);
+        }
+
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #ffdcb3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--primary-amber);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .brand-quote h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--accent-crema);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .brand-quote p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; }
+
+        .features-pill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .feature-pill {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(220, 165, 110, 0.1);
+            padding: 8px 12px; border-radius: var(--radius-md);
+            font-size: 0.82rem; color: var(--text-secondary);
+        }
+        .feature-pill i { color: var(--primary-amber); }
+
+        .quick-demo-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(229, 152, 67, 0.35);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            margin: 20px 0 12px;
+        }
+
+        .quick-demo-header { font-size: 0.78rem; font-weight: 600; color: var(--primary-amber); margin-bottom: 8px; }
+        .demo-btn-group { display: flex; gap: 8px; }
+        .demo-btn {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(220, 165, 110, 0.2);
+            color: var(--text-secondary);
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .demo-btn:hover { background: var(--primary-amber); color: #110c09; }
+
+        .auth-card-panel { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; }
+
+        .auth-tabs {
+            position: relative;
+            display: flex;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(220, 165, 110, 0.15);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 9px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 2;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .auth-tab.active { color: #110c09; }
+        .tab-indicator {
+            position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+            background: linear-gradient(135deg, #f5aa5b 0%, #e59843 100%);
+            border-radius: 10px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+        .tab-indicator.register-mode { transform: translateX(100%); }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .form-header-text h3 { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .form-header-text p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 18px; }
+
+        .input-group { margin-bottom: 16px; }
+        .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .input-group label { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+        .forgot-link { font-size: 0.78rem; font-weight: 600; color: var(--primary-amber); text-decoration: none; }
+        
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius-md);
+            transition: var(--transition-smooth);
+        }
+        .input-wrapper:focus-within { border-color: var(--primary-amber); background: rgba(255, 255, 255, 0.07); }
+        .input-icon { padding-left: 14px; color: var(--text-muted); }
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 14px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 0.92rem;
+            font-family: inherit;
+        }
+        .btn-toggle-pwd { background: none; border: none; color: var(--text-muted); padding: 0 14px; cursor: pointer; }
+
+        .btn-primary-auth {
+            width: 100%;
+            padding: 13px 20px;
+            background: linear-gradient(135deg, #f5aa5b 0%, #e59843 100%);
+            border: none;
+            border-radius: var(--radius-md);
+            color: #120d09;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 6px 18px rgba(229, 152, 67, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary-auth:hover { background: linear-gradient(135deg, #fbb86e, #f3a958); transform: translateY(-2px); }
+
+        .auth-divider { display: flex; align-items: center; text-align: center; margin: 18px 0 14px; color: var(--text-muted); font-size: 0.78rem; }
+        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(220, 165, 110, 0.15); }
+        .auth-divider span { padding: 0 12px; }
+
+        .social-login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-social {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(220, 165, 110, 0.18);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .btn-social:hover { background: rgba(255, 255, 255, 0.08); color: #fff; transform: translateY(-1px); }
+
+        .modal-backdrop {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px); z-index: 100;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-box {
+            background: #19120e; border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius-lg); padding: 30px 24px;
+            width: 100%; max-width: 420px; text-align: center;
+        }
+
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast {
+            min-width: 280px; background: #1f1612; border: 1px solid rgba(220, 165, 110, 0.3);
+            border-radius: var(--radius-md); padding: 12px 16px;
+            display: flex; align-items: center; gap: 10px;
+            color: #fff; font-size: 0.84rem;
+        }
+        .toast-success { border-left: 4px solid var(--success-green); }
+        .toast-info { border-left: 4px solid var(--primary-amber); }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 880px) {
+            .login-master-container { grid-template-columns: 1fr; max-width: 480px; }
+            .brand-hero-panel { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-wrapper">
+        <div class="bg-gradient-mesh"></div>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="steam-particle-container" id="steamContainer"></div>
+    </div>
+
+    <main class="login-master-container">
+        <!-- Left Panel -->
+        <section class="brand-hero-panel">
+            <div class="brand-badge">
+                <i class="fa-solid fa-mug-hot"></i>
+                <span>Est. 2024 • Sohib Caffe & Resto</span>
+            </div>
+
+            <div class="brand-content">
+                <div class="logo-mark">
+                    <div class="logo-icon-ring"><i class="fa-solid fa-mug-saucer"></i></div>
+                    <div class="logo-text">
+                        <h1>Sohib</h1>
+                        <span class="logo-subtitle">CAFFE & RESTO</span>
+                    </div>
+                </div>
+
+                <div class="brand-quote">
+                    <h2>"Secangkir Cerita & Cita Rasa Terbaik."</h2>
+                    <p>Portal login mandiri dan eksklusif untuk staf, kasir, dan pelanggan setia Sohib Caffe & Resto.</p>
+                </div>
+
+                <div class="features-pill-grid">
+                    <div class="feature-pill"><i class="fa-solid fa-wifi"></i> Free High-Speed WiFi</div>
+                    <div class="feature-pill"><i class="fa-solid fa-award"></i> Premium Coffee</div>
+                    <div class="feature-pill"><i class="fa-solid fa-couch"></i> Cozy Space</div>
+                    <div class="feature-pill"><i class="fa-solid fa-shield-halved"></i> Secure Login</div>
+                </div>
+            </div>
+
+            <!-- Demo Switcher -->
+            <div class="quick-demo-card">
+                <div class="quick-demo-header"><i class="fa-solid fa-wand-magic-sparkles"></i> Akun Demo Cepat (Klik untuk Isi):</div>
+                <div class="demo-btn-group">
+                    <button type="button" class="demo-btn" onclick="fillDemo('kasir')"><i class="fa-solid fa-cash-register"></i> Kasir</button>
+                    <button type="button" class="demo-btn" onclick="fillDemo('pelanggan')"><i class="fa-solid fa-crown"></i> VIP</button>
+                    <button type="button" class="demo-btn" onclick="fillDemo('admin')"><i class="fa-solid fa-user-shield"></i> Admin</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel (Form) -->
+        <section class="auth-card-panel">
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')"><i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk</button>
+                <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')"><i class="fa-solid fa-user-plus"></i> Daftar Baru</button>
+                <div class="tab-indicator" id="tabIndicator"></div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="formLogin" class="auth-form active" onsubmit="handleLoginSubmit(event)">
+                <div class="form-header-text">
+                    <h3>Selamat Datang Kembali! 👋</h3>
+                    <p>Masukkan email & kata sandi akun Sohib Anda</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginEmail">Email / Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+                        <input type="text" id="loginEmail" placeholder="nama@sohibresto.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="loginPassword">Kata Sandi</label>
+                        <a href="javascript:void(0)" class="forgot-link" onclick="openForgotModal()">Lupa Sandi?</a>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('loginPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary-auth" id="btnLoginSubmit">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+                </button>
+
+                <div class="auth-divider"><span>atau masuk dengan</span></div>
+                <div class="social-login-grid">
+                    <button type="button" class="btn-social" onclick="showToast('Otentikasi Google Berhasil!', 'success')"><i class="fa-brands fa-google" style="color:#EA4335"></i> Google</button>
+                    <button type="button" class="btn-social" onclick="showToast('Otentikasi WA OTP Berhasil!', 'success')"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i> WhatsApp</button>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="formRegister" class="auth-form" onsubmit="handleRegisterSubmit(event)">
+                <div class="form-header-text">
+                    <h3>Gabung Jadi Sahabat Sohib! ✨</h3>
+                    <p>Daftar sekarang untuk dapatkan promo eksklusif</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="regName">Nama Lengkap</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fa-regular fa-user"></i></span>
+                        <input type="text" id="regName" placeholder="Contoh: Rian Anggara" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regEmail">Alamat Email</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+                        <input type="email" id="regEmail" placeholder="nama@email.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regPassword">Kata Sandi</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="regPassword" placeholder="Minimal 8 karakter" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary-auth">
+                    <i class="fa-solid fa-user-plus"></i> Buat Akun Member
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Forgot Modal -->
+    <div class="modal-backdrop hidden" id="forgotModal">
+        <div class="modal-box">
+            <h3 style="color:#fff; margin-bottom: 8px;">Atur Ulang Sandi</h3>
+            <p style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:16px;">Masukkan email Anda untuk menerima tautan pemulihan.</p>
+            <input type="email" id="forgotEmail" placeholder="nama@email.com" style="width:100%; padding:10px; border-radius:8px; border:1px solid #555; background:#222; color:#fff; margin-bottom:14px;">
+            <button type="button" class="btn-primary-auth" onclick="closeForgotModal(); showToast('Tautan reset terkirim!', 'success')">Kirim Tautan</button>
+            <button type="button" onclick="closeForgotModal()" style="margin-top:10px; background:none; border:none; color:var(--text-muted); cursor:pointer;">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-backdrop hidden" id="successModal">
+        <div class="modal-box">
+            <i class="fa-solid fa-circle-check" style="font-size:3rem; color:var(--success-green); margin-bottom:12px;"></i>
+            <h3 style="color:#fff; margin-bottom: 6px;">Login Berhasil!</h3>
+            <p id="successMsg" style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:18px;">Selamat datang di portal Sohib Caffe & Resto.</p>
+            <button type="button" class="btn-primary-auth" onclick="closeSuccessModal()">Tutup & Lanjut</button>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const DEMO = {
+            kasir: { email: 'kasir@sohibresto.com', pass: 'kasir1234' },
+            pelanggan: { email: 'vip.sohib@gmail.com', pass: 'member2024' },
+            admin: { email: 'admin@sohibresto.com', pass: 'adminsohib99' }
+        };
+
+        function switchAuthTab(mode) {
+            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+            document.getElementById('tabIndicator').classList.toggle('register-mode', mode === 'register');
+            document.getElementById('formLogin').classList.toggle('active', mode === 'login');
+            document.getElementById('formRegister').classList.toggle('active', mode === 'register');
+        }
+
+        function fillDemo(role) {
+            switchAuthTab('login');
+            document.getElementById('loginEmail').value = DEMO[role].email;
+            document.getElementById('loginPassword').value = DEMO[role].pass;
+            showToast('Akun ' + role.toUpperCase() + ' terisi otomatis!', 'info');
+        }
+
+        function togglePasswordVisibility(id, btn) {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+            btn.querySelector('i').className = el.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            document.getElementById('successMsg').textContent = `Selamat datang kembali (${email})!`;
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            showToast('Registrasi berhasil! Silakan masuk.', 'success');
+            switchAuthTab('login');
+        }
+
+        function openForgotModal() { document.getElementById('forgotModal').classList.remove('hidden'); }
+        function closeForgotModal() { document.getElementById('forgotModal').classList.add('hidden'); }
+        function closeSuccessModal() { document.getElementById('successModal').classList.add('hidden'); }
+
+        // Particles
+        const c = document.getElementById('steamContainer');
+        for(let i=0; i<10; i++) {
+            const p = document.createElement('div');
+            p.className = 'steam-particle';
+            const sz = Math.random()*40 + 20;
+            p.style.width = sz+'px'; p.style.height = sz+'px';
+            p.style.left = (Math.random()*100)+'%';
+            p.style.animationDuration = (Math.random()*5 + 5)+'s';
+            p.style.animationDelay = -(Math.random()*6)+'s';
+            c.appendChild(p);
+        }
+    </script>
+</body>
+</html>

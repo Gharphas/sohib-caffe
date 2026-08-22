@@ -387,6 +387,67 @@ a {
     letter-spacing: 0.4px;
 }
 
+/* Header Logout Button */
+.btn-header-logout {
+    height: 40px;
+    padding: 0 0.95rem;
+    border-radius: var(--radius-md);
+    background: rgba(225, 29, 72, 0.12);
+    border: 1px solid rgba(225, 29, 72, 0.32);
+    color: #f43f5e;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-header-logout:hover {
+    background: #e11d48;
+    color: #ffffff;
+    border-color: #e11d48;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-header-logout:active {
+    transform: translateY(0);
+}
+
+.btn-mobile-user-logout {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: rgba(225, 29, 72, 0.15);
+    border: 1px solid rgba(225, 29, 72, 0.35);
+    color: #f43f5e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.btn-mobile-user-logout:hover {
+    background: #e11d48;
+    color: #fff;
+}
+
+.mobile-menu-tile.logout-tile {
+    border-color: rgba(225, 29, 72, 0.3);
+}
+
+.mobile-menu-tile.logout-tile:hover {
+    background: rgba(225, 29, 72, 0.15);
+    border-color: #f43f5e;
+}
+
 /* ==========================================================================
    MAIN POS WORKSPACE LAYOUT
    ========================================================================== */
