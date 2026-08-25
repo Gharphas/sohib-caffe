@@ -287,7 +287,7 @@ function handleLoginSubmit(event) {
 
         // Determine user identity
         let userData = {
-            name: 'Muhammad Ikhsan Anggara',
+            name: 'Muh Ikhsan Anggara',
             role: 'Owner & General Manager',
             roleBadge: 'Owner',
             avatar: 'MIA',
