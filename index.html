@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SohibCaffe Pro - Aplikasi Mesin Kasir Pintar & Point of Sale Modern</title>
-    <meta name="description" content="Aplikasi mesin kasir pintar (POS) dengan manajemen inventori, struk thermal, multi-pembayaran QRIS & Tunai, laporan penjualan, dan sinkronisasi real-time.">
+    <meta name="description"
+        content="Aplikasi mesin kasir pintar (POS) dengan manajemen inventori, struk thermal, multi-pembayaran QRIS & Tunai, laporan penjualan, dan sinkronisasi real-time.">
     <!-- Google Fonts (Plus Jakarta Sans + Arabic Calligraphy Fonts: Amiri & El Messiri) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=El+Messiri:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=El+Messiri:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <!-- RemixIcon -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- App Header Bar -->
     <header class="pos-header">
         <div class="header-left">
             <div class="brand-logo">
-                <div class="brand-icon" style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 50%, #2E1505 100%); box-shadow: 0 0 22px rgba(122, 75, 41, 0.6); border: 1px solid rgba(212, 163, 115, 0.45);">
+                <div class="brand-icon"
+                    style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 50%, #2E1505 100%); box-shadow: 0 0 22px rgba(122, 75, 41, 0.6); border: 1px solid rgba(212, 163, 115, 0.45);">
                     <i class="ri-cup-fill" style="color: #FDF6EE; font-size: 1.4rem;"></i>
                 </div>
                 <div class="brand-title">
                     <div class="brand-heading-row">
                         <h1 class="arabic-styled-name">Sohib Caffe & Resto</h1>
-                        <span class="pro-badge" style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 100%); color: #FDF6EE; border: 1px solid rgba(212, 163, 115, 0.35);">Arabian Resto</span>
+                        <span class="pro-badge"
+                            style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 100%); color: #FDF6EE; border: 1px solid rgba(212, 163, 115, 0.35);">Arabian
+                            Resto</span>
                     </div>
-                    <span class="brand-owner-text"><i class="ri-user-star-fill" style="color: #f59e0b; font-size: 0.75rem;"></i> Owner: <b>Muhammad Ikhsan Anggara</b></span>
+                    <span class="brand-owner-text"><i class="ri-user-star-fill"
+                            style="color: #f59e0b; font-size: 0.75rem;"></i> Owner: <b>Muhammad Ikhsan
+                            Anggara</b></span>
                 </div>
             </div>
             <div class="store-status-pill">
@@ -81,7 +91,8 @@
                 <div class="cashier-avatar">MIA</div>
                 <div class="cashier-details">
                     <span class="cashier-name">M. Ikhsan Anggara</span>
-                    <span class="cashier-role"><i class="ri-vip-crown-fill" style="color: #f59e0b; font-size: 0.65rem;"></i> Owner</span>
+                    <span class="cashier-role"><i class="ri-vip-crown-fill"
+                            style="color: #f59e0b; font-size: 0.65rem;"></i> Owner</span>
                 </div>
             </div>
 
@@ -95,16 +106,17 @@
 
     <!-- Main POS Interface -->
     <main class="pos-main-container">
-        
+
         <!-- Left Panel: Product Catalog & Category Nav -->
         <section class="pos-catalog-panel">
-            
+
             <!-- Catalog Search & Filter Toolbar -->
             <div class="catalog-toolbar">
                 <div class="search-barcode-row">
                     <div class="search-input-box">
                         <i class="ri-search-line search-icon"></i>
-                        <input type="text" id="productSearchInput" placeholder="Cari Mandhi, Kebuli, Gahwa, Maryam, Samosa... (F1)">
+                        <input type="text" id="productSearchInput"
+                            placeholder="Cari Mandhi, Kebuli, Gahwa, Maryam, Samosa... (F1)">
                         <button class="clear-search-btn" id="clearSearchBtn">&times;</button>
                     </div>
                     <button class="btn-scan-barcode" id="btnScanBarcode">
@@ -146,7 +158,7 @@
 
         <!-- Right Panel: Cart / Order Slip -->
         <aside class="pos-cart-panel" id="posCartPanel">
-            
+
             <!-- Order Header Options -->
             <div class="cart-header-section">
                 <!-- Mobile Drag Handle -->
@@ -172,7 +184,8 @@
 
                 <div class="customer-table-row">
                     <input type="text" id="customerNameInput" placeholder="Nama Pelanggan (Cth: Budi)">
-                    <input type="text" id="tableNumberInput" placeholder="No. Meja / Ref (Cth: Meja 05)" style="max-width: 130px;">
+                    <input type="text" id="tableNumberInput" placeholder="No. Meja / Ref (Cth: Meja 05)"
+                        style="max-width: 130px;">
                 </div>
 
                 <div class="order-meta-summary">
@@ -242,6 +255,11 @@
                 <span><b>WhatsApp:</b> +62 895-3254-80299</span>
             </div>
             <div class="footer-info-divider"></div>
+            <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank" rel="noopener" class="footer-info-item" style="color: inherit; text-decoration: none;">
+                <i class="ri-instagram-fill" style="color: #E1306C;"></i>
+                <span><b>Instagram:</b> @muh_ikhsan_a</span>
+            </a>
+            <div class="footer-info-divider"></div>
             <div class="footer-info-item">
                 <i class="ri-time-fill" style="color: var(--primary-amber);"></i>
                 <span><b>Buka:</b> 10:00 - 23:00 WIB</span>
@@ -290,7 +308,7 @@
 
                     <!-- Right: Tab Contents -->
                     <div class="payment-tab-panes">
-                        
+
                         <!-- PANE 1: CASH -->
                         <div class="payment-tab-content active" id="tab-cash">
                             <div class="cash-total-display">
@@ -327,10 +345,12 @@
                         <div class="payment-tab-content" id="tab-qris">
                             <div class="qris-pay-view">
                                 <div class="qris-qr-box">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=POSIFY-QRIS-PAYMENT" alt="QRIS QR Code" class="qris-qr-img">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=POSIFY-QRIS-PAYMENT"
+                                        alt="QRIS QR Code" class="qris-qr-img">
                                 </div>
                                 <h4>Scan Kode QRIS Merchant</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.3rem;">Dapat discan via BCA Mobile, GoPay, OVO, Dana, ShopeePay, Mandiri Livin, dll.</p>
+                                <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.3rem;">Dapat discan via
+                                    BCA Mobile, GoPay, OVO, Dana, ShopeePay, Mandiri Livin, dll.</p>
                                 <div class="qris-countdown-badge">
                                     <i class="ri-timer-line"></i>
                                     <span>Menunggu Pembayaran: <b>02:45</b></span>
@@ -345,7 +365,8 @@
                                     <i class="ri-bank-card-2-line"></i>
                                 </div>
                                 <h4>Pembayaran Kartu Debit / Kredit</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Gesek / Tap kartu pada mesin EDC Kasir. Masukkan No. Referensi / Approval Code:</p>
+                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Gesek / Tap
+                                    kartu pada mesin EDC Kasir. Masukkan No. Referensi / Approval Code:</p>
                                 <div class="form-group-pos" style="text-align: left;">
                                     <label for="edcRefInput">No. Approval EDC (Opsional)</label>
                                     <input type="text" id="edcRefInput" placeholder="Contoh: APPR-889021">
@@ -356,11 +377,13 @@
                         <!-- PANE 4: E-WALLET -->
                         <div class="payment-tab-content" id="tab-ewallet">
                             <div class="ewallet-view">
-                                <div class="edc-icon-badge" style="background: rgba(16, 185, 129, 0.12); color: var(--primary-emerald); border-color: rgba(16, 185, 129, 0.3);">
+                                <div class="edc-icon-badge"
+                                    style="background: rgba(16, 185, 129, 0.12); color: var(--primary-emerald); border-color: rgba(16, 185, 129, 0.3);">
                                     <i class="ri-smartphone-line"></i>
                                 </div>
                                 <h4>Direct E-Wallet Checkout</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Kirim push billing notifikasi langsung ke nomor akun pembeli.</p>
+                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Kirim push
+                                    billing notifikasi langsung ke nomor akun pembeli.</p>
                                 <div class="form-group-pos" style="text-align: left;">
                                     <label for="ewalletPhoneInput">Nomor Ponsel E-Wallet Pembeli</label>
                                     <input type="text" id="ewalletPhoneInput" placeholder="0812-xxxx-xxxx">
@@ -371,12 +394,16 @@
                         <!-- PANE 5: TRANSFER -->
                         <div class="payment-tab-content" id="tab-transfer">
                             <div class="edc-machine-view">
-                                <div class="edc-icon-badge" style="background: rgba(139, 92, 246, 0.12); color: var(--primary-purple); border-color: rgba(139, 92, 246, 0.3);">
+                                <div class="edc-icon-badge"
+                                    style="background: rgba(139, 92, 246, 0.12); color: var(--primary-purple); border-color: rgba(139, 92, 246, 0.3);">
                                     <i class="ri-exchange-dollar-line"></i>
                                 </div>
                                 <h4>Transfer Rekening Kasir</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">BCA: <b>882-901-2991</b> a/n POSify Resto</p>
-                                <p class="text-muted" style="font-size: 0.8rem;">Mandiri: <b>123-00-98212-99</b> a/n POSify Resto</p>
+                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">BCA:
+                                    <b>882-901-2991</b> a/n POSify Resto
+                                </p>
+                                <p class="text-muted" style="font-size: 0.8rem;">Mandiri: <b>123-00-98212-99</b> a/n
+                                    POSify Resto</p>
                             </div>
                         </div>
 
@@ -494,16 +521,19 @@
                 <button class="modal-close-btn" data-close="modalInventory">&times;</button>
             </div>
             <div class="modal-body-scroll">
-                
+
                 <!-- Add/Edit Product Form -->
-                <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-                    <h4 style="margin-bottom: 1rem; font-size: 1rem;" id="productFormTitle"><i class="ri-add-circle-line"></i> Tambah Produk Baru</h4>
+                <div
+                    style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem; font-size: 1rem;" id="productFormTitle"><i
+                            class="ri-add-circle-line"></i> Tambah Produk Baru</h4>
                     <form id="productManageForm" onsubmit="return false;">
                         <input type="hidden" id="editProductId" value="">
                         <div class="form-grid-2">
                             <div class="form-group-pos">
                                 <label for="prodNameInput">Nama Produk</label>
-                                <input type="text" id="prodNameInput" placeholder="Contoh: Nasi Goreng Spesial" required>
+                                <input type="text" id="prodNameInput" placeholder="Contoh: Nasi Goreng Spesial"
+                                    required>
                             </div>
                             <div class="form-group-pos">
                                 <label for="prodCategorySelect">Kategori Menu</label>
@@ -533,7 +563,8 @@
                             </div>
                         </div>
                         <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-                            <button type="button" class="btn-secondary" id="btnCancelEditProd" style="display: none;">Batal Edit</button>
+                            <button type="button" class="btn-secondary" id="btnCancelEditProd"
+                                style="display: none;">Batal Edit</button>
                             <button type="submit" class="btn-primary-action" id="btnSaveProduct">
                                 <i class="ri-save-line"></i> Simpan Produk
                             </button>
@@ -543,7 +574,8 @@
 
                 <!-- Products Table -->
                 <div class="inventory-table-wrap">
-                    <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem;">Daftar Produk Aktif (<span id="totalProductCount">0</span>)</h4>
+                    <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem;">Daftar Produk Aktif (<span
+                            id="totalProductCount">0</span>)</h4>
                     <table class="pos-table" id="inventoryTable">
                         <thead>
                             <tr>
@@ -578,7 +610,7 @@
                 <button class="modal-close-btn" data-close="modalReports">&times;</button>
             </div>
             <div class="modal-body-scroll">
-                
+
                 <!-- Metrics Summary Cards -->
                 <div class="metrics-summary-grid">
                     <div class="metric-card-pos">
@@ -601,9 +633,11 @@
 
                 <!-- Transaction History Table -->
                 <div class="inventory-table-wrap">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                         <h4>Riwayat Transaksi Terakhir</h4>
-                        <button class="btn-secondary" id="btnExportReportCSV" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
+                        <button class="btn-secondary" id="btnExportReportCSV"
+                            style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
                             <i class="ri-file-excel-2-line"></i> Ekspor CSV
                         </button>
                     </div>
@@ -659,7 +693,8 @@
         <div class="pos-modal-box drink-options-modal-box">
             <div class="modal-head">
                 <div class="sheet-drag-handle"></div>
-                <h3><i class="ri-cup-fill" style="color: var(--primary-amber);"></i> Pilihan Variasi & Topping Minuman</h3>
+                <h3><i class="ri-cup-fill" style="color: var(--primary-amber);"></i> Pilihan Variasi & Topping Minuman
+                </h3>
                 <button class="modal-close-btn" data-close="modalDrinkOptions">&times;</button>
             </div>
             <div class="modal-body-scroll">
@@ -677,10 +712,12 @@
                 <div class="modifier-group">
                     <label class="modifier-title"><i class="ri-temp-hot-line"></i> Pilihan Suhu (Temperature)</label>
                     <div class="modifier-pills-row" id="tempOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="temp" data-val="Dingin (Ice)" data-price="0">
+                        <button type="button" class="opt-pill active" data-group="temp" data-val="Dingin (Ice)"
+                            data-price="0">
                             <i class="ri-snowflake-line"></i> ❄️ Dingin (Ice)
                         </button>
-                        <button type="button" class="opt-pill" data-group="temp" data-val="Hangat / Panas (Hot)" data-price="0">
+                        <button type="button" class="opt-pill" data-group="temp" data-val="Hangat / Panas (Hot)"
+                            data-price="0">
                             <i class="ri-fire-line"></i> ☕ Hangat (Hot)
                         </button>
                     </div>
@@ -690,10 +727,12 @@
                 <div class="modifier-group">
                     <label class="modifier-title"><i class="ri-cup-line"></i> Ukuran Cup (Size)</label>
                     <div class="modifier-pills-row" id="sizeOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="size" data-val="Regular" data-price="0">
+                        <button type="button" class="opt-pill active" data-group="size" data-val="Regular"
+                            data-price="0">
                             Regular (Standard)
                         </button>
-                        <button type="button" class="opt-pill" data-group="size" data-val="Large (Jumbo)" data-price="5000">
+                        <button type="button" class="opt-pill" data-group="size" data-val="Large (Jumbo)"
+                            data-price="5000">
                             Large (+Rp 5.000)
                         </button>
                     </div>
@@ -703,19 +742,24 @@
                 <div class="modifier-group">
                     <label class="modifier-title"><i class="ri-drop-line"></i> Level Manis / Gula (Sugar)</label>
                     <div class="modifier-pills-grid" id="sugarOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="sugar" data-val="Normal (100%)" data-price="0">
+                        <button type="button" class="opt-pill active" data-group="sugar" data-val="Normal (100%)"
+                            data-price="0">
                             Normal (100%)
                         </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Less Sugar (50%)" data-price="0">
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Less Sugar (50%)"
+                            data-price="0">
                             Less (50%)
                         </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Sedikit Gula (25%)" data-price="0">
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Sedikit Gula (25%)"
+                            data-price="0">
                             Sedikit (25%)
                         </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Tanpa Gula (0%)" data-price="0">
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Tanpa Gula (0%)"
+                            data-price="0">
                             Tanpa Gula (0%)
                         </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Madu Arab" data-price="3000">
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Madu Arab"
+                            data-price="3000">
                             🍯 Madu (+3rb)
                         </button>
                     </div>
@@ -725,7 +769,8 @@
                 <div class="modifier-group" id="iceModifierSection">
                     <label class="modifier-title"><i class="ri-snowy-line"></i> Level Es Batu (Ice)</label>
                     <div class="modifier-pills-row" id="iceOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="ice" data-val="Normal Ice" data-price="0">
+                        <button type="button" class="opt-pill active" data-group="ice" data-val="Normal Ice"
+                            data-price="0">
                             Normal Ice
                         </button>
                         <button type="button" class="opt-pill" data-group="ice" data-val="Less Ice" data-price="0">
@@ -739,7 +784,8 @@
 
                 <!-- Option Group 5: Extra Toppings / Add-ons (Checkbox Multi-select) -->
                 <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-add-circle-line"></i> Topping & Tambahan Khas Arab</label>
+                    <label class="modifier-title"><i class="ri-add-circle-line"></i> Topping & Tambahan Khas
+                        Arab</label>
                     <div class="modifier-checkboxes-grid" id="toppingOptionGroup">
                         <label class="addon-card-item">
                             <input type="checkbox" class="addon-checkbox" data-name="Susu Kambing" data-price="4000">
@@ -749,7 +795,8 @@
                             </div>
                         </label>
                         <label class="addon-card-item">
-                            <input type="checkbox" class="addon-checkbox" data-name="Saffron & Kapulaga" data-price="5000">
+                            <input type="checkbox" class="addon-checkbox" data-name="Saffron & Kapulaga"
+                                data-price="5000">
                             <div class="addon-card-inner">
                                 <span class="addon-name">🌿 Saffron & Kapulaga</span>
                                 <span class="addon-price">+Rp 5.000</span>
@@ -775,7 +822,8 @@
                 <!-- Special Note -->
                 <div class="modifier-group">
                     <label class="modifier-title"><i class="ri-edit-line"></i> Catatan Khusus Minuman (Opsional)</label>
-                    <input type="text" id="optDrinkSpecialNote" class="form-control-note" placeholder="Cth: kurangi manisnya, es dipisah...">
+                    <input type="text" id="optDrinkSpecialNote" class="form-control-note"
+                        placeholder="Cth: kurangi manisnya, es dipisah...">
                 </div>
             </div>
 
@@ -806,10 +854,12 @@
             </div>
             <div class="modal-body-scroll">
                 <div class="mobile-menu-user-card">
-                    <div class="cashier-avatar" id="mMenuAvatar" style="width: 46px; height: 46px; font-size: 1.1rem;">MIA</div>
+                    <div class="cashier-avatar" id="mMenuAvatar" style="width: 46px; height: 46px; font-size: 1.1rem;">
+                        MIA</div>
                     <div class="mobile-menu-user-info">
                         <h4 id="mMenuUserName">Muhammad Ikhsan Anggara</h4>
-                        <span class="user-status-text" id="mMenuUserRole"><i class="ri-vip-crown-fill" style="color: #f59e0b;"></i> Pemilik (Owner) • Shift 1 Online</span>
+                        <span class="user-status-text" id="mMenuUserRole"><i class="ri-vip-crown-fill"
+                                style="color: #f59e0b;"></i> Pemilik (Owner) • Shift 1 Online</span>
                     </div>
                     <button class="btn-mobile-user-logout" id="btnMobileUserLogout" title="Logout Akun">
                         <i class="ri-logout-box-r-line"></i>
@@ -824,19 +874,22 @@
                         <span>Kelola Produk</span>
                     </button>
                     <button class="mobile-menu-tile" id="mMenuReports">
-                        <div class="tile-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--primary-emerald);">
+                        <div class="tile-icon"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--primary-emerald);">
                             <i class="ri-bar-chart-box-line"></i>
                         </div>
                         <span>Laporan Penjualan</span>
                     </button>
                     <button class="mobile-menu-tile" id="mMenuHoldBills">
-                        <div class="tile-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--primary-amber);">
+                        <div class="tile-icon"
+                            style="background: rgba(245, 158, 11, 0.15); color: var(--primary-amber);">
                             <i class="ri-draft-line"></i>
                         </div>
                         <span>Hold Bills (<b id="mMenuHoldCount">0</b>)</span>
                     </button>
                     <button class="mobile-menu-tile" id="mMenuTheme">
-                        <div class="tile-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--primary-purple);">
+                        <div class="tile-icon"
+                            style="background: rgba(139, 92, 246, 0.15); color: var(--primary-purple);">
                             <i class="ri-sun-line" id="mMenuThemeIcon"></i>
                         </div>
                         <span>Ganti Tema</span>
@@ -854,12 +907,17 @@
                     <h5><i class="ri-store-2-fill"></i> Sohib Caffe & Resto</h5>
                     <div class="contact-entry">
                         <i class="ri-map-pin-2-fill"></i>
-                        <span>Jl. Pangeran sidong ing kenayan. 24, kel 36 ilir. kec. gandus,Kota Palembang Sumatera Selatan</span>
+                        <span>Jl. Pangeran sidong ing kenayan. 24, kel 36 ilir. kec. gandus,Kota Palembang Sumatera
+                            Selatan</span>
                     </div>
                     <div class="contact-entry">
                         <i class="ri-whatsapp-fill"></i>
                         <span>WhatsApp / Telp: +62 895-3254-80299</span>
                     </div>
+                    <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank" rel="noopener" class="contact-entry" style="color: inherit; text-decoration: none;">
+                        <i class="ri-instagram-fill" style="color: #E1306C;"></i>
+                        <span>Instagram: @muh_ikhsan_a</span>
+                    </a>
                     <div class="contact-entry">
                         <i class="ri-time-fill"></i>
                         <span>Operasional: 10:00 - 23:00 WIB</span>
@@ -886,7 +944,8 @@
         <div class="pos-modal-box maps-modal-box">
             <div class="modal-head">
                 <div class="sheet-drag-handle"></div>
-                <h3><i class="ri-map-pin-2-fill" style="color: var(--primary-amber);"></i> Lokasi & Rute Google Maps</h3>
+                <h3><i class="ri-map-pin-2-fill" style="color: var(--primary-amber);"></i> Lokasi & Rute Google Maps
+                </h3>
                 <button class="modal-close-btn" data-close="modalLocationMap">&times;</button>
             </div>
             <div class="modal-body-scroll">
@@ -902,11 +961,16 @@
                     <div class="maps-details-list">
                         <div class="maps-detail-item">
                             <i class="ri-map-pin-2-fill text-amber"></i>
-                            <span><b>Alamat:</b> Jl. Pangeran Sidong Ing Kenayan No. 24, Kel. 36 Ilir, Kec. Gandus, Kota Palembang, Sumatera Selatan</span>
+                            <span><b>Alamat:</b> Jl. Pangeran Sidong Ing Kenayan No.25 Rt 24 Rw 07, Kel. 36 Ilir, Kec.
+                                Gandus, Kota Palembang, Sumatera Selatan</span>
                         </div>
                         <div class="maps-detail-item">
                             <i class="ri-whatsapp-fill text-emerald"></i>
                             <span><b>WhatsApp / Reservasi:</b> +62 895-3254-80299</span>
+                        </div>
+                        <div class="maps-detail-item">
+                            <i class="ri-instagram-fill" style="color: #E1306C;"></i>
+                            <span><b>Instagram:</b> <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">@muh_ikhsan_a</a></span>
                         </div>
                         <div class="maps-detail-item">
                             <i class="ri-time-fill text-amber"></i>
@@ -917,28 +981,33 @@
 
                 <!-- Google Maps Embed Frame -->
                 <div class="google-maps-frame-wrap">
-                    <iframe 
-                        id="gmapIframe"
-                        title="Peta Lokasi Sohib Caffe & Resto Palembang"
+                    <iframe id="gmapIframe" title="Peta Lokasi Sohib Caffe & Resto Palembang"
                         src="https://maps.google.com/maps?q=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24,+36+Ilir,+Gandus,+Kota+Palembang,+Sumatera+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                        loading="lazy" 
-                        allowfullscreen>
+                        loading="lazy" allowfullscreen>
                     </iframe>
                 </div>
 
                 <!-- Quick Navigation Action Buttons -->
                 <div class="maps-action-grid">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang" target="_blank" rel="noopener" class="btn-maps-action btn-maps-app">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang"
+                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-app">
                         <i class="ri-google-fill"></i>
                         <span>Buka di Aplikasi Google Maps</span>
                     </a>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang" target="_blank" rel="noopener" class="btn-maps-action btn-maps-directions">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang"
+                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-directions">
                         <i class="ri-navigation-fill"></i>
                         <span>Petunjuk Rute Jalan (Directions)</span>
                     </a>
-                    <a href="https://wa.me/62895325480299?text=Halo%20Sohib%20Coffe%20%26%20Resto%2C%20saya%20ingin%20bertanya%20lokasi%20atau%20reservasi" target="_blank" rel="noopener" class="btn-maps-action btn-maps-wa">
+                    <a href="https://wa.me/62895325480299?text=Halo%20Sohib%20Coffe%20%26%20Resto%2C%20saya%20ingin%20bertanya%20lokasi%20atau%20reservasi"
+                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-wa">
                         <i class="ri-whatsapp-fill"></i>
                         <span>Chat WhatsApp Resto</span>
+                    </a>
+                    <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank"
+                        rel="noopener" class="btn-maps-action btn-maps-ig">
+                        <i class="ri-instagram-fill"></i>
+                        <span>Kunjungi Instagram (@muh_ikhsan_a)</span>
                     </a>
                 </div>
             </div>
@@ -994,4 +1063,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

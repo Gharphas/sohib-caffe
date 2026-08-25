@@ -666,7 +666,7 @@ a {
 
 .maps-action-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.65rem;
 }
 
@@ -687,6 +687,7 @@ a {
     font-weight: 700;
     text-align: center;
     transition: var(--transition);
+    text-decoration: none;
 }
 
 .btn-maps-app {
@@ -723,6 +724,18 @@ a {
     background: #059669;
     color: #fff;
     box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.btn-maps-ig {
+    background: rgba(225, 48, 108, 0.15);
+    border: 1px solid rgba(225, 48, 108, 0.35);
+    color: #fb7185;
+}
+
+.btn-maps-ig:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(225, 48, 108, 0.4);
 }
 
 /* Left Panel: Catalog, Categories & Products */
