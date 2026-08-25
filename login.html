@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sohib Caffe & Resto — Portal Masuk</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <!-- Custom Login CSS -->
     <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
     <!-- Background Decor & Ambience -->
     <div class="bg-wrapper">
@@ -23,7 +27,7 @@
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
         <div class="glow-orb orb-3"></div>
-        
+
         <!-- Floating Coffee Steam Particles -->
         <div class="steam-particle-container" id="steamContainer"></div>
     </div>
@@ -56,7 +60,8 @@
 
                 <div class="brand-quote">
                     <h2>"Tempat Cerita, Secangkir Kopi, & Rasa Tak Terlupakan."</h2>
-                    <p>Portal login terpadu untuk staf kasir, barista, manajemen, dan pelanggan setia Sohib Caffe & Resto.</p>
+                    <p>Portal login terpadu untuk staf kasir, barista, manajemen, dan pelanggan setia Sohib Caffe &
+                        Resto.</p>
                 </div>
 
                 <div class="features-pill-grid">
@@ -140,7 +145,8 @@
                     <!-- Role Preset Indicator Tag -->
                     <div class="active-role-tag hidden" id="activeRoleTag">
                         <span id="roleLabel"><i class="fa-solid fa-user-check"></i> Mode: Kasir</span>
-                        <button type="button" onclick="clearSelectedRole()" title="Hapus Pilihan"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" onclick="clearSelectedRole()" title="Hapus Pilihan"><i
+                                class="fa-solid fa-xmark"></i></button>
                     </div>
 
                     <!-- Input: Email / Username -->
@@ -148,7 +154,8 @@
                         <label for="loginEmail">Email / Username</label>
                         <div class="input-wrapper">
                             <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
-                            <input type="text" id="loginEmail" placeholder="nama@sohibcaffe.com" autocomplete="username" required>
+                            <input type="text" id="loginEmail" placeholder="nama@sohibcaffe.com" autocomplete="username"
+                                required>
                         </div>
                     </div>
 
@@ -156,12 +163,16 @@
                     <div class="input-group" id="loginPasswordGroup">
                         <div class="label-row">
                             <label for="loginPassword">Kata Sandi</label>
-                            <a href="javascript:void(0)" class="forgot-link" onclick="openForgotModal()">Lupa Kata Sandi?</a>
+                            <a href="javascript:void(0)" class="forgot-link" onclick="openForgotModal()">Lupa Kata
+                                Sandi?</a>
                         </div>
                         <div class="input-wrapper">
                             <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-                            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
-                            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('loginPassword', this)" title="Lihat/Sembunyikan Sandi">
+                            <input type="password" id="loginPassword" placeholder="••••••••"
+                                autocomplete="current-password" required>
+                            <button type="button" class="btn-toggle-pwd"
+                                onclick="togglePasswordVisibility('loginPassword', this)"
+                                title="Lihat/Sembunyikan Sandi">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
                         </div>
@@ -178,7 +189,8 @@
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn-primary-auth" id="btnLoginSubmit">
-                        <span class="btn-text"><i class="fa-solid fa-right-to-bracket"></i> Masuk ke Website Kasir</span>
+                        <span class="btn-text"><i class="fa-solid fa-right-to-bracket"></i> Masuk ke Website
+                            Kasir</span>
                         <span class="btn-spinner hidden"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
                     </button>
 
@@ -191,10 +203,14 @@
                     <div class="social-login-grid">
                         <button type="button" class="btn-social" onclick="simulateSocialLogin('Google')">
                             <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-                                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z"/>
-                                <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.4C3.7 20.1 7.5 23 12 23z"/>
+                                <path fill="#EA4335"
+                                    d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z" />
+                                <path fill="#4285F4"
+                                    d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z" />
+                                <path fill="#FBBC05"
+                                    d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
+                                <path fill="#34A853"
+                                    d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.4C3.7 20.1 7.5 23 12 23z" />
                             </svg>
                             <span>Google</span>
                         </button>
@@ -216,7 +232,7 @@
                         <label for="regName">Nama Lengkap</label>
                         <div class="input-wrapper">
                             <span class="input-icon"><i class="fa-regular fa-user"></i></span>
-                            <input type="text" id="regName" placeholder="Contoh: Rian Anggara" required>
+                            <input type="text" id="regName" placeholder="Contoh: Bella Anggraeni" required>
                         </div>
                     </div>
 
@@ -240,13 +256,17 @@
                         <label for="regPassword">Buat Kata Sandi</label>
                         <div class="input-wrapper">
                             <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-                            <input type="password" id="regPassword" placeholder="Minimal 8 karakter" oninput="checkPasswordStrength(this.value)" required>
-                            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)">
+                            <input type="password" id="regPassword" placeholder="Minimal 8 karakter"
+                                oninput="checkPasswordStrength(this.value)" required>
+                            <button type="button" class="btn-toggle-pwd"
+                                onclick="togglePasswordVisibility('regPassword', this)">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
                         </div>
                         <div class="pwd-strength-box">
-                            <div class="strength-bar"><div class="strength-progress" id="strengthProgress"></div></div>
+                            <div class="strength-bar">
+                                <div class="strength-progress" id="strengthProgress"></div>
+                            </div>
                             <span class="strength-text" id="strengthText">Kekuatan Sandi: Belum diisi</span>
                         </div>
                     </div>
@@ -255,7 +275,8 @@
                         <label class="custom-checkbox">
                             <input type="checkbox" id="agreeTerms" required>
                             <span class="checkmark"></span>
-                            <span class="checkbox-label">Saya menyetujui <a href="javascript:void(0)" class="term-link">Syarat & Ketentuan</a> Sohib Resto</span>
+                            <span class="checkbox-label">Saya menyetujui <a href="javascript:void(0)"
+                                    class="term-link">Syarat & Ketentuan</a> Sohib Resto</span>
                         </label>
                     </div>
 
@@ -267,7 +288,8 @@
 
                 <!-- Footer Copyright & Audio Ambience Toggle -->
                 <div class="card-bottom-bar">
-                    <button type="button" class="btn-sound-toggle" id="btnSoundToggle" onclick="toggleSoundAmbience()" title="Efek Suara Interaktif">
+                    <button type="button" class="btn-sound-toggle" id="btnSoundToggle" onclick="toggleSoundAmbience()"
+                        title="Efek Suara Interaktif">
                         <i class="fa-solid fa-volume-high" id="soundIcon"></i>
                         <span id="soundText">Suara: Aktif</span>
                     </button>
@@ -288,7 +310,7 @@
             </div>
             <h3>Atur Ulang Kata Sandi</h3>
             <p>Masukkan email terdaftar Anda. Kami akan mengirimkan tautan verifikasi pemulihan sandi.</p>
-            
+
             <form onsubmit="handleForgotSubmit(event)">
                 <div class="input-group">
                     <div class="input-wrapper">
@@ -312,7 +334,7 @@
             </div>
             <h3 id="welcomeHeaderTitle">Login Berhasil!</h3>
             <p id="welcomeUserMessage">Selamat datang di Aplikasi Sohib Caffe & Resto.</p>
-            
+
             <div class="user-badge-preview">
                 <div class="preview-avatar" id="previewAvatar">MIA</div>
                 <div class="preview-info">
@@ -325,7 +347,7 @@
                 <div class="redirect-fill" id="redirectFill"></div>
             </div>
             <p class="redirect-caption">Membuka Dashboard Kasir dalam <span id="countdownTimer">2</span> detik...</p>
-            
+
             <button type="button" class="btn-primary-auth" onclick="redirectToMainApp()">
                 <i class="fa-solid fa-arrow-right"></i> Langsung Masuk Sekarang
             </button>
@@ -338,4 +360,5 @@
     <!-- Custom Login Script -->
     <script src="login.js"></script>
 </body>
+
 </html>
