@@ -285,38 +285,48 @@ function handleLoginSubmit(event) {
         btnText.classList.remove('hidden');
         btnSpinner.classList.add('hidden');
 
-        // Determine user identity
-        let userData = {
-            name: 'Muh Ikhsan Anggara',
-            role: 'Owner & General Manager',
-            roleBadge: 'Owner',
-            avatar: 'MIA',
-            email: email,
-            loginTime: new Date().toLocaleTimeString('id-ID')
-        };
+        let userData = null;
 
-        if (currentRole && DEMO_ACCOUNTS[currentRole]) {
-            const acc = DEMO_ACCOUNTS[currentRole];
-            userData.name = acc.name;
-            userData.role = acc.roleName;
-            userData.roleBadge = acc.roleBadge;
-            userData.avatar = acc.avatar;
-        } else if (email.toLowerCase().includes('kasir')) {
-            userData.name = 'Fajar Pratama';
-            userData.role = 'Kasir Utama';
-            userData.roleBadge = 'Kasir';
-            userData.avatar = 'FP';
-        } else if (email.toLowerCase().includes('barista')) {
-            userData.name = 'Rian Anggara';
-            userData.role = 'Barista Shift 1';
-            userData.roleBadge = 'Barista';
-            userData.avatar = 'RA';
-        } else {
-            const cleanName = email.split('@')[0];
-            userData.name = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
-            userData.role = 'Kasir / Staff';
-            userData.roleBadge = 'Staff';
-            userData.avatar = cleanName.substring(0, 2).toUpperCase();
+        // Cek apakah ada di database SohibDB
+        if (typeof SohibDB !== 'undefined') {
+            const authResult = SohibDB.authenticateUser(email, pass);
+            if (authResult.success) {
+                const dbUser = authResult.user;
+                userData = {
+                    name: dbUser.full_name,
+                    role: dbUser.role_badge || dbUser.role,
+                    roleBadge: dbUser.role === 'owner' ? 'Owner' : (dbUser.role === 'kasir' ? 'Kasir' : 'Member'),
+                    avatar: dbUser.avatar || 'US',
+                    email: dbUser.email,
+                    phone: dbUser.phone || '',
+                    loginTime: new Date().toLocaleTimeString('id-ID')
+                };
+            }
+        }
+
+        // Fallback jika login via demo role
+        if (!userData) {
+            if (currentRole && DEMO_ACCOUNTS[currentRole]) {
+                const acc = DEMO_ACCOUNTS[currentRole];
+                userData = {
+                    name: acc.name,
+                    role: acc.roleName,
+                    roleBadge: acc.roleBadge,
+                    avatar: acc.avatar,
+                    email: email,
+                    loginTime: new Date().toLocaleTimeString('id-ID')
+                };
+            } else {
+                const cleanName = email.split('@')[0];
+                userData = {
+                    name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+                    role: 'Kasir / Member',
+                    roleBadge: 'Member',
+                    avatar: cleanName.substring(0, 2).toUpperCase(),
+                    email: email,
+                    loginTime: new Date().toLocaleTimeString('id-ID')
+                };
+            }
         }
 
         // Save active user to localStorage for index.html to read
@@ -336,6 +346,8 @@ function handleRegisterSubmit(event) {
 
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
+    const phoneInput = document.getElementById('regPhone');
+    const phone = phoneInput ? phoneInput.value.trim() : '';
     const pass = document.getElementById('regPassword').value;
     const btnSubmit = document.getElementById('btnRegSubmit');
     const btnText = btnSubmit.querySelector('.btn-text');
@@ -356,8 +368,26 @@ function handleRegisterSubmit(event) {
         btnText.classList.remove('hidden');
         btnSpinner.classList.add('hidden');
 
+        // Simpan Akun Baru Langsung ke Database (SohibDB)
+        if (typeof SohibDB !== 'undefined') {
+            const result = SohibDB.addUser({
+                full_name: name,
+                email: email,
+                phone: phone,
+                pass: pass,
+                role: 'member',
+                role_badge: 'Member Pelanggan'
+            });
+
+            if (!result.success) {
+                playSound('error');
+                showToast(result.message, 'error', 'Pendaftaran Gagal');
+                return;
+            }
+        }
+
         playSound('success');
-        showToast('Pendaftaran akun berhasil! Silakan masuk.', 'success', 'Registrasi Berhasil');
+        showToast('Pendaftaran akun berhasil & tersimpan di database! Silakan masuk.', 'success', 'Akun Tersimpan');
         switchAuthTab('login');
         document.getElementById('loginEmail').value = email;
         document.getElementById('loginPassword').value = pass;

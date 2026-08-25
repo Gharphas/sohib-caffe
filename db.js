@@ -1,7 +1,7 @@
 /**
  * SOHIB CAFFE & RESTO — Database Management Client Layer (db.js)
  * Menyediakan fungsi CRUD lokal terstruktur untuk:
- * - 1. Akun Pengguna & Staf (Users)
+ * - 1. Akun Pengguna & Staf (Users - Login & Registrasi Real-time)
  * - 2. Transaksi Penjualan Kasir (Sales)
  * - 3. Pembelian Bahan Baku / Stok (Purchases)
  * - 4. Inventori & Produk Menu (Products & Stock)
@@ -30,6 +30,7 @@ const SohibDB = (function () {
                 full_name: 'Muh Ikhsan Anggara',
                 email: 'owner@sohibcaffe.com',
                 phone: '0895325480299',
+                pass: 'sohib2024',
                 role: 'owner',
                 role_badge: 'Owner & General Manager',
                 avatar: 'MIA',
@@ -42,6 +43,7 @@ const SohibDB = (function () {
                 full_name: 'Fajar Pratama',
                 email: 'kasir@sohibcaffe.com',
                 phone: '081298765432',
+                pass: 'kasir1234',
                 role: 'kasir',
                 role_badge: 'Kasir Utama (Shift 1)',
                 avatar: 'FP',
@@ -54,6 +56,7 @@ const SohibDB = (function () {
                 full_name: 'Rian Anggara',
                 email: 'barista@sohibcaffe.com',
                 phone: '081345678901',
+                pass: 'barista1234',
                 role: 'barista',
                 role_badge: 'Barista & Staff',
                 avatar: 'RA',
@@ -117,35 +120,90 @@ const SohibDB = (function () {
 
     return {
         /* -------------------------------------------------------------
-           1. MODUL USERS / AKUN PENGGUNA
+           1. MODUL USERS / AKUN PENGGUNA (PENDAFTARAN & LOGIN)
            ------------------------------------------------------------- */
         getUsers() {
-            return getStored(STORAGE_KEYS.USERS, []);
+            return getStored(STORAGE_KEYS.USERS, DEFAULT_DATA.users);
         },
 
         getUserByEmail(email) {
+            if (!email) return null;
             const users = this.getUsers();
-            return users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            return users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase().trim());
+        },
+
+        getUserByIdentifier(identifier) {
+            if (!identifier) return null;
+            const users = this.getUsers();
+            const idLower = identifier.toLowerCase().trim();
+            return users.find(u => 
+                (u.email && u.email.toLowerCase() === idLower) ||
+                (u.username && u.username.toLowerCase() === idLower) ||
+                (u.phone && u.phone === identifier.trim())
+            );
         },
 
         addUser(userData) {
             const users = this.getUsers();
-            const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+            
+            // Cek duplikasi email
+            if (this.getUserByEmail(userData.email)) {
+                return { success: false, message: 'Email sudah terdaftar. Silakan gunakan email lain atau langsung masuk.' };
+            }
+
+            const newId = users.length > 0 ? Math.max(...users.map(u => u.id || 0)) + 1 : 1;
+            const cleanUsername = userData.username || (userData.email ? userData.email.split('@')[0] : `user${newId}`);
+            
+            // Inisial avatar
+            let avatarLetters = 'MB';
+            if (userData.full_name) {
+                const parts = userData.full_name.trim().split(' ');
+                avatarLetters = parts.length > 1 
+                    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() 
+                    : parts[0].substring(0, 2).toUpperCase();
+            }
+
             const newUser = {
                 id: newId,
-                username: userData.username || userData.email.split('@')[0],
-                full_name: userData.full_name || 'Pengguna Baru',
-                email: userData.email,
-                phone: userData.phone || '',
-                role: userData.role || 'kasir',
-                role_badge: userData.role_badge || 'Kasir',
-                avatar: userData.avatar || (userData.full_name ? userData.full_name.substring(0, 2).toUpperCase() : 'US'),
+                username: cleanUsername,
+                full_name: userData.full_name || 'Member Sohib Resto',
+                email: userData.email ? userData.email.toLowerCase().trim() : '',
+                phone: userData.phone ? userData.phone.trim() : '',
+                pass: userData.pass || userData.password || '',
+                role: userData.role || 'member',
+                role_badge: userData.role_badge || (userData.role === 'owner' ? 'Owner & General Manager' : 'Member Pelanggan'),
+                avatar: userData.avatar || avatarLetters,
                 status: 'active',
                 created_at: new Date().toISOString()
             };
+
             users.push(newUser);
             setStored(STORAGE_KEYS.USERS, users);
-            return newUser;
+            console.log('✅ Akun Baru Tersimpan di Database SohibDB:', newUser);
+            return { success: true, user: newUser };
+        },
+
+        authenticateUser(identifier, password) {
+            const user = this.getUserByIdentifier(identifier);
+            if (!user) {
+                return { success: false, message: 'Akun belum terdaftar di database.' };
+            }
+
+            // Validasi kata sandi (jika ada sandi tersimpan)
+            if (user.pass && password && user.pass !== password) {
+                return { success: false, message: 'Kata sandi tidak sesuai.' };
+            }
+
+            // Update last login
+            user.last_login = new Date().toISOString();
+            const users = this.getUsers();
+            const idx = users.findIndex(u => u.id === user.id);
+            if (idx !== -1) {
+                users[idx] = user;
+                setStored(STORAGE_KEYS.USERS, users);
+            }
+
+            return { success: true, user: user };
         },
 
         /* -------------------------------------------------------------
@@ -157,7 +215,7 @@ const SohibDB = (function () {
 
         addSale(saleData) {
             const sales = this.getSales();
-            const newId = sales.length > 0 ? Math.max(...sales.map(s => s.id)) + 1 : 1;
+            const newId = sales.length > 0 ? Math.max(...sales.map(s => s.id || 0)) + 1 : 1;
             const invoiceNo = `INV-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${String(newId).padStart(4, '0')}`;
 
             const newSale = {
@@ -203,7 +261,7 @@ const SohibDB = (function () {
 
         addPurchase(purchaseData) {
             const purchases = this.getPurchases();
-            const newId = purchases.length > 0 ? Math.max(...purchases.map(p => p.id)) + 1 : 1;
+            const newId = purchases.length > 0 ? Math.max(...purchases.map(p => p.id || 0)) + 1 : 1;
             const purchaseNo = `PO-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${String(newId).padStart(4, '0')}`;
 
             const newPurchase = {
@@ -238,7 +296,7 @@ const SohibDB = (function () {
            4. MODUL PRODUK & STOK INVENTORI
            ------------------------------------------------------------- */
         getProducts() {
-            return getStored(STORAGE_KEYS.PRODUCTS, []);
+            return getStored(STORAGE_KEYS.PRODUCTS, DEFAULT_DATA.products);
         },
 
         updateProductStock(productId, changeQty) {
