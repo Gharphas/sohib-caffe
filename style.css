@@ -2476,6 +2476,7 @@ a {
         color: #F59E0B;
         background: linear-gradient(135deg, #FFFDF8 0%, #F59E0B 55%, #D4AF37 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         white-space: nowrap;
         line-height: 1.2;
@@ -2485,6 +2486,7 @@ a {
         color: #92400E;
         background: linear-gradient(135deg, #451A03 0%, #92400E 60%, #B45309 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
