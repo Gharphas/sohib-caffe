@@ -1,0 +1,223 @@
+{
+  "database_name": "sohib_caffe_db",
+  "owner": "Muh Ikhsan Anggara",
+  "version": "2.0.0",
+  "last_updated": "2026-08-25T20:30:00.000Z",
+  "users": [
+    {
+      "id": 1,
+      "username": "owner",
+      "full_name": "Muh Ikhsan Anggara",
+      "email": "owner@sohibcaffe.com",
+      "phone": "0895325480299",
+      "role": "owner",
+      "role_badge": "Owner & General Manager",
+      "avatar": "MIA",
+      "status": "active",
+      "created_at": "2026-08-25T08:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "username": "kasir1",
+      "full_name": "Fajar Pratama",
+      "email": "kasir@sohibcaffe.com",
+      "phone": "081298765432",
+      "role": "kasir",
+      "role_badge": "Kasir Utama (Shift 1)",
+      "avatar": "FP",
+      "status": "active",
+      "created_at": "2026-08-25T08:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "username": "barista1",
+      "full_name": "Rian Anggara",
+      "email": "barista@sohibcaffe.com",
+      "phone": "081345678901",
+      "role": "barista",
+      "role_badge": "Barista & Staff",
+      "avatar": "RA",
+      "status": "active",
+      "created_at": "2026-08-25T08:00:00.000Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "code": "MAKANAN",
+      "name": "Makanan Khas Arab",
+      "icon": "ri-restaurant-line"
+    },
+    {
+      "id": 2,
+      "code": "MINUMAN",
+      "name": "Kopi & Minuman Segar",
+      "icon": "ri-cup-line"
+    },
+    {
+      "id": 3,
+      "code": "SNACK",
+      "name": "Camilan & Roti",
+      "icon": "ri-cake-3-line"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "category_id": 1,
+      "sku": "MND-KMB-01",
+      "name": "Nasi Mandhi Kambing Spesial",
+      "price": 48000,
+      "cost_price": 32000,
+      "stock": 35,
+      "is_drink": false
+    },
+    {
+      "id": 2,
+      "category_id": 1,
+      "sku": "KBL-AYM-01",
+      "name": "Nasi Kebuli Ayam Panggang",
+      "price": 38000,
+      "cost_price": 24000,
+      "stock": 40,
+      "is_drink": false
+    },
+    {
+      "id": 3,
+      "category_id": 1,
+      "sku": "BRY-KMB-01",
+      "name": "Nasi Briyani Daging Domba",
+      "price": 52000,
+      "cost_price": 35000,
+      "stock": 25,
+      "is_drink": false
+    },
+    {
+      "id": 4,
+      "category_id": 2,
+      "sku": "GHW-ARB-01",
+      "name": "Kopi Gahwa Arabica Saffron",
+      "price": 22000,
+      "cost_price": 11000,
+      "stock": 60,
+      "is_drink": true
+    },
+    {
+      "id": 5,
+      "category_id": 2,
+      "sku": "KRK-TEA-01",
+      "name": "Karak Tea Rempah Arab",
+      "price": 18000,
+      "cost_price": 9000,
+      "stock": 80,
+      "is_drink": true
+    },
+    {
+      "id": 6,
+      "category_id": 3,
+      "sku": "RYM-MDU-01",
+      "name": "Roti Maryam Madu Yaman",
+      "price": 16000,
+      "cost_price": 8000,
+      "stock": 50,
+      "is_drink": false
+    },
+    {
+      "id": 7,
+      "category_id": 3,
+      "sku": "SMS-DGG-01",
+      "name": "Samosa Daging Kambing (3 Pcs)",
+      "price": 20000,
+      "cost_price": 11000,
+      "stock": 45,
+      "is_drink": false
+    }
+  ],
+  "sales": [
+    {
+      "id": 1,
+      "invoice_no": "INV-20260825-001",
+      "user_id": 1,
+      "cashier_name": "Muh Ikhsan Anggara",
+      "customer_name": "Budi Santoso",
+      "table_number": "Meja 05",
+      "order_type": "dine_in",
+      "subtotal": 70000,
+      "discount": 0,
+      "tax": 0,
+      "total_amount": 70000,
+      "payment_method": "qris",
+      "amount_paid": 70000,
+      "change_due": 0,
+      "payment_status": "paid",
+      "shift_number": 1,
+      "created_at": "2026-08-25T14:30:00.000Z",
+      "items": [
+        {
+          "product_id": 1,
+          "name": "Nasi Mandhi Kambing Spesial",
+          "quantity": 1,
+          "price": 48000,
+          "subtotal": 48000,
+          "notes": "Daging empuk"
+        },
+        {
+          "product_id": 4,
+          "name": "Kopi Gahwa Arabica Saffron",
+          "quantity": 1,
+          "price": 22000,
+          "subtotal": 22000,
+          "temperature": "Hot",
+          "sugar": "Madu Arab",
+          "size": "Regular",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "purchases": [
+    {
+      "id": 1,
+      "purchase_no": "PO-20260825-001",
+      "supplier_name": "CV Berkah Rempah Nusantara",
+      "purchaser_name": "Muh Ikhsan Anggara",
+      "total_amount": 1250000,
+      "payment_method": "transfer",
+      "payment_status": "lunas",
+      "purchase_date": "2026-08-25T09:30:00.000Z",
+      "notes": "Restok Beras Basmati & Kopi Gahwa",
+      "items": [
+        {
+          "item_name": "Biji Kopi Arabica Gahwa 5Kg",
+          "quantity": 5,
+          "unit_cost": 150000,
+          "subtotal": 750000
+        },
+        {
+          "item_name": "Rempah Karak Tea Premium 500g",
+          "quantity": 5,
+          "unit_cost": 100000,
+          "subtotal": 500000
+        }
+      ]
+    }
+  ],
+  "suppliers": [
+    {
+      "id": 1,
+      "supplier_code": "SUP-01",
+      "name": "CV Berkah Rempah Nusantara",
+      "contact_person": "H. Syukri",
+      "phone": "081122334455",
+      "address": "Jl. Sukabangun II, Palembang"
+    },
+    {
+      "id": 2,
+      "supplier_code": "SUP-02",
+      "name": "Peternakan Kambing Barokah",
+      "contact_person": "Ustadz Mansur",
+      "phone": "085277889900",
+      "address": "Gandus, Kota Palembang"
+    }
+  ]
+}
