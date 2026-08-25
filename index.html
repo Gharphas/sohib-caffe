@@ -72,6 +72,13 @@
                 <span>Laporan</span>
             </button>
 
+            <!-- Cyber Security SOC Monitor -->
+            <button class="btn-header btn-header-security" id="btnOpenSecuritySOC" title="Pusat Keamanan Siber & WAF (Owner Mode)">
+                <i class="ri-shield-check-fill" style="color: #10b981;"></i>
+                <span>WAF SOC</span>
+                <span class="security-pulse-dot" title="WAF Aktif & Memproteksi"></span>
+            </button>
+
             <!-- Theme Toggle -->
             <button class="btn-header-icon" id="themeToggleBtn" title="Ganti Tema (Gelap / Terang)">
                 <i class="ri-sun-line" id="themeIcon"></i>
@@ -1019,6 +1026,267 @@
             </div>
             <div class="modal-foot">
                 <button class="btn-secondary w-100" data-close="modalLocationMap">Tutup Peta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cyber Security Operations Center (SOC) Modal -->
+    <div class="modal-overlay" id="modalSecuritySOC">
+        <div class="modal-container modal-soc-container">
+            <div class="modal-head modal-head-soc">
+                <div class="modal-title-with-badge">
+                    <div class="soc-shield-icon">
+                        <i class="ri-shield-keyhole-fill"></i>
+                    </div>
+                    <div>
+                        <h2 class="modal-title">Cyber Security Operations Center (SOC)</h2>
+                        <span class="soc-subtitle">Web Application Firewall (WAF v2.5) &bull; Sistem Proteksi Real-Time</span>
+                    </div>
+                </div>
+                <div class="soc-head-actions">
+                    <span class="soc-live-status-badge" id="socServerStatusBadge">
+                        <span class="live-blink-dot"></span> WAF ONLINE
+                    </span>
+                    <button class="modal-close" data-close="modalSecuritySOC">&times;</button>
+                </div>
+            </div>
+            
+            <div class="modal-body modal-body-soc">
+                <!-- Top Threat Metrics Grid -->
+                <div class="soc-metrics-grid">
+                    <div class="soc-metric-card">
+                        <div class="soc-metric-icon icon-req">
+                            <i class="ri-radar-line"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">Total Permintaan WAF</span>
+                            <span class="soc-metric-value" id="socTotalRequests">0</span>
+                        </div>
+                    </div>
+                    <div class="soc-metric-card card-danger">
+                        <div class="soc-metric-icon icon-blocked">
+                            <i class="ri-shield-cross-fill"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">Serangan Dicegah</span>
+                            <span class="soc-metric-value" id="socTotalBlocked">0</span>
+                        </div>
+                    </div>
+                    <div class="soc-metric-card">
+                        <div class="soc-metric-icon icon-sqli">
+                            <i class="ri-database-2-line"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">SQLi Blocked</span>
+                            <span class="soc-metric-value" id="socSqliBlocked">0</span>
+                        </div>
+                    </div>
+                    <div class="soc-metric-card">
+                        <div class="soc-metric-icon icon-xss">
+                            <i class="ri-code-box-line"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">XSS Blocked</span>
+                            <span class="soc-metric-value" id="socXssBlocked">0</span>
+                        </div>
+                    </div>
+                    <div class="soc-metric-card">
+                        <div class="soc-metric-icon icon-bot">
+                            <i class="ri-robot-2-line"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">Scanner / Bot</span>
+                            <span class="soc-metric-value" id="socBotBlocked">0</span>
+                        </div>
+                    </div>
+                    <div class="soc-metric-card">
+                        <div class="soc-metric-icon icon-ddos">
+                            <i class="ri-fire-line"></i>
+                        </div>
+                        <div class="soc-metric-info">
+                            <span class="soc-metric-label">DDoS Rate Limit</span>
+                            <span class="soc-metric-value" id="socDdosBlocked">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOC Navigation Tabs -->
+                <div class="soc-tabs">
+                    <button class="soc-tab active" data-soc-tab="logs">
+                        <i class="ri-file-list-3-line"></i> Log Forensik Real-Time
+                    </button>
+                    <button class="soc-tab" data-soc-tab="ip-manager">
+                        <i class="ri-shield-user-line"></i> Manajemen IP Terblokir (<span id="socBlockedIpCount">0</span>)
+                    </button>
+                    <button class="soc-tab" data-soc-tab="test-center">
+                        <i class="ri-flask-line"></i> Lab Uji Serangan WAF
+                    </button>
+                    <button class="soc-tab" data-soc-tab="protections">
+                        <i class="ri-lock-2-line"></i> Lapisan Enkripsi & Header
+                    </button>
+                </div>
+
+                <!-- Tab 1: Live Audit Logs -->
+                <div class="soc-tab-content active" id="socTabContent-logs">
+                    <div class="soc-toolbar">
+                        <div class="soc-search-box">
+                            <i class="ri-search-line"></i>
+                            <input type="text" id="socLogFilterInput" placeholder="Filter log berdasarkan IP, SQLi, XSS, URL...">
+                        </div>
+                        <div class="soc-actions-row">
+                            <button class="btn-soc-action" id="btnRefreshSocLogs">
+                                <i class="ri-refresh-line"></i> Refresh
+                            </button>
+                            <button class="btn-soc-action" id="btnClearTerminalLogs">
+                                <i class="ri-delete-bin-7-line"></i> Bersihkan Layar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="soc-terminal-wrapper">
+                        <div class="soc-terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="terminal-title">live_security_audit_stream.log</span>
+                            <span class="terminal-badge">LIVE 200 FPS</span>
+                        </div>
+                        <div class="soc-terminal-body" id="socTerminalLogsBody">
+                            <div class="terminal-log-empty">Memuat data log forensik keamanan...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: IP Blacklist Management -->
+                <div class="soc-tab-content" id="socTabContent-ip-manager">
+                    <div class="soc-ip-management-layout">
+                        <div class="soc-ip-form-card">
+                            <h4><i class="ri-user-unfollow-line"></i> Blokir / Buka Blokir IP Manual</h4>
+                            <p class="text-muted">Masukkan IP address untuk dimasukkan ke daftar blacklist atau whitelist.</p>
+                            <div class="soc-ip-input-group">
+                                <input type="text" id="socTargetIpInput" placeholder="Contoh: 192.168.1.100 atau 10.0.0.5">
+                                <div class="soc-ip-btn-row">
+                                    <button class="btn-soc-danger" id="btnManualBlockIp">
+                                        <i class="ri-forbid-2-line"></i> Blokir IP
+                                    </button>
+                                    <button class="btn-soc-success" id="btnManualUnblockIp">
+                                        <i class="ri-checkbox-circle-line"></i> Buka Blokir (Unblock)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="soc-ip-list-card">
+                            <h4><i class="ri-shield-fill text-danger"></i> Daftar IP yang Sedang Diblokir</h4>
+                            <div class="soc-blocked-ip-list" id="socBlockedIpListContainer">
+                                <div class="terminal-log-empty">Tidak ada IP yang sedang diblokir.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Test Attack Lab -->
+                <div class="soc-tab-content" id="socTabContent-test-center">
+                    <div class="soc-test-lab-header">
+                        <h4><i class="ri-flask-fill text-warning"></i> Simulator Uji Penetrasi & Kekuatan WAF</h4>
+                        <p class="text-muted">Uji secara langsung respons Web Application Firewall (WAF) terhadap berbagai variasi payload serangan siber.</p>
+                    </div>
+
+                    <div class="soc-test-grid">
+                        <div class="soc-test-card">
+                            <div class="test-card-head">
+                                <span class="badge-test-type">SQL INJECTION</span>
+                                <button class="btn-run-sim-test" data-test-type="sqli" data-payload="' OR '1'='1' UNION SELECT username, password FROM users--">
+                                    <i class="ri-play-fill"></i> Jalankan Uji
+                                </button>
+                            </div>
+                            <code class="test-payload-sample">' OR '1'='1' UNION SELECT username, password FROM users--</code>
+                            <p class="test-desc">Menguji apakah WAF memblokir upaya manipulasi query SQL form / URL.</p>
+                        </div>
+
+                        <div class="soc-test-card">
+                            <div class="test-card-head">
+                                <span class="badge-test-type">CROSS-SITE SCRIPTING</span>
+                                <button class="btn-run-sim-test" data-test-type="xss" data-payload="&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;">
+                                    <i class="ri-play-fill"></i> Jalankan Uji
+                                </button>
+                            </div>
+                            <code class="test-payload-sample">&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;</code>
+                            <p class="test-desc">Menguji apakah filter XSS menangkap injeksi script browser berbahaya.</p>
+                        </div>
+
+                        <div class="soc-test-card">
+                            <div class="test-card-head">
+                                <span class="badge-test-type">PATH TRAVERSAL / LFI</span>
+                                <button class="btn-run-sim-test" data-test-type="traversal" data-payload="../../../../etc/passwd%00.html">
+                                    <i class="ri-play-fill"></i> Jalankan Uji
+                                </button>
+                            </div>
+                            <code class="test-payload-sample">../../../../etc/passwd%00.html</code>
+                            <p class="test-desc">Menguji pencegahan peretasan direktori sistem file server.</p>
+                        </div>
+
+                        <div class="soc-test-card">
+                            <div class="test-card-head">
+                                <span class="badge-test-type">COMMAND INJECTION / RCE</span>
+                                <button class="btn-run-sim-test" data-test-type="rce" data-payload="; whoami && cat /etc/shadow">
+                                    <i class="ri-play-fill"></i> Jalankan Uji
+                                </button>
+                            </div>
+                            <code class="test-payload-sample">; whoami && cat /etc/shadow</code>
+                            <p class="test-desc">Menguji penangkalan eksekusi perintah shell berbahaya pada server.</p>
+                        </div>
+                    </div>
+
+                    <div class="soc-test-result-box" id="socTestResultOutput">
+                        <div class="text-muted"><i class="ri-information-line"></i> Klik salah satu tombol "Jalankan Uji" di atas untuk melihat respon WAF secara langsung.</div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Protections & Cryptography Info -->
+                <div class="soc-tab-content" id="socTabContent-protections">
+                    <div class="soc-protections-grid">
+                        <div class="protection-item">
+                            <div class="protection-icon"><i class="ri-lock-password-line"></i></div>
+                            <div class="protection-info">
+                                <h5>Password Hashing PBKDF2-SHA256</h5>
+                                <p>Setiap kata sandi pengguna di-hash menggunakan 100.000 iterasi PBKDF2 dengan salt acak 128-bit untuk mencegah serangan brute force dan rainbow table.</p>
+                            </div>
+                        </div>
+                        <div class="protection-item">
+                            <div class="protection-icon"><i class="ri-key-2-line"></i></div>
+                            <div class="protection-info">
+                                <h5>HMAC SHA-256 Digitally Signed Tokens</h5>
+                                <p>Sesi autentikasi diamankan dengan tanda tangan kriptografi HMAC 256-bit untuk mencegah pemalsuan identitas (token tampering).</p>
+                            </div>
+                        </div>
+                        <div class="protection-item">
+                            <div class="protection-icon"><i class="ri-shield-star-line"></i></div>
+                            <div class="protection-info">
+                                <h5>HTTP Security Headers (Grade A+)</h5>
+                                <p>Disematkan Content-Security-Policy (CSP), X-Frame-Options: SAMEORIGIN (Anti-Clickjacking), X-Content-Type-Options: nosniff, dan Referrer-Policy.</p>
+                            </div>
+                        </div>
+                        <div class="protection-item">
+                            <div class="protection-icon"><i class="ri-speed-line"></i></div>
+                            <div class="protection-info">
+                                <h5>Anti-DDoS & Rate Limiter</h5>
+                                <p>Membatasi maksimal 120 request/menit per IP. IP yang terdeteksi melakukan spam flood akan diblokir otomatis selama 5 menit.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-foot modal-foot-soc">
+                <div class="soc-foot-meta">
+                    <span><i class="ri-user-shield-line"></i> System Admin: <strong>Muh Ikhsan Anggara</strong></span>
+                    <span>&bull;</span>
+                    <span id="socUptimeText">Uptime: 0j 0m 0d</span>
+                </div>
+                <button class="btn-secondary" data-close="modalSecuritySOC">Tutup SOC Dashboard</button>
             </div>
         </div>
     </div>

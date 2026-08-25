@@ -258,8 +258,8 @@ function checkPasswordStrength(password) {
     }
 }
 
-/* 8. FORM SUBMISSION & REDIRECT TO INDEX.HTML */
-function handleLoginSubmit(event) {
+/* 8. FORM SUBMISSION & SECURE BACKEND AUTH */
+async function handleLoginSubmit(event) {
     event.preventDefault();
     playSound('click');
 
@@ -271,7 +271,7 @@ function handleLoginSubmit(event) {
 
     if (!email || !pass) {
         playSound('error');
-        showToast('Harap masukkan email dan kata sandi.', 'error');
+        showToast('Harap masukkan email/username dan kata sandi.', 'error');
         return;
     }
 
@@ -280,14 +280,64 @@ function handleLoginSubmit(event) {
     btnText.classList.add('hidden');
     btnSpinner.classList.remove('hidden');
 
-    setTimeout(() => {
-        btnSubmit.disabled = false;
-        btnText.classList.remove('hidden');
-        btnSpinner.classList.add('hidden');
+    let userData = null;
+    let backendSuccess = false;
 
-        let userData = null;
+    // 1. Coba Autentikasi Kriptografi ke Server Python /api/auth/login
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, pass: pass })
+        });
 
-        // Cek apakah ada di database SohibDB
+        if (response.ok) {
+            const result = await response.json();
+            if (result.status === 'success') {
+                backendSuccess = true;
+                const u = result.user;
+                userData = {
+                    name: u.full_name,
+                    role: u.role_badge || u.role,
+                    roleBadge: u.role === 'owner' ? 'Owner' : (u.role === 'kasir' ? 'Kasir' : 'Barista'),
+                    avatar: u.avatar || 'US',
+                    email: u.email,
+                    token: result.token,
+                    csrf_token: result.csrf_token,
+                    loginTime: new Date().toLocaleTimeString('id-ID')
+                };
+                if (result.token) sessionStorage.setItem('sohib_auth_token', result.token);
+                if (result.csrf_token) sessionStorage.setItem('sohib_csrf_token', result.csrf_token);
+            }
+        } else if (response.status === 401) {
+            const errResult = await response.json();
+            btnSubmit.disabled = false;
+            btnText.classList.remove('hidden');
+            btnSpinner.classList.add('hidden');
+            playSound('error');
+            showToast(errResult.message || 'Email atau kata sandi tidak cocok.', 'error', 'Gagal Masuk');
+            return;
+        } else if (response.status === 403) {
+            btnSubmit.disabled = false;
+            btnText.classList.remove('hidden');
+            btnSpinner.classList.add('hidden');
+            playSound('error');
+            showToast('Akses diblokir oleh Firewall WAF.', 'error', 'WAF Shield Blocked');
+            return;
+        } else if (response.status === 429) {
+            btnSubmit.disabled = false;
+            btnText.classList.remove('hidden');
+            btnSpinner.classList.add('hidden');
+            playSound('error');
+            showToast('Terlalu banyak percobaan login gagal. IP dikunci sementara (Anti-Brute Force).', 'error', 'IP Lockout');
+            return;
+        }
+    } catch (e) {
+        // Fallback offline mode bila server backend belum dijalankan
+    }
+
+    // 2. Client-side Fallback Authentication jika offline
+    if (!backendSuccess) {
         if (typeof SohibDB !== 'undefined') {
             const authResult = SohibDB.authenticateUser(email, pass);
             if (authResult.success) {
@@ -304,7 +354,6 @@ function handleLoginSubmit(event) {
             }
         }
 
-        // Fallback jika login via demo role
         if (!userData) {
             if (currentRole && DEMO_ACCOUNTS[currentRole]) {
                 const acc = DEMO_ACCOUNTS[currentRole];
@@ -328,16 +377,20 @@ function handleLoginSubmit(event) {
                 };
             }
         }
+    }
 
-        // Save active user to localStorage for index.html to read
-        try {
-            localStorage.setItem('sohib_active_user', JSON.stringify(userData));
-        } catch (e) {}
+    btnSubmit.disabled = false;
+    btnText.classList.remove('hidden');
+    btnSpinner.classList.add('hidden');
 
-        playSound('success');
-        showToast(`Login berhasil! Mengarahkan ke website Sohib Caffe...`, 'success');
-        openSuccessModal(userData);
-    }, 800);
+    // Save active user to localStorage for index.html
+    try {
+        localStorage.setItem('sohib_active_user', JSON.stringify(userData));
+    } catch (e) {}
+
+    playSound('success');
+    showToast(`Login berhasil! Mengarahkan ke sistem Sohib Caffe...`, 'success');
+    openSuccessModal(userData);
 }
 
 function handleRegisterSubmit(event) {
