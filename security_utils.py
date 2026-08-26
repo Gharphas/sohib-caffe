@@ -100,6 +100,16 @@ DEFAULT_SECURE_USERS = {
         "role_badge": "Barista & Staff",
         "avatar": "RA",
         "password_hash": hash_password("barista1234", salt="sohib_barista_salt_2024")
+    },
+    "admin": {
+        "id": 4,
+        "username": "admin",
+        "email": "admin@sohibcaffe.com",
+        "full_name": "Admin Keamanan Siber",
+        "role": "admin",
+        "role_badge": "Admin Security & SOC Officer",
+        "avatar": "ADM",
+        "password_hash": hash_password("admin2024", salt="sohib_admin_salt_2024")
     }
 }
 

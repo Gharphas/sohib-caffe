@@ -72,9 +72,10 @@ python security_test.py
 
 ## 🖥️ 4. Menggunakan Cyber SOC Dashboard di Website
 
-1. Buka website di browser: `http://localhost:8080`
-2. Login sebagai **Owner** (`owner@sohibcaffe.com` / `sohib2024`).
-3. Pada navbar atas, klik tombol **WAF SOC** (ikon perisai hijau berkedip).
+1. Buka website di browser: `http://localhost:8080` (atau langsung `login.html`)
+2. Login sebagai **Admin Keamanan** (`admin@sohibcaffe.com` / `admin2024`) atau **Owner** (`owner@sohibcaffe.com` / `sohib2024`).
+   > *Catatan: Akun Kasir, Barista, dan Member umum tidak dapat melihat maupun mengakses tombol/fitur Cyber Security SOC demi keamanan sistem.*
+3. Pada navbar atas, tombol **WAF SOC** (ikon perisai hijau berkedip) akan muncul khusus untuk Admin/Owner. Klik tombol tersebut untuk membuka dashboard SOC.
 4. Di dalam modal SOC, Anda dapat:
    - **Melihat Metrik Real-Time**: Total permintaan, jumlah serangan dicegah, statistik SQLi, XSS, Bot, DDoS.
    - **Log Forensik Real-Time**: Membaca streaming aktivitas serangan yang dicegah secara live.

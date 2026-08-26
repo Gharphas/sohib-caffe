@@ -1462,9 +1462,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------------------------
-    // 11. MODAL SYSTEM
+    // 11. MODAL SYSTEM & SECURITY ACCESS CONTROL
     // ----------------------------------------------------------------------
+    function isSecurityAuthorized() {
+        try {
+            const rawUser = localStorage.getItem('sohib_active_user');
+            if (!rawUser) return false;
+            const user = JSON.parse(rawUser);
+            const role = (user.rawRole || user.role || '').toLowerCase();
+            const badge = (user.roleBadge || '').toLowerCase();
+            const email = (user.email || '').toLowerCase();
+            return role === 'admin' || role === 'owner' || role.includes('admin') || role.includes('security') ||
+                   badge.includes('admin') || badge.includes('owner') ||
+                   email === 'admin@sohibcaffe.com' || email === 'owner@sohibcaffe.com';
+        } catch (e) {
+            return false;
+        }
+    }
+
     function openModal(modalId) {
+        if (modalId === 'modalSecuritySOC' && !isSecurityAuthorized()) {
+            showToast('Akses Ditolak: Fitur Cyber Security SOC hanya diizinkan untuk Admin Keamanan atau Owner.', 'warning');
+            return;
+        }
         const modal = document.getElementById(modalId);
         if (modal) modal.classList.add('active');
     }
@@ -1778,7 +1798,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (cashierNameEl && user.name) cashierNameEl.textContent = user.name;
                 if (cashierAvatarEl && user.avatar) cashierAvatarEl.textContent = user.avatar;
                 if (cashierRoleEl && user.roleBadge) {
-                    cashierRoleEl.innerHTML = `<i class="ri-vip-crown-fill" style="color: #f59e0b; font-size: 0.65rem;"></i> ${user.roleBadge}`;
+                    const iconClass = user.roleBadge.includes('Admin') ? 'ri-shield-keyhole-fill' : 'ri-vip-crown-fill';
+                    const iconColor = user.roleBadge.includes('Admin') ? '#10b981' : '#f59e0b';
+                    cashierRoleEl.innerHTML = `<i class="${iconClass}" style="color: ${iconColor}; font-size: 0.65rem;"></i> ${user.roleBadge}`;
                 }
 
                 // Mobile Menu Profile Elements
@@ -1793,6 +1815,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (e) {}
+
+        // RBAC: Kontrol Hak Akses Tombol WAF SOC (Hanya Admin / Owner)
+        const btnOpenSOC = document.getElementById('btnOpenSecuritySOC');
+        if (btnOpenSOC) {
+            if (isSecurityAuthorized()) {
+                btnOpenSOC.style.display = 'inline-flex';
+            } else {
+                btnOpenSOC.style.display = 'none';
+            }
+        }
 
         // Bind Desktop Header Logout Button
         document.getElementById('btnLogoutHeader')?.addEventListener('click', () => {
@@ -1819,10 +1851,14 @@ document.addEventListener('DOMContentLoaded', () => {
         logsData: [],
 
         init() {
-            // Open SOC Modal button
+            // Open SOC Modal button (Dilindungi otorisasi Admin)
             const btnOpenSOC = document.getElementById('btnOpenSecuritySOC');
             if (btnOpenSOC) {
                 btnOpenSOC.addEventListener('click', () => {
+                    if (!isSecurityAuthorized()) {
+                        showToast('Akses Ditolak: Hanya Admin Keamanan atau Owner yang berhak mengakses Cyber SOC!', 'warning');
+                        return;
+                    }
                     openModal('modalSecuritySOC');
                     this.fetchStats();
                     this.fetchLogs();

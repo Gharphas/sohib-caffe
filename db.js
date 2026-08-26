@@ -62,6 +62,19 @@ const SohibDB = (function () {
                 avatar: 'RA',
                 status: 'active',
                 created_at: new Date().toISOString()
+            },
+            {
+                id: 4,
+                username: 'admin',
+                full_name: 'Admin Keamanan Siber',
+                email: 'admin@sohibcaffe.com',
+                phone: '089599887766',
+                pass: 'admin2024',
+                role: 'admin',
+                role_badge: 'Admin Security & SOC Officer',
+                avatar: 'ADM',
+                status: 'active',
+                created_at: new Date().toISOString()
             }
         ],
         products: [
@@ -100,8 +113,19 @@ const SohibDB = (function () {
 
     // Inisialisasi Database jika pertama kali berjalan
     function init() {
-        if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+        let currentUsers = getStored(STORAGE_KEYS.USERS, null);
+        if (!currentUsers) {
             setStored(STORAGE_KEYS.USERS, DEFAULT_DATA.users);
+        } else {
+            // Pastikan user admin dan owner terdaftar jika sebelumnya database lokal tersimpan versi lama
+            const hasAdmin = currentUsers.some(u => u.email === 'admin@sohibcaffe.com' || u.username === 'admin');
+            if (!hasAdmin) {
+                const adminUser = DEFAULT_DATA.users.find(u => u.username === 'admin');
+                if (adminUser) {
+                    currentUsers.push(adminUser);
+                    setStored(STORAGE_KEYS.USERS, currentUsers);
+                }
+            }
         }
         if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
             setStored(STORAGE_KEYS.PRODUCTS, DEFAULT_DATA.products);

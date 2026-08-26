@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `inventory_logs` (
 -- 1. Data Akun Default
 INSERT INTO `users` (`username`, `full_name`, `email`, `phone`, `password_hash`, `role`, `avatar`) VALUES
 ('owner', 'Muh Ikhsan Anggara', 'owner@sohibcaffe.com', '0895325480299', '$2y$10$e8wF9aK...sohib2026', 'owner', 'MIA'),
+('admin', 'Admin Keamanan Siber', 'admin@sohibcaffe.com', '089599887766', '$2y$10$e8wF9aK...admin2024', 'admin', 'ADM'),
 ('kasir1', 'Fajar Pratama', 'kasir@sohibcaffe.com', '081298765432', '$2y$10$e8wF9aK...kasir1234', 'kasir', 'FP'),
 ('barista1', 'Rian Anggara', 'barista@sohibcaffe.com', '081345678901', '$2y$10$e8wF9aK...barista1234', 'barista', 'RA');
 

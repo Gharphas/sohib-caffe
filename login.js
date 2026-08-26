@@ -15,7 +15,17 @@ const DEMO_ACCOUNTS = {
         pass: 'sohib2024',
         name: 'M. Ikhsan Anggara',
         roleBadge: 'Owner',
-        avatar: 'MIA'
+        avatar: 'MIA',
+        rawRole: 'owner'
+    },
+    admin: {
+        roleName: 'Cyber Security Admin (SOC)',
+        email: 'admin@sohibcaffe.com',
+        pass: 'admin2024',
+        name: 'Admin Keamanan Siber',
+        roleBadge: 'Admin Security',
+        avatar: 'ADM',
+        rawRole: 'admin'
     },
     kasir: {
         roleName: 'Kasir Utama (Shift 1)',
@@ -23,7 +33,8 @@ const DEMO_ACCOUNTS = {
         pass: 'kasir1234',
         name: 'Fajar Pratama',
         roleBadge: 'Kasir',
-        avatar: 'FP'
+        avatar: 'FP',
+        rawRole: 'kasir'
     },
     barista: {
         roleName: 'Barista & Staff',
@@ -31,7 +42,8 @@ const DEMO_ACCOUNTS = {
         pass: 'barista1234',
         name: 'Rian Anggara',
         roleBadge: 'Barista',
-        avatar: 'RA'
+        avatar: 'RA',
+        rawRole: 'barista'
     }
 };
 
@@ -299,7 +311,8 @@ async function handleLoginSubmit(event) {
                 userData = {
                     name: u.full_name,
                     role: u.role_badge || u.role,
-                    roleBadge: u.role === 'owner' ? 'Owner' : (u.role === 'kasir' ? 'Kasir' : 'Barista'),
+                    roleBadge: u.role === 'owner' ? 'Owner' : (u.role === 'admin' ? 'Admin Security' : (u.role === 'kasir' ? 'Kasir' : (u.role === 'barista' ? 'Barista' : 'Member'))),
+                    rawRole: u.role,
                     avatar: u.avatar || 'US',
                     email: u.email,
                     token: result.token,
@@ -345,7 +358,8 @@ async function handleLoginSubmit(event) {
                 userData = {
                     name: dbUser.full_name,
                     role: dbUser.role_badge || dbUser.role,
-                    roleBadge: dbUser.role === 'owner' ? 'Owner' : (dbUser.role === 'kasir' ? 'Kasir' : 'Member'),
+                    roleBadge: dbUser.role === 'owner' ? 'Owner' : (dbUser.role === 'admin' ? 'Admin Security' : (dbUser.role === 'kasir' ? 'Kasir' : (dbUser.role === 'barista' ? 'Barista' : 'Member'))),
+                    rawRole: dbUser.role,
                     avatar: dbUser.avatar || 'US',
                     email: dbUser.email,
                     phone: dbUser.phone || '',
@@ -361,6 +375,7 @@ async function handleLoginSubmit(event) {
                     name: acc.name,
                     role: acc.roleName,
                     roleBadge: acc.roleBadge,
+                    rawRole: acc.rawRole || currentRole,
                     avatar: acc.avatar,
                     email: email,
                     loginTime: new Date().toLocaleTimeString('id-ID')
@@ -371,6 +386,7 @@ async function handleLoginSubmit(event) {
                     name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
                     role: 'Kasir / Member',
                     roleBadge: 'Member',
+                    rawRole: 'member',
                     avatar: cleanName.substring(0, 2).toUpperCase(),
                     email: email,
                     loginTime: new Date().toLocaleTimeString('id-ID')

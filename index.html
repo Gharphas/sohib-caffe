@@ -72,8 +72,9 @@
                 <span>Laporan</span>
             </button>
 
-            <!-- Cyber Security SOC Monitor -->
-            <button class="btn-header btn-header-security" id="btnOpenSecuritySOC" title="Pusat Keamanan Siber & WAF (Owner Mode)">
+            <!-- Cyber Security SOC Monitor (Admin Only) -->
+            <button class="btn-header btn-header-security" id="btnOpenSecuritySOC"
+                title="Pusat Keamanan Siber & WAF (Admin Mode)" style="display: none;">
                 <i class="ri-shield-check-fill" style="color: #10b981;"></i>
                 <span>WAF SOC</span>
                 <span class="security-pulse-dot" title="WAF Aktif & Memproteksi"></span>
@@ -1040,7 +1041,8 @@
                     </div>
                     <div>
                         <h2 class="modal-title">Cyber Security Operations Center (SOC)</h2>
-                        <span class="soc-subtitle">Web Application Firewall (WAF v2.5) &bull; Sistem Proteksi Real-Time</span>
+                        <span class="soc-subtitle">Web Application Firewall (WAF v2.5) &bull; Sistem Proteksi
+                            Real-Time</span>
                     </div>
                 </div>
                 <div class="soc-head-actions">
@@ -1050,7 +1052,7 @@
                     <button class="modal-close" data-close="modalSecuritySOC">&times;</button>
                 </div>
             </div>
-            
+
             <div class="modal-body modal-body-soc">
                 <!-- Top Threat Metrics Grid -->
                 <div class="soc-metrics-grid">
@@ -1116,7 +1118,8 @@
                         <i class="ri-file-list-3-line"></i> Log Forensik Real-Time
                     </button>
                     <button class="soc-tab" data-soc-tab="ip-manager">
-                        <i class="ri-shield-user-line"></i> Manajemen IP Terblokir (<span id="socBlockedIpCount">0</span>)
+                        <i class="ri-shield-user-line"></i> Manajemen IP Terblokir (<span
+                            id="socBlockedIpCount">0</span>)
                     </button>
                     <button class="soc-tab" data-soc-tab="test-center">
                         <i class="ri-flask-line"></i> Lab Uji Serangan WAF
@@ -1131,7 +1134,8 @@
                     <div class="soc-toolbar">
                         <div class="soc-search-box">
                             <i class="ri-search-line"></i>
-                            <input type="text" id="socLogFilterInput" placeholder="Filter log berdasarkan IP, SQLi, XSS, URL...">
+                            <input type="text" id="socLogFilterInput"
+                                placeholder="Filter log berdasarkan IP, SQLi, XSS, URL...">
                         </div>
                         <div class="soc-actions-row">
                             <button class="btn-soc-action" id="btnRefreshSocLogs">
@@ -1164,9 +1168,11 @@
                     <div class="soc-ip-management-layout">
                         <div class="soc-ip-form-card">
                             <h4><i class="ri-user-unfollow-line"></i> Blokir / Buka Blokir IP Manual</h4>
-                            <p class="text-muted">Masukkan IP address untuk dimasukkan ke daftar blacklist atau whitelist.</p>
+                            <p class="text-muted">Masukkan IP address untuk dimasukkan ke daftar blacklist atau
+                                whitelist.</p>
                             <div class="soc-ip-input-group">
-                                <input type="text" id="socTargetIpInput" placeholder="Contoh: 192.168.1.100 atau 10.0.0.5">
+                                <input type="text" id="socTargetIpInput"
+                                    placeholder="Contoh: 192.168.1.100 atau 10.0.0.5">
                                 <div class="soc-ip-btn-row">
                                     <button class="btn-soc-danger" id="btnManualBlockIp">
                                         <i class="ri-forbid-2-line"></i> Blokir IP
@@ -1191,36 +1197,43 @@
                 <div class="soc-tab-content" id="socTabContent-test-center">
                     <div class="soc-test-lab-header">
                         <h4><i class="ri-flask-fill text-warning"></i> Simulator Uji Penetrasi & Kekuatan WAF</h4>
-                        <p class="text-muted">Uji secara langsung respons Web Application Firewall (WAF) terhadap berbagai variasi payload serangan siber.</p>
+                        <p class="text-muted">Uji secara langsung respons Web Application Firewall (WAF) terhadap
+                            berbagai variasi payload serangan siber.</p>
                     </div>
 
                     <div class="soc-test-grid">
                         <div class="soc-test-card">
                             <div class="test-card-head">
                                 <span class="badge-test-type">SQL INJECTION</span>
-                                <button class="btn-run-sim-test" data-test-type="sqli" data-payload="' OR '1'='1' UNION SELECT username, password FROM users--">
+                                <button class="btn-run-sim-test" data-test-type="sqli"
+                                    data-payload="' OR '1'='1' UNION SELECT username, password FROM users--">
                                     <i class="ri-play-fill"></i> Jalankan Uji
                                 </button>
                             </div>
-                            <code class="test-payload-sample">' OR '1'='1' UNION SELECT username, password FROM users--</code>
+                            <code
+                                class="test-payload-sample">' OR '1'='1' UNION SELECT username, password FROM users--</code>
                             <p class="test-desc">Menguji apakah WAF memblokir upaya manipulasi query SQL form / URL.</p>
                         </div>
 
                         <div class="soc-test-card">
                             <div class="test-card-head">
                                 <span class="badge-test-type">CROSS-SITE SCRIPTING</span>
-                                <button class="btn-run-sim-test" data-test-type="xss" data-payload="&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;">
+                                <button class="btn-run-sim-test" data-test-type="xss"
+                                    data-payload="&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;">
                                     <i class="ri-play-fill"></i> Jalankan Uji
                                 </button>
                             </div>
-                            <code class="test-payload-sample">&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;</code>
-                            <p class="test-desc">Menguji apakah filter XSS menangkap injeksi script browser berbahaya.</p>
+                            <code
+                                class="test-payload-sample">&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;</code>
+                            <p class="test-desc">Menguji apakah filter XSS menangkap injeksi script browser berbahaya.
+                            </p>
                         </div>
 
                         <div class="soc-test-card">
                             <div class="test-card-head">
                                 <span class="badge-test-type">PATH TRAVERSAL / LFI</span>
-                                <button class="btn-run-sim-test" data-test-type="traversal" data-payload="../../../../etc/passwd%00.html">
+                                <button class="btn-run-sim-test" data-test-type="traversal"
+                                    data-payload="../../../../etc/passwd%00.html">
                                     <i class="ri-play-fill"></i> Jalankan Uji
                                 </button>
                             </div>
@@ -1231,7 +1244,8 @@
                         <div class="soc-test-card">
                             <div class="test-card-head">
                                 <span class="badge-test-type">COMMAND INJECTION / RCE</span>
-                                <button class="btn-run-sim-test" data-test-type="rce" data-payload="; whoami && cat /etc/shadow">
+                                <button class="btn-run-sim-test" data-test-type="rce"
+                                    data-payload="; whoami && cat /etc/shadow">
                                     <i class="ri-play-fill"></i> Jalankan Uji
                                 </button>
                             </div>
@@ -1241,7 +1255,8 @@
                     </div>
 
                     <div class="soc-test-result-box" id="socTestResultOutput">
-                        <div class="text-muted"><i class="ri-information-line"></i> Klik salah satu tombol "Jalankan Uji" di atas untuk melihat respon WAF secara langsung.</div>
+                        <div class="text-muted"><i class="ri-information-line"></i> Klik salah satu tombol "Jalankan
+                            Uji" di atas untuk melihat respon WAF secara langsung.</div>
                     </div>
                 </div>
 
@@ -1252,28 +1267,32 @@
                             <div class="protection-icon"><i class="ri-lock-password-line"></i></div>
                             <div class="protection-info">
                                 <h5>Password Hashing PBKDF2-SHA256</h5>
-                                <p>Setiap kata sandi pengguna di-hash menggunakan 100.000 iterasi PBKDF2 dengan salt acak 128-bit untuk mencegah serangan brute force dan rainbow table.</p>
+                                <p>Setiap kata sandi pengguna di-hash menggunakan 100.000 iterasi PBKDF2 dengan salt
+                                    acak 128-bit untuk mencegah serangan brute force dan rainbow table.</p>
                             </div>
                         </div>
                         <div class="protection-item">
                             <div class="protection-icon"><i class="ri-key-2-line"></i></div>
                             <div class="protection-info">
                                 <h5>HMAC SHA-256 Digitally Signed Tokens</h5>
-                                <p>Sesi autentikasi diamankan dengan tanda tangan kriptografi HMAC 256-bit untuk mencegah pemalsuan identitas (token tampering).</p>
+                                <p>Sesi autentikasi diamankan dengan tanda tangan kriptografi HMAC 256-bit untuk
+                                    mencegah pemalsuan identitas (token tampering).</p>
                             </div>
                         </div>
                         <div class="protection-item">
                             <div class="protection-icon"><i class="ri-shield-star-line"></i></div>
                             <div class="protection-info">
                                 <h5>HTTP Security Headers (Grade A+)</h5>
-                                <p>Disematkan Content-Security-Policy (CSP), X-Frame-Options: SAMEORIGIN (Anti-Clickjacking), X-Content-Type-Options: nosniff, dan Referrer-Policy.</p>
+                                <p>Disematkan Content-Security-Policy (CSP), X-Frame-Options: SAMEORIGIN
+                                    (Anti-Clickjacking), X-Content-Type-Options: nosniff, dan Referrer-Policy.</p>
                             </div>
                         </div>
                         <div class="protection-item">
                             <div class="protection-icon"><i class="ri-speed-line"></i></div>
                             <div class="protection-info">
                                 <h5>Anti-DDoS & Rate Limiter</h5>
-                                <p>Membatasi maksimal 120 request/menit per IP. IP yang terdeteksi melakukan spam flood akan diblokir otomatis selama 5 menit.</p>
+                                <p>Membatasi maksimal 120 request/menit per IP. IP yang terdeteksi melakukan spam flood
+                                    akan diblokir otomatis selama 5 menit.</p>
                             </div>
                         </div>
                     </div>
