@@ -1,11 +1,16 @@
 /**
- * SOHIB CAFFE & RESTO — Database Management Client Layer (db.js)
+ * SOHIB CAFFE & RESTO — Database Management Client Layer (db.js) v3.0
  * Menyediakan fungsi CRUD lokal terstruktur untuk:
- * - 1. Akun Pengguna & Staf (Users - Login & Registrasi Real-time)
+ * - 1. Akun Pengguna & Staf (Users)
  * - 2. Transaksi Penjualan Kasir (Sales)
  * - 3. Pembelian Bahan Baku / Stok (Purchases)
  * - 4. Inventori & Produk Menu (Products & Stock)
- * - 5. Export & Backup Data (JSON / CSV)
+ * - 5. Manajemen Meja & Denah Resto (Tables & Floor Plan)
+ * - 6. Antrean Dapur & Barista (Kitchen Display System / KDS)
+ * - 7. CRM Member Pelanggan & Poin Sultan (Members)
+ * - 8. Mesin Kupon & Promo Voucher (Vouchers)
+ * - 9. Manajemen Shift, Modal Kas, Kas Kecil & Z-Report (Shifts)
+ * - 10. Export & Backup Data (JSON / CSV)
  * 
  * Owner: Muh Ikhsan Anggara
  */
@@ -16,78 +21,69 @@ const SohibDB = (function () {
         PRODUCTS: 'sohib_db_products',
         SALES: 'sohib_db_sales',
         PURCHASES: 'sohib_db_purchases',
-        SUPPLIERS: 'sohib_db_suppliers',
-        LOGS: 'sohib_db_inventory_logs',
+        TABLES: 'sohib_db_tables',
+        KDS_ORDERS: 'sohib_db_kds_orders',
+        MEMBERS: 'sohib_db_members',
+        VOUCHERS: 'sohib_db_vouchers',
+        SHIFTS: 'sohib_db_shifts_active',
+        SHIFT_HISTORY: 'sohib_db_shifts_history',
         CONFIG: 'sohib_db_config'
     };
 
-    // Initial Seed Data Defaults
-    const DEFAULT_DATA = {
-        users: [
-            {
-                id: 1,
-                username: 'owner',
-                full_name: 'Muh Ikhsan Anggara',
-                email: 'owner@sohibcaffe.com',
-                phone: '0895325480299',
-                pass: 'sohib2024',
-                role: 'owner',
-                role_badge: 'Owner & General Manager',
-                avatar: 'MIA',
-                status: 'active',
-                created_at: new Date().toISOString()
-            },
-            {
-                id: 2,
-                username: 'kasir1',
-                full_name: 'Fajar Pratama',
-                email: 'kasir@sohibcaffe.com',
-                phone: '081298765432',
-                pass: 'kasir1234',
-                role: 'kasir',
-                role_badge: 'Kasir Utama (Shift 1)',
-                avatar: 'FP',
-                status: 'active',
-                created_at: new Date().toISOString()
-            },
-            {
-                id: 3,
-                username: 'barista1',
-                full_name: 'Rian Anggara',
-                email: 'barista@sohibcaffe.com',
-                phone: '081345678901',
-                pass: 'barista1234',
-                role: 'barista',
-                role_badge: 'Barista & Staff',
-                avatar: 'RA',
-                status: 'active',
-                created_at: new Date().toISOString()
-            },
-            {
-                id: 4,
-                username: 'admin',
-                full_name: 'Admin Keamanan Siber',
-                email: 'admin@sohibcaffe.com',
-                phone: '089599887766',
-                pass: 'admin2024',
-                role: 'admin',
-                role_badge: 'Admin Security & SOC Officer',
-                avatar: 'ADM',
-                status: 'active',
-                created_at: new Date().toISOString()
-            }
+    // Default Tables Seed Data
+    const DEFAULT_TABLES = [
+        // Area Majlis Lesehan Khas Arab
+        { id: 'M-01', name: 'Majlis 1', zone: 'majlis', capacity: 6, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'M-02', name: 'Majlis 2', zone: 'majlis', capacity: 6, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'M-03', name: 'Majlis 3 (Family)', zone: 'majlis', capacity: 8, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'M-04', name: 'Majlis 4 (Sultan)', zone: 'majlis', capacity: 10, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+
+        // Indoor Dining Hall Resto
+        { id: 'T-01', name: 'Meja T01', zone: 'indoor', capacity: 2, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-02', name: 'Meja T02', zone: 'indoor', capacity: 2, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-03', name: 'Meja T03', zone: 'indoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-04', name: 'Meja T04', zone: 'indoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-05', name: 'Meja T05', zone: 'indoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-06', name: 'Meja T06', zone: 'indoor', capacity: 6, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-07', name: 'Meja T07', zone: 'indoor', capacity: 6, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'T-08', name: 'Meja T08', zone: 'indoor', capacity: 8, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+
+        // Outdoor Garden Terrace
+        { id: 'O-01', name: 'Outdoor O1', zone: 'outdoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'O-02', name: 'Outdoor O2', zone: 'outdoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'O-03', name: 'Outdoor O3', zone: 'outdoor', capacity: 4, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'O-04', name: 'Outdoor O4 (Kanopi)', zone: 'outdoor', capacity: 6, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+
+        // VIP Room
+        { id: 'VIP-01', name: 'VIP Bagdad Room', zone: 'vip', capacity: 12, status: 'available', orderId: null, customer: '', amount: 0, time: null },
+        { id: 'VIP-02', name: 'VIP Madinah Room', zone: 'vip', capacity: 10, status: 'available', orderId: null, customer: '', amount: 0, time: null }
+    ];
+
+    // Default Seed Members
+    const DEFAULT_MEMBERS = [
+        { id: 'MB-101', name: 'Habib Ahmad Al-Kaff', phone: '081234567890', tier: 'Sultan', points: 240, totalSpend: 2400000, joinDate: '2026-01-15' },
+        { id: 'MB-102', name: 'Faisal Basri', phone: '085298765432', tier: 'Gold', points: 85, totalSpend: 850000, joinDate: '2026-03-10' },
+        { id: 'MB-103', name: 'Siti Sarah', phone: '089533221100', tier: 'Silver', points: 30, totalSpend: 300000, joinDate: '2026-06-01' }
+    ];
+
+    // Default Seed Promo Vouchers
+    const DEFAULT_VOUCHERS = [
+        { code: 'SULTANHEMAT10', title: 'Diskon 10% Spesial Sultan', type: 'percent', value: 10, minSpend: 100000, maxDiscount: 35000, active: true },
+        { code: 'KOPIARAB', title: 'Potongan Rp 10.000 Pecinta Gahwa', type: 'fixed', value: 10000, minSpend: 50000, maxDiscount: 10000, active: true },
+        { code: 'GAHWA20', title: 'Diskon 20% Menu Kopi & Minuman', type: 'percent', value: 20, minSpend: 40000, maxDiscount: 25000, active: true },
+        { code: 'RAMADHAN', title: 'Diskon Berkah Rp 25.000 Nampan', type: 'fixed', value: 25000, minSpend: 180000, maxDiscount: 25000, active: true }
+    ];
+
+    // Default Active Shift
+    const DEFAULT_SHIFT = {
+        shiftNumber: 1,
+        cashierName: 'Muh Ikhsan Anggara (Owner)',
+        startTime: new Date().toISOString(),
+        startingCash: 250000, // Modal awal laci kasir Rp 250.000
+        pettyCashLogs: [
+            { id: 'PC-1', type: 'out', amount: 35000, reason: 'Beli Es Batu Kristal 2 Karung', time: new Date(Date.now() - 3600000).toISOString() }
         ],
-        products: [
-            { id: 1, category: 'makanan', sku: 'MND-01', name: 'Nasi Mandhi Kambing Spesial', price: 48000, cost_price: 32000, stock: 35, is_drink: false },
-            { id: 2, category: 'makanan', sku: 'KBL-01', name: 'Nasi Kebuli Ayam Panggang', price: 38000, cost_price: 24000, stock: 40, is_drink: false },
-            { id: 3, category: 'makanan', sku: 'BRY-01', name: 'Nasi Briyani Daging Domba', price: 52000, cost_price: 35000, stock: 25, is_drink: false },
-            { id: 4, category: 'minuman', sku: 'GHW-01', name: 'Kopi Gahwa Arabica Saffron', price: 22000, cost_price: 11000, stock: 60, is_drink: true },
-            { id: 5, category: 'minuman', sku: 'KRK-01', name: 'Karak Tea Rempah Arab', price: 18000, cost_price: 9000, stock: 80, is_drink: true },
-            { id: 6, category: 'snack', sku: 'RYM-01', name: 'Roti Maryam Madu Yaman', price: 16000, cost_price: 8000, stock: 50, is_drink: false },
-            { id: 7, category: 'snack', sku: 'SMS-01', name: 'Samosa Daging Kambing (3 Pcs)', price: 20000, cost_price: 11000, stock: 45, is_drink: false }
-        ],
-        sales: [],
-        purchases: []
+        status: 'open'
     };
 
     // Helper functions
@@ -113,121 +109,35 @@ const SohibDB = (function () {
 
     // Inisialisasi Database jika pertama kali berjalan
     function init() {
-        let currentUsers = getStored(STORAGE_KEYS.USERS, null);
-        if (!currentUsers) {
-            setStored(STORAGE_KEYS.USERS, DEFAULT_DATA.users);
-        } else {
-            // Pastikan user admin dan owner terdaftar jika sebelumnya database lokal tersimpan versi lama
-            const hasAdmin = currentUsers.some(u => u.email === 'admin@sohibcaffe.com' || u.username === 'admin');
-            if (!hasAdmin) {
-                const adminUser = DEFAULT_DATA.users.find(u => u.username === 'admin');
-                if (adminUser) {
-                    currentUsers.push(adminUser);
-                    setStored(STORAGE_KEYS.USERS, currentUsers);
-                }
-            }
+        if (!localStorage.getItem(STORAGE_KEYS.TABLES)) {
+            setStored(STORAGE_KEYS.TABLES, DEFAULT_TABLES);
         }
-        if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
-            setStored(STORAGE_KEYS.PRODUCTS, DEFAULT_DATA.products);
+        if (!localStorage.getItem(STORAGE_KEYS.MEMBERS)) {
+            setStored(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS);
         }
-        if (!localStorage.getItem(STORAGE_KEYS.SALES)) {
-            setStored(STORAGE_KEYS.SALES, DEFAULT_DATA.sales);
+        if (!localStorage.getItem(STORAGE_KEYS.VOUCHERS)) {
+            setStored(STORAGE_KEYS.VOUCHERS, DEFAULT_VOUCHERS);
         }
-        if (!localStorage.getItem(STORAGE_KEYS.PURCHASES)) {
-            setStored(STORAGE_KEYS.PURCHASES, DEFAULT_DATA.purchases);
+        if (!localStorage.getItem(STORAGE_KEYS.SHIFTS)) {
+            setStored(STORAGE_KEYS.SHIFTS, DEFAULT_SHIFT);
         }
-        console.log('✅ SohibDB Initialized Successfully');
+        if (!localStorage.getItem(STORAGE_KEYS.KDS_ORDERS)) {
+            setStored(STORAGE_KEYS.KDS_ORDERS, []);
+        }
+        console.log('✅ SohibDB v3.0 Initialized Successfully with KDS, Tables, CRM & Shifts');
     }
 
     // Auto-run init
     init();
 
     return {
+        STORAGE_KEYS,
+
         /* -------------------------------------------------------------
-           1. MODUL USERS / AKUN PENGGUNA (PENDAFTARAN & LOGIN)
+           1. MODUL USERS / AKUN PENGGUNA
            ------------------------------------------------------------- */
         getUsers() {
-            return getStored(STORAGE_KEYS.USERS, DEFAULT_DATA.users);
-        },
-
-        getUserByEmail(email) {
-            if (!email) return null;
-            const users = this.getUsers();
-            return users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase().trim());
-        },
-
-        getUserByIdentifier(identifier) {
-            if (!identifier) return null;
-            const users = this.getUsers();
-            const idLower = identifier.toLowerCase().trim();
-            return users.find(u => 
-                (u.email && u.email.toLowerCase() === idLower) ||
-                (u.username && u.username.toLowerCase() === idLower) ||
-                (u.phone && u.phone === identifier.trim())
-            );
-        },
-
-        addUser(userData) {
-            const users = this.getUsers();
-            
-            // Cek duplikasi email
-            if (this.getUserByEmail(userData.email)) {
-                return { success: false, message: 'Email sudah terdaftar. Silakan gunakan email lain atau langsung masuk.' };
-            }
-
-            const newId = users.length > 0 ? Math.max(...users.map(u => u.id || 0)) + 1 : 1;
-            const cleanUsername = userData.username || (userData.email ? userData.email.split('@')[0] : `user${newId}`);
-            
-            // Inisial avatar
-            let avatarLetters = 'MB';
-            if (userData.full_name) {
-                const parts = userData.full_name.trim().split(' ');
-                avatarLetters = parts.length > 1 
-                    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() 
-                    : parts[0].substring(0, 2).toUpperCase();
-            }
-
-            const newUser = {
-                id: newId,
-                username: cleanUsername,
-                full_name: userData.full_name || 'Member Sohib Resto',
-                email: userData.email ? userData.email.toLowerCase().trim() : '',
-                phone: userData.phone ? userData.phone.trim() : '',
-                pass: userData.pass || userData.password || '',
-                role: userData.role || 'member',
-                role_badge: userData.role_badge || (userData.role === 'owner' ? 'Owner & General Manager' : 'Member Pelanggan'),
-                avatar: userData.avatar || avatarLetters,
-                status: 'active',
-                created_at: new Date().toISOString()
-            };
-
-            users.push(newUser);
-            setStored(STORAGE_KEYS.USERS, users);
-            console.log('✅ Akun Baru Tersimpan di Database SohibDB:', newUser);
-            return { success: true, user: newUser };
-        },
-
-        authenticateUser(identifier, password) {
-            const user = this.getUserByIdentifier(identifier);
-            if (!user) {
-                return { success: false, message: 'Akun belum terdaftar di database.' };
-            }
-
-            // Validasi kata sandi (jika ada sandi tersimpan)
-            if (user.pass && password && user.pass !== password) {
-                return { success: false, message: 'Kata sandi tidak sesuai.' };
-            }
-
-            // Update last login
-            user.last_login = new Date().toISOString();
-            const users = this.getUsers();
-            const idx = users.findIndex(u => u.id === user.id);
-            if (idx !== -1) {
-                users[idx] = user;
-                setStored(STORAGE_KEYS.USERS, users);
-            }
-
-            return { success: true, user: user };
+            return getStored(STORAGE_KEYS.USERS, []);
         },
 
         /* -------------------------------------------------------------
@@ -257,108 +167,341 @@ const SohibDB = (function () {
                 payment_method: saleData.payment_method || 'cash',
                 amount_paid: saleData.amount_paid || saleData.total_amount || 0,
                 change_due: saleData.change_due || 0,
+                voucher_code: saleData.voucher_code || null,
+                member_phone: saleData.member_phone || null,
                 payment_status: 'paid',
                 created_at: new Date().toISOString()
             };
 
             sales.unshift(newSale);
             setStored(STORAGE_KEYS.SALES, sales);
-
-            // Otomatis kurangi stok produk
-            if (Array.isArray(newSale.items)) {
-                newSale.items.forEach(item => {
-                    if (item.product_id) {
-                        this.updateProductStock(item.product_id, -(item.quantity || 1));
-                    }
-                });
-            }
-
             return newSale;
         },
 
         /* -------------------------------------------------------------
-           3. MODUL PEMBELIAN STOK (PURCHASES / RESTOCK)
+           3. MODUL MEJA & DENAH RESTO (FLOOR PLAN)
            ------------------------------------------------------------- */
-        getPurchases() {
-            return getStored(STORAGE_KEYS.PURCHASES, []);
+        getTables() {
+            return getStored(STORAGE_KEYS.TABLES, DEFAULT_TABLES);
         },
 
-        addPurchase(purchaseData) {
-            const purchases = this.getPurchases();
-            const newId = purchases.length > 0 ? Math.max(...purchases.map(p => p.id || 0)) + 1 : 1;
-            const purchaseNo = `PO-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${String(newId).padStart(4, '0')}`;
+        getTableById(tableId) {
+            const tables = this.getTables();
+            return tables.find(t => t.id === tableId || t.name.toLowerCase() === (tableId || '').toLowerCase());
+        },
 
-            const newPurchase = {
-                id: newId,
-                purchase_no: purchaseNo,
-                supplier_name: purchaseData.supplier_name || 'Supplier Utama',
-                purchaser_name: purchaseData.purchaser_name || 'Muh Ikhsan Anggara',
-                items: purchaseData.items || [],
-                total_amount: purchaseData.total_amount || 0,
-                payment_method: purchaseData.payment_method || 'transfer',
-                payment_status: purchaseData.payment_status || 'lunas',
-                purchase_date: new Date().toISOString(),
-                notes: purchaseData.notes || ''
+        updateTableStatus(tableId, status, details = {}) {
+            const tables = this.getTables();
+            const idx = tables.findIndex(t => t.id === tableId || t.name.toLowerCase() === (tableId || '').toLowerCase());
+            if (idx !== -1) {
+                tables[idx].status = status; // 'available', 'occupied', 'billing', 'reserved'
+                if (status === 'available') {
+                    tables[idx].orderId = null;
+                    tables[idx].customer = '';
+                    tables[idx].amount = 0;
+                    tables[idx].time = null;
+                    tables[idx].activeItems = [];
+                } else {
+                    if (details.orderId !== undefined) tables[idx].orderId = details.orderId;
+                    if (details.customer !== undefined) tables[idx].customer = details.customer;
+                    if (details.amount !== undefined) tables[idx].amount = details.amount;
+                    if (details.activeItems !== undefined) tables[idx].activeItems = details.activeItems;
+                    tables[idx].time = details.time || tables[idx].time || new Date().toISOString();
+                }
+                setStored(STORAGE_KEYS.TABLES, tables);
+                return tables[idx];
+            }
+            return null;
+        },
+
+        /* -------------------------------------------------------------
+           4. MODUL KITCHEN DISPLAY SYSTEM (KDS) & ANTREAN DAPUR
+           ------------------------------------------------------------- */
+        getKdsOrders() {
+            return getStored(STORAGE_KEYS.KDS_ORDERS, []);
+        },
+
+        addKdsOrder(order) {
+            const orders = this.getKdsOrders();
+            const newKdsItem = {
+                id: 'KDS-' + Date.now().toString().slice(-6),
+                orderId: order.orderId,
+                customerName: order.customerName || 'Pelanggan',
+                tableNumber: order.tableNumber || '-',
+                orderType: order.orderType || 'dine-in',
+                items: order.items || [],
+                note: order.note || '',
+                status: order.status || 'queue', // 'queue' (antre), 'cooking' (dimasak), 'ready' (siap saji), 'served' (selesai)
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                isSelfOrder: !!order.isSelfOrder
             };
 
-            purchases.unshift(newPurchase);
-            setStored(STORAGE_KEYS.PURCHASES, purchases);
+            orders.unshift(newKdsItem);
+            setStored(STORAGE_KEYS.KDS_ORDERS, orders);
+            return newKdsItem;
+        },
 
-            // Tambahkan stok produk masuk jika ada mapping product_id
-            if (Array.isArray(newPurchase.items)) {
-                newPurchase.items.forEach(item => {
-                    if (item.product_id) {
-                        this.updateProductStock(item.product_id, (item.quantity || 0));
-                    }
-                });
+        updateKdsStatus(kdsId, newStatus) {
+            const orders = this.getKdsOrders();
+            const idx = orders.findIndex(o => o.id === kdsId || o.orderId === kdsId);
+            if (idx !== -1) {
+                orders[idx].status = newStatus;
+                orders[idx].updatedAt = new Date().toISOString();
+                setStored(STORAGE_KEYS.KDS_ORDERS, orders);
+                return orders[idx];
             }
+            return null;
+        },
 
-            return newPurchase;
+        clearCompletedKdsOrders() {
+            const orders = this.getKdsOrders();
+            const activeOnly = orders.filter(o => o.status !== 'served');
+            setStored(STORAGE_KEYS.KDS_ORDERS, activeOnly);
+            return activeOnly;
         },
 
         /* -------------------------------------------------------------
-           4. MODUL PRODUK & STOK INVENTORI
+           5. MODUL CRM MEMBER & POIN SULTAN
            ------------------------------------------------------------- */
-        getProducts() {
-            return getStored(STORAGE_KEYS.PRODUCTS, DEFAULT_DATA.products);
+        getMembers() {
+            return getStored(STORAGE_KEYS.MEMBERS, DEFAULT_MEMBERS);
         },
 
-        updateProductStock(productId, changeQty) {
-            const products = this.getProducts();
-            const prod = products.find(p => p.id === productId);
-            if (prod) {
-                prod.stock = Math.max(0, (prod.stock || 0) + changeQty);
-                setStored(STORAGE_KEYS.PRODUCTS, products);
+        getMemberByPhone(phone) {
+            if (!phone) return null;
+            const cleanPhone = phone.replace(/[^0-9]/g, '');
+            const members = this.getMembers();
+            return members.find(m => m.phone.replace(/[^0-9]/g, '') === cleanPhone);
+        },
+
+        registerMember(name, phone) {
+            const existing = this.getMemberByPhone(phone);
+            if (existing) return { success: false, message: 'Nomor WhatsApp sudah terdaftar sebagai Member!', member: existing };
+
+            const members = this.getMembers();
+            const newMember = {
+                id: 'MB-' + (members.length + 101),
+                name: name.trim(),
+                phone: phone.trim(),
+                tier: 'Silver',
+                points: 10, // Bonus daftar 10 poin
+                totalSpend: 0,
+                joinDate: new Date().toISOString().slice(0, 10)
+            };
+
+            members.unshift(newMember);
+            setStored(STORAGE_KEYS.MEMBERS, members);
+            return { success: true, member: newMember };
+        },
+
+        addMemberPointsAndSpend(phone, grandTotal) {
+            const members = this.getMembers();
+            const cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+            const idx = members.findIndex(m => m.phone.replace(/[^0-9]/g, '') === cleanPhone);
+            if (idx !== -1) {
+                const earnedPoints = Math.floor(grandTotal / 10000); // 1 poin per Rp 10.000
+                members[idx].points = (members[idx].points || 0) + earnedPoints;
+                members[idx].totalSpend = (members[idx].totalSpend || 0) + grandTotal;
+
+                // Auto upgrade tier
+                if (members[idx].totalSpend >= 2000000) {
+                    members[idx].tier = 'Sultan';
+                } else if (members[idx].totalSpend >= 750000) {
+                    members[idx].tier = 'Gold';
+                }
+
+                setStored(STORAGE_KEYS.MEMBERS, members);
+                return members[idx];
             }
+            return null;
+        },
+
+        redeemMemberPoints(phone, pointsToRedeem) {
+            const members = this.getMembers();
+            const cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+            const idx = members.findIndex(m => m.phone.replace(/[^0-9]/g, '') === cleanPhone);
+            if (idx !== -1) {
+                if (members[idx].points >= pointsToRedeem) {
+                    members[idx].points -= pointsToRedeem;
+                    setStored(STORAGE_KEYS.MEMBERS, members);
+                    return { success: true, remainingPoints: members[idx].points, discountValue: pointsToRedeem * 1000 };
+                }
+                return { success: false, message: 'Poin tidak mencukupi!' };
+            }
+            return { success: false, message: 'Member tidak ditemukan!' };
         },
 
         /* -------------------------------------------------------------
-           5. EKSPOR & BACKUP DATABASE LENGKAP
+           6. MODUL PROMO VOUCHER
+           ------------------------------------------------------------- */
+        getVouchers() {
+            return getStored(STORAGE_KEYS.VOUCHERS, DEFAULT_VOUCHERS);
+        },
+
+        validateVoucher(code, subtotal) {
+            if (!code) return { valid: false, message: 'Kode voucher kosong.' };
+            const cleanCode = code.trim().toUpperCase();
+            const vouchers = this.getVouchers();
+            const v = vouchers.find(item => item.code.toUpperCase() === cleanCode && item.active);
+
+            if (!v) {
+                return { valid: false, message: 'Kode kupon promo tidak valid atau sudah kadaluarsa.' };
+            }
+
+            if (subtotal < v.minSpend) {
+                return { valid: false, message: `Minimal belanja untuk voucher ini adalah Rp ${v.minSpend.toLocaleString('id-ID')}` };
+            }
+
+            let discountAmount = 0;
+            if (v.type === 'percent') {
+                discountAmount = Math.round(subtotal * (v.value / 100));
+                if (v.maxDiscount && discountAmount > v.maxDiscount) {
+                    discountAmount = v.maxDiscount;
+                }
+            } else {
+                discountAmount = v.value;
+            }
+
+            return {
+                valid: true,
+                voucher: v,
+                discountAmount: discountAmount,
+                message: `Voucher ${v.title} berhasil diterapkan! Hemat Rp ${discountAmount.toLocaleString('id-ID')}`
+            };
+        },
+
+        /* -------------------------------------------------------------
+           7. MODUL SHIFT KASIR & KAS KECIL (Z-REPORT)
+           ------------------------------------------------------------- */
+        getActiveShift() {
+            return getStored(STORAGE_KEYS.SHIFTS, DEFAULT_SHIFT);
+        },
+
+        updateStartingCash(amount) {
+            const shift = this.getActiveShift();
+            shift.startingCash = parseFloat(amount) || 0;
+            setStored(STORAGE_KEYS.SHIFTS, shift);
+            return shift;
+        },
+
+        addPettyCash(type, amount, reason) {
+            const shift = this.getActiveShift();
+            if (!shift.pettyCashLogs) shift.pettyCashLogs = [];
+            const newLog = {
+                id: 'PC-' + Date.now().toString().slice(-4),
+                type: type, // 'in' (kas masuk) atau 'out' (kas keluar)
+                amount: parseFloat(amount) || 0,
+                reason: reason.trim(),
+                time: new Date().toISOString()
+            };
+            shift.pettyCashLogs.push(newLog);
+            setStored(STORAGE_KEYS.SHIFTS, shift);
+            return newLog;
+        },
+
+        closeShiftAndGenerateZReport(actualCashInDrawer, notes = '') {
+            const shift = this.getActiveShift();
+            const sales = this.getSales();
+            const shiftStartTime = new Date(shift.startTime).getTime();
+
+            // Filter transaksi yang terjadi selama shift aktif
+            const shiftSales = sales.filter(s => new Date(s.created_at || s.dateTime).getTime() >= shiftStartTime);
+
+            let totalCashSales = 0;
+            let totalQrisSales = 0;
+            let totalCardSales = 0;
+            let totalTransferSales = 0;
+            let totalDiscounts = 0;
+            let totalGrandSales = 0;
+
+            shiftSales.forEach(s => {
+                const total = s.total_amount || s.grandTotal || 0;
+                const method = (s.payment_method || s.payMethod || '').toLowerCase();
+                totalGrandSales += total;
+                totalDiscounts += (s.discount || 0);
+
+                if (method.includes('tunai') || method.includes('cash')) {
+                    totalCashSales += total;
+                } else if (method.includes('qris')) {
+                    totalQrisSales += total;
+                } else if (method.includes('kartu') || method.includes('card') || method.includes('edc')) {
+                    totalCardSales += total;
+                } else {
+                    totalTransferSales += total;
+                }
+            });
+
+            // Hitung Kas Kecil
+            let totalPettyCashIn = 0;
+            let totalPettyCashOut = 0;
+            (shift.pettyCashLogs || []).forEach(log => {
+                if (log.type === 'in') totalPettyCashIn += log.amount;
+                if (log.type === 'out') totalPettyCashOut += log.amount;
+            });
+
+            const expectedCash = (shift.startingCash || 0) + totalCashSales + totalPettyCashIn - totalPettyCashOut;
+            const diff = actualCashInDrawer - expectedCash;
+
+            const zReport = {
+                reportId: 'ZR-' + Date.now().toString().slice(-6),
+                shiftNumber: shift.shiftNumber || 1,
+                cashierName: shift.cashierName || 'Kasir Resto',
+                startTime: shift.startTime,
+                endTime: new Date().toISOString(),
+                startingCash: shift.startingCash || 0,
+                totalCashSales: totalCashSales,
+                totalQrisSales: totalQrisSales,
+                totalCardSales: totalCardSales,
+                totalTransferSales: totalTransferSales,
+                totalDiscounts: totalDiscounts,
+                totalPettyCashIn: totalPettyCashIn,
+                totalPettyCashOut: totalPettyCashOut,
+                expectedCash: expectedCash,
+                actualCashInDrawer: actualCashInDrawer,
+                cashDifference: diff, // > 0: lebih, < 0: kurang, = 0: balance
+                totalTransactions: shiftSales.length,
+                totalTurnover: totalGrandSales,
+                notes: notes,
+                pettyCashLogs: shift.pettyCashLogs || []
+            };
+
+            // Simpan riwayat shift
+            const history = getStored(STORAGE_KEYS.SHIFT_HISTORY, []);
+            history.unshift(zReport);
+            setStored(STORAGE_KEYS.SHIFT_HISTORY, history);
+
+            // Buka Shift Baru otomatis
+            const newShift = {
+                shiftNumber: (shift.shiftNumber % 2) + 1,
+                cashierName: shift.cashierName,
+                startTime: new Date().toISOString(),
+                startingCash: actualCashInDrawer, // Modal awal shift baru dari sisa kas fisik
+                pettyCashLogs: [],
+                status: 'open'
+            };
+            setStored(STORAGE_KEYS.SHIFTS, newShift);
+
+            return zReport;
+        },
+
+        /* -------------------------------------------------------------
+           8. EKSPOR & BACKUP DATABASE LENGKAP
            ------------------------------------------------------------- */
         exportDatabaseJSON() {
             const backup = {
-                database_name: 'sohib_caffe_db',
+                database_name: 'sohib_caffe_db_v3',
                 owner: 'Muh Ikhsan Anggara',
                 export_date: new Date().toISOString(),
-                users: this.getUsers(),
-                products: this.getProducts(),
-                sales: this.getSales(),
-                purchases: this.getPurchases()
+                tables: this.getTables(),
+                kds_orders: this.getKdsOrders(),
+                members: this.getMembers(),
+                vouchers: this.getVouchers(),
+                active_shift: this.getActiveShift(),
+                shift_history: getStored(STORAGE_KEYS.SHIFT_HISTORY, []),
+                sales: this.getSales()
             };
             return JSON.stringify(backup, null, 2);
-        },
-
-        downloadBackupJSON() {
-            const jsonString = this.exportDatabaseJSON();
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `backup_sohib_caffe_${new Date().toISOString().slice(0, 10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
     };
 })();

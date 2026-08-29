@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sohib Caffe Pro - Aplikasi Pemesanan online Makanan & Minuman & Point of Sale Modern</title>
+    <title>Sohib Caffe Pro - Mesin Kasir POS, KDS Dapur & Pemesanan Online Khas Timur Tengah</title>
     <meta name="description"
-        content="Aplikasi mesin kasir pintar (POS) dengan manajemen inventori, struk thermal, multi-pembayaran QRIS & Tunai, laporan penjualan, dan sinkronisasi real-time.">
+        content="Aplikasi POS Pintar Sohib Caffe & Resto: Manajemen Meja Floor Plan, KDS Dapur Real-time, Self-Order QR, Member CRM, Shift Z-Report, Struk Thermal & Keamanan Siber.">
+    
+    <!-- PWA Manifest & Mobile Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c68b59">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3170/3170733.png">
+
     <!-- Google Fonts (Plus Jakarta Sans + Arabic Calligraphy Fonts: Amiri & El Messiri) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,10 +28,16 @@
 
 <body>
 
+    <!-- Offline Network Status Notification Banner -->
+    <div class="pos-network-banner" id="networkBanner" style="display: none;">
+        <i class="ri-wifi-off-line"></i>
+        <span>Mode Offline Aktif — Transaksi kasir & data tetap tersimpan aman di perangkat lokal!</span>
+    </div>
+
     <!-- App Header Bar -->
-    <header class="pos-header">
+    <header class="pos-header" id="mainHeader">
         <div class="header-left">
-            <div class="brand-logo">
+            <div class="brand-logo" id="headerBrandLogo">
                 <div class="brand-icon"
                     style="background: linear-gradient(135deg, #7A4B29 0%, #4E2A12 50%, #2E1505 100%); box-shadow: 0 0 22px rgba(122, 75, 41, 0.6); border: 1px solid rgba(212, 163, 115, 0.45);">
                     <i class="ri-cup-fill" style="color: #FDF6EE; font-size: 1.4rem;"></i>
@@ -36,9 +50,9 @@
                             style="color: #f59e0b; font-size: 0.75rem;"></i> Owner: <b>Muh Ikhsan Anggara</b></span>
                 </div>
             </div>
-            <div class="store-status-pill">
+            <div class="store-status-pill" id="storeStatusPill">
                 <span class="status-dot"></span>
-                <span>Online (Shift 1)</span>
+                <span id="shiftStatusHeader">Shift 1 (Online)</span>
             </div>
         </div>
 
@@ -54,30 +68,66 @@
         </div>
 
         <div class="header-actions">
-            <!-- Hold Bills / Drafts -->
+            <!-- 1. KDS Dapur & Barista Station -->
+            <button class="btn-header btn-header-kds" id="btnOpenKDS" title="Layar Antrean Dapur & Bar (KDS)">
+                <i class="ri-restaurant-2-line"></i>
+                <span>KDS Dapur</span>
+                <span class="badge-count-pulse" id="kdsActiveBadge">0</span>
+            </button>
+
+            <!-- 2. Denah Meja / Floor Plan -->
+            <button class="btn-header" id="btnOpenFloorPlan" title="Denah Meja & Tata Letak Resto (F3)">
+                <i class="ri-layout-grid-line"></i>
+                <span>Denah Meja</span>
+                <span class="badge-count" id="activeTablesBadge">0</span>
+            </button>
+
+            <!-- 3. Tutup Shift & Z-Report -->
+            <button class="btn-header" id="btnOpenShiftManager" title="Kas Laci, Petty Cash & Tutup Shift (Z-Report)">
+                <i class="ri-money-dollar-circle-line"></i>
+                <span>Kas & Shift</span>
+            </button>
+
+            <!-- 4. Member CRM & Poin Sultan -->
+            <button class="btn-header" id="btnOpenMemberCRM" title="Database Member & Poin Loyalitas">
+                <i class="ri-vip-crown-line"></i>
+                <span>Member</span>
+            </button>
+
+            <!-- 5. Hold Bills / Drafts -->
             <button class="btn-header" id="btnOpenHoldBills" title="Lihat Pesanan Tertunda (F4)">
                 <i class="ri-draft-line"></i>
                 <span>Draft (<b id="holdBillCount">0</b>)</span>
             </button>
 
-            <!-- Inventory Management -->
+            <!-- 6. Inventory Management -->
             <button class="btn-header" id="btnOpenInventory" title="Kelola Produk & Stok (F2)">
                 <i class="ri-box-3-line"></i>
                 <span>Inventori</span>
             </button>
 
-            <!-- Sales Report -->
+            <!-- 7. Sales Report -->
             <button class="btn-header" id="btnOpenReports" title="Laporan & Riwayat Penjualan">
                 <i class="ri-bar-chart-box-line"></i>
                 <span>Laporan</span>
             </button>
 
-            <!-- Cyber Security SOC Monitor (Admin Only) -->
+            <!-- 8. Cyber Security SOC Monitor (Admin Only) -->
             <button class="btn-header btn-header-security" id="btnOpenSecuritySOC"
                 title="Pusat Keamanan Siber & WAF (Admin Mode)" style="display: none;">
                 <i class="ri-shield-check-fill" style="color: #10b981;"></i>
                 <span>WAF SOC</span>
                 <span class="security-pulse-dot" title="WAF Aktif & Memproteksi"></span>
+            </button>
+
+            <!-- 9. Sound FX Synthesizer Toggle -->
+            <button class="btn-header-icon" id="btnToggleAudioFx" title="Suara Efek Audio (Aktif / Senyap)">
+                <i class="ri-volume-up-fill" id="audioFxIcon"></i>
+            </button>
+
+            <!-- 10. Customer QR Self-Order Switch -->
+            <button class="btn-header-icon btn-mode-switch" id="btnSwitchCustomerView" title="Tampilan Menu Pelanggan (QR Order)">
+                <i class="ri-qr-code-line"></i>
             </button>
 
             <!-- Theme Toggle -->
@@ -109,7 +159,7 @@
     </header>
 
     <!-- Main POS Interface -->
-    <main class="pos-main-container">
+    <main class="pos-main-container" id="posMainView">
 
         <!-- Left Panel: Product Catalog & Category Nav -->
         <section class="pos-catalog-panel">
@@ -160,43 +210,76 @@
             </div>
         </section>
 
-        <!-- Right Panel: Cart / Order Slip -->
+        <!-- Right Panel: Active Order Cart & Billing -->
         <aside class="pos-cart-panel" id="posCartPanel">
 
-            <!-- Order Header Options -->
-            <div class="cart-header-section">
-                <!-- Mobile Drag Handle -->
-                <div class="sheet-drag-handle"></div>
+            <!-- Mobile Drag Handle & Back Button -->
+            <div class="sheet-drag-handle"></div>
+            <button class="btn-mobile-close-cart" id="btnMobileCloseCart">
+                <i class="ri-arrow-left-line"></i>
+                <span>Kembali ke Katalog Menu</span>
+            </button>
 
-                <!-- Mobile Back Button -->
-                <button class="btn-mobile-close-cart" id="btnMobileCloseCart">
-                    <i class="ri-arrow-left-line"></i>
-                    <span>Kembali ke Katalog Menu</span>
-                </button>
-
-                <div class="order-type-row">
-                    <button class="order-type-btn active" data-type="dine-in">
-                        <i class="ri-restaurant-2-line"></i> Dine In
+            <!-- Cart Header & Order Info -->
+            <div class="cart-header-top">
+                <div class="cart-title-row">
+                    <div class="order-id-badge">
+                        <i class="ri-ticket-2-line"></i>
+                        <span id="currentOrderIdDisplay">ORD-0001</span>
+                    </div>
+                    <button class="btn-clear-cart" id="btnClearCart" title="Kosongkan Keranjang">
+                        <i class="ri-delete-bin-line"></i> Reset
                     </button>
-                    <button class="order-type-btn" data-type="take-away">
+                </div>
+
+                <!-- Order Type Selector (Dine In, Take Away, Delivery) -->
+                <div class="order-type-switch">
+                    <button class="type-btn active" data-type="dine-in">
+                        <i class="ri-restaurant-line"></i> Dine In
+                    </button>
+                    <button class="type-btn" data-type="take-away">
                         <i class="ri-shopping-bag-3-line"></i> Take Away
                     </button>
-                    <button class="order-type-btn" data-type="delivery">
-                        <i class="ri-takeaway-line"></i> Delivery
+                    <button class="type-btn" data-type="delivery">
+                        <i class="ri-e-bike-2-line"></i> Delivery
                     </button>
                 </div>
 
-                <div class="customer-table-row">
-                    <input type="text" id="customerNameInput" placeholder="Nama Pelanggan (Cth: Budi)">
-                    <input type="text" id="tableNumberInput" placeholder="No. Meja / Ref (Cth: Meja 05)"
-                        style="max-width: 130px;">
+                <!-- Customer Details Form -->
+                <div class="customer-info-grid">
+                    <div class="input-group-sm">
+                        <i class="ri-user-3-line"></i>
+                        <input type="text" id="customerNameInput" placeholder="Nama Tamu / Pelanggan">
+                    </div>
+                    <div class="input-group-sm table-select-group">
+                        <i class="ri-layout-masonry-line"></i>
+                        <input type="text" id="tableNumberInput" placeholder="Pilih Meja...">
+                        <button type="button" class="btn-quick-table" id="btnQuickPickTable" title="Pilih dari Denah Meja">
+                            <i class="ri-layout-grid-fill"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="order-meta-summary">
-                    <span>Order No: <strong class="order-id-tag" id="currentOrderIdDisplay">#ORD-9021</strong></span>
-                    <button class="btn-clear-cart" id="btnClearCart" title="Kosongkan Keranjang">
-                        <i class="ri-delete-bin-line"></i> Bersihkan
-                    </button>
+                <!-- Member Lookup & Voucher Bar -->
+                <div class="cart-promo-crm-bar">
+                    <div class="cart-member-badge-row" id="cartMemberBadgeRow" style="display: none;">
+                        <span class="member-chip" id="cartMemberChip"><i class="ri-vip-crown-fill"></i> <b id="cartMemberName">-</b> (<span id="cartMemberTier">Silver</span>)</span>
+                        <span class="member-points-chip"><i class="ri-copper-coin-fill"></i> <span id="cartMemberPoints">0</span> Poin</span>
+                        <button class="btn-remove-member" id="btnRemoveMemberCart" title="Lepas Member">&times;</button>
+                    </div>
+
+                    <div class="cart-voucher-input-row" id="cartVoucherInputRow">
+                        <div class="voucher-input-box">
+                            <i class="ri-coupon-3-line"></i>
+                            <input type="text" id="voucherCodeInput" placeholder="Kode Voucher Promo (Cth: SULTANHEMAT10)">
+                        </div>
+                        <button class="btn-apply-voucher" id="btnApplyVoucher">Pakai</button>
+                    </div>
+                    <div class="active-voucher-tag" id="activeVoucherTag" style="display: none;">
+                        <i class="ri-checkbox-circle-fill"></i>
+                        <span id="activeVoucherText">Voucher Diterapkan</span>
+                        <button class="btn-remove-voucher" id="btnRemoveVoucher" title="Hapus Voucher">&times;</button>
+                    </div>
                 </div>
             </div>
 
@@ -214,7 +297,7 @@
                     </div>
 
                     <div class="calc-row discount-row" id="discountRow" style="display: none;">
-                        <span>Diskon Promo (<span id="discountPercentLabel">0%</span>)</span>
+                        <span id="discountRowLabel">Diskon Promo</span>
                         <span class="val" id="calcDiscount">-Rp 0</span>
                     </div>
 
@@ -246,8 +329,79 @@
         </aside>
     </main>
 
+    <!-- ====================================================================
+         VIEW KHUSUS: MODE MENU PELANGGAN (CUSTOMER SELF-ORDER VIEW)
+         ==================================================================== -->
+    <div class="customer-self-order-view" id="customerSelfOrderView" style="display: none;">
+        <!-- Customer View Top Header -->
+        <header class="customer-header">
+            <div class="cust-header-brand">
+                <div class="cust-logo-circle">
+                    <i class="ri-cup-fill"></i>
+                </div>
+                <div>
+                    <h2>Sohib Caffe & Resto</h2>
+                    <p class="cust-tagline">Autentik Hidangan Arab & Kopi Rempah Timur Tengah</p>
+                </div>
+            </div>
+            <div class="cust-header-meta">
+                <div class="cust-table-pill" id="custHeaderTablePill">
+                    <i class="ri-map-pin-user-fill"></i>
+                    <span>Meja: <b id="custActiveTableLabel">Pilih Meja</b></span>
+                </div>
+                <button class="btn-cust-exit-mode" id="btnExitCustomerMode" title="Kembali ke Mode Kasir (Owner/Staff)">
+                    <i class="ri-admin-line"></i> Mode Kasir
+                </button>
+            </div>
+        </header>
+
+        <!-- Customer Menu Catalog -->
+        <div class="customer-menu-body">
+            <div class="cust-banner-hero">
+                <div class="hero-content">
+                    <span class="hero-badge">🌟 Selamat Datang di Sohib Caffe</span>
+                    <h3>Pesan Langsung dari Meja Anda</h3>
+                    <p>Pilih menu favorit, sesuaikan tingkat manis & topping minuman, pesanan langsung dimasak oleh chef kami.</p>
+                </div>
+            </div>
+
+            <!-- Customer Categories Nav -->
+            <div class="cust-category-bar" id="custCategoryBar">
+                <button class="cust-cat-pill active" data-category="all">Semua Menu</button>
+                <button class="cust-cat-pill" data-category="makanan">🍛 Nasi & Kebab Arab</button>
+                <button class="cust-cat-pill" data-category="kopi">☕ Kopi Gahwa & Karak</button>
+                <button class="cust-cat-pill" data-category="minuman">🍹 Teh Susu & Jus</button>
+                <button class="cust-cat-pill" data-category="snack">🍰 Maryam & Baklava</button>
+                <button class="cust-cat-pill" data-category="paket">👑 Paket Sultan</button>
+            </div>
+
+            <!-- Customer Product Grid -->
+            <div class="customer-product-grid" id="custProductGrid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Customer Floating Order Cart Drawer Bar -->
+        <div class="cust-floating-cart-bar" id="custFloatingCartBar" style="display: none;">
+            <div class="cust-cart-summary">
+                <div class="cust-cart-icon-box">
+                    <i class="ri-shopping-bag-3-fill"></i>
+                    <span class="cust-cart-badge" id="custCartBadge">0</span>
+                </div>
+                <div>
+                    <div class="cust-cart-total" id="custCartTotal">Rp 0</div>
+                    <div class="cust-cart-items-info" id="custCartItemsInfo">0 item dipilih</div>
+                </div>
+            </div>
+            <button class="btn-cust-view-order" id="btnCustOpenCartDrawer">
+                <span>Lihat Pesanan & Kirim ke Dapur</span>
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- App Bottom Information Bar: Alamat Toko & No Kontak -->
-    <footer class="pos-bottom-info-bar">
+    <footer class="pos-bottom-info-bar" id="mainFooterBar">
         <div class="footer-info-container">
             <div class="footer-info-item">
                 <i class="ri-user-star-fill" style="color: var(--primary-amber);"></i>
@@ -256,7 +410,7 @@
             <div class="footer-info-divider"></div>
             <div class="footer-info-item">
                 <i class="ri-map-pin-2-fill" style="color: var(--primary-amber);"></i>
-                <span><b>Alamat Toko:</b> Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</span>
+                <span><b>Alamat:</b> Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</span>
             </div>
             <div class="footer-info-divider"></div>
             <div class="footer-info-item">
@@ -270,13 +424,8 @@
                 <span><b>Instagram:</b> @muh_ikhsan_a</span>
             </a>
             <div class="footer-info-divider"></div>
-            <div class="footer-info-item">
-                <i class="ri-time-fill" style="color: var(--primary-amber);"></i>
-                <span><b>Buka:</b> 10:00 - 23:00 WIB</span>
-            </div>
-            <div class="footer-info-divider"></div>
             <button class="btn-open-maps-inline" id="btnOpenMapsFooter" title="Buka Peta Lokasi & Rute Google Maps">
-                <i class="ri-map-pin-line"></i> <span>Buka Google Maps</span>
+                <i class="ri-map-pin-line"></i> <span>Google Maps</span>
             </button>
         </div>
     </footer>
@@ -287,314 +436,703 @@
     <div class="pos-modal-overlay" id="modalCheckout">
         <div class="pos-modal-box checkout-modal-box">
             <div class="modal-head">
-                <h3><i class="ri-secure-payment-line"></i> Pembayaran Transaksi</h3>
+                <h3><i class="ri-secure-payment-line" style="color: var(--primary-amber);"></i> Selesaikan Pembayaran</h3>
                 <button class="modal-close-btn" data-close="modalCheckout">&times;</button>
             </div>
             <div class="modal-body-scroll">
-                <div class="checkout-grid">
-                    <!-- Left: Payment Nav Tabs -->
-                    <div class="payment-method-nav">
-                        <div class="payment-nav-item active" data-paytab="tab-cash">
-                            <span class="rp-icon-badge">Rp.</span>
-                            <span>Tunai (Cash)</span>
-                        </div>
-                        <div class="payment-nav-item" data-paytab="tab-qris">
-                            <i class="ri-qr-code-line"></i>
-                            <span>QRIS Instan</span>
-                        </div>
-                        <div class="payment-nav-item" data-paytab="tab-card">
-                            <i class="ri-bank-card-line"></i>
-                            <span>Debit / Kartu EDC</span>
-                        </div>
-                        <div class="payment-nav-item" data-paytab="tab-ewallet">
-                            <i class="ri-smartphone-line"></i>
-                            <span>E-Wallet (GoPay/Dana)</span>
-                        </div>
-                        <div class="payment-nav-item" data-paytab="tab-transfer">
-                            <i class="ri-bank-line"></i>
-                            <span>Transfer Bank</span>
+                <!-- Total Amount Banner -->
+                <div class="checkout-amount-banner">
+                    <span class="label">Total Tagihan Pesanan:</span>
+                    <span class="amount" id="checkoutDueAmountDisplay">Rp 0</span>
+                </div>
+
+                <!-- Payment Methods Selector Tabs -->
+                <div class="payment-tabs-row" id="paymentTabsRow">
+                    <button type="button" class="pay-tab active" data-tab="tab-cash">
+                        <i class="ri-money-dollar-box-line"></i> Tunai (Cash)
+                    </button>
+                    <button type="button" class="pay-tab" data-tab="tab-qris">
+                        <i class="ri-qr-code-line"></i> Dynamic QRIS
+                    </button>
+                    <button type="button" class="pay-tab" data-tab="tab-card">
+                        <i class="ri-bank-card-line"></i> Kartu Debit/EDC
+                    </button>
+                    <button type="button" class="pay-tab" data-tab="tab-ewallet">
+                        <i class="ri-wallet-3-line"></i> E-Wallet
+                    </button>
+                </div>
+
+                <!-- Cash Payment Panel -->
+                <div class="pay-tab-content active" id="tab-cash">
+                    <div class="form-group">
+                        <label>Uang Tunai Diterima (Rp):</label>
+                        <div class="cash-input-wrap">
+                            <span class="currency-prefix">Rp</span>
+                            <input type="number" id="cashReceivedInput" class="form-control-cash" placeholder="0">
                         </div>
                     </div>
 
-                    <!-- Right: Tab Contents -->
-                    <div class="payment-tab-panes">
+                    <!-- Quick Cash Shortcut Buttons -->
+                    <div class="quick-cash-presets" id="quickCashPresets">
+                        <button type="button" class="btn-preset" data-val="exact">Uang Pas</button>
+                        <button type="button" class="btn-preset" data-val="50000">Rp 50.000</button>
+                        <button type="button" class="btn-preset" data-val="100000">Rp 100.000</button>
+                        <button type="button" class="btn-preset" data-val="200000">Rp 200.000</button>
+                    </div>
 
-                        <!-- PANE 1: CASH -->
-                        <div class="payment-tab-content active" id="tab-cash">
-                            <div class="cash-total-display">
-                                <span class="label">Total Yang Harus Dibayar:</span>
-                                <span class="amount" id="checkoutCashTotalDue">Rp 0</span>
-                            </div>
+                    <!-- Change Calculation Result Box -->
+                    <div class="change-display-box" id="changeResultBox">
+                        <span class="change-lbl" id="changeLabel">Kembalian:</span>
+                        <span class="change-val" id="changeAmountDisplay">Rp 0</span>
+                    </div>
+                </div>
 
-                            <div class="cash-input-group">
-                                <label for="cashReceivedInput">Uang Diterima Dari Pembeli (Rp)</label>
-                                <div class="cash-input-wrapper">
-                                    <span class="prefix">Rp</span>
-                                    <input type="number" id="cashReceivedInput" placeholder="Masukkan jumlah uang...">
-                                </div>
-                            </div>
-
-                            <!-- Quick Cash Nominal Chips -->
-                            <div class="quick-cash-chips" id="quickCashChips">
-                                <button class="cash-chip-btn" data-type="exact">Uang Pas</button>
-                                <button class="cash-chip-btn" data-val="20000">Rp 20.000</button>
-                                <button class="cash-chip-btn" data-val="50000">Rp 50.000</button>
-                                <button class="cash-chip-btn" data-val="100000">Rp 100.000</button>
-                                <button class="cash-chip-btn" data-val="150000">Rp 150.000</button>
-                                <button class="cash-chip-btn" data-val="200000">Rp 200.000</button>
-                            </div>
-
-                            <!-- Change Display -->
-                            <div class="change-result-box" id="changeResultBox">
-                                <span class="change-lbl" id="changeLabel">Kembalian:</span>
-                                <span class="change-val" id="changeAmountDisplay">Rp 0</span>
-                            </div>
+                <!-- QRIS Dynamic Payment Panel -->
+                <div class="pay-tab-content" id="tab-qris">
+                    <div class="qris-payment-center">
+                        <div class="qris-badge-tag"><i class="ri-shield-check-fill"></i> QRIS Standar Bank Indonesia</div>
+                        <div class="qris-qr-frame">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5919SOHIB+CAFFE+RESTO6009PALEMBANG61053013662070703A016304"
+                                alt="Dynamic QRIS Sohib Caffe" class="qris-img-tag" id="qrisImageCode">
                         </div>
+                        <div class="qris-amount-tag" id="qrisExactAmountTag">Total: Rp 0</div>
+                        <p class="qris-hint">Scan dengan BCA, Mandiri, BRI, GoPay, OVO, DANA, atau ShopeePay. Transaksi diverifikasi secara otomatis.</p>
+                    </div>
+                </div>
 
-                        <!-- PANE 2: QRIS -->
-                        <div class="payment-tab-content" id="tab-qris">
-                            <div class="qris-pay-view">
-                                <div class="qris-qr-box">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=POSIFY-QRIS-PAYMENT"
-                                        alt="QRIS QR Code" class="qris-qr-img">
-                                </div>
-                                <h4>Scan Kode QRIS Merchant</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.3rem;">Dapat discan via
-                                    BCA Mobile, GoPay, OVO, Dana, ShopeePay, Mandiri Livin, dll.</p>
-                                <div class="qris-countdown-badge">
-                                    <i class="ri-timer-line"></i>
-                                    <span>Menunggu Pembayaran: <b>02:45</b></span>
-                                </div>
-                            </div>
+                <!-- Card / EDC Panel -->
+                <div class="pay-tab-content" id="tab-card">
+                    <div class="card-payment-form">
+                        <div class="form-group">
+                            <label>Pilih Mesin EDC / Bank:</label>
+                            <select class="form-control" id="edcBankSelect">
+                                <option value="BCA">EDC BCA</option>
+                                <option value="Mandiri">EDC Bank Mandiri</option>
+                                <option value="BRI">EDC BRI</option>
+                                <option value="BNI">EDC BNI</option>
+                            </select>
                         </div>
-
-                        <!-- PANE 3: DEBIT CARD -->
-                        <div class="payment-tab-content" id="tab-card">
-                            <div class="edc-machine-view">
-                                <div class="edc-icon-badge">
-                                    <i class="ri-bank-card-2-line"></i>
-                                </div>
-                                <h4>Pembayaran Kartu Debit / Kredit</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Gesek / Tap
-                                    kartu pada mesin EDC Kasir. Masukkan No. Referensi / Approval Code:</p>
-                                <div class="form-group-pos" style="text-align: left;">
-                                    <label for="edcRefInput">No. Approval EDC (Opsional)</label>
-                                    <input type="text" id="edcRefInput" placeholder="Contoh: APPR-889021">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Nomor Approval Code / Trace No (Opsional):</label>
+                            <input type="text" class="form-control" id="edcApprovalInput" placeholder="Cth: 489201">
                         </div>
+                    </div>
+                </div>
 
-                        <!-- PANE 4: E-WALLET -->
-                        <div class="payment-tab-content" id="tab-ewallet">
-                            <div class="ewallet-view">
-                                <div class="edc-icon-badge"
-                                    style="background: rgba(16, 185, 129, 0.12); color: var(--primary-emerald); border-color: rgba(16, 185, 129, 0.3);">
-                                    <i class="ri-smartphone-line"></i>
-                                </div>
-                                <h4>Direct E-Wallet Checkout</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0 1.25rem;">Kirim push
-                                    billing notifikasi langsung ke nomor akun pembeli.</p>
-                                <div class="form-group-pos" style="text-align: left;">
-                                    <label for="ewalletPhoneInput">Nomor Ponsel E-Wallet Pembeli</label>
-                                    <input type="text" id="ewalletPhoneInput" placeholder="0812-xxxx-xxxx">
-                                </div>
+                <!-- E-Wallet Panel -->
+                <div class="pay-tab-content" id="tab-ewallet">
+                    <div class="ewallet-selector-grid">
+                        <label class="ewallet-option-card">
+                            <input type="radio" name="ewalletOption" value="GoPay" checked>
+                            <div class="ewallet-card-body">
+                                <span>GoPay</span>
                             </div>
-                        </div>
-
-                        <!-- PANE 5: TRANSFER -->
-                        <div class="payment-tab-content" id="tab-transfer">
-                            <div class="edc-machine-view">
-                                <div class="edc-icon-badge"
-                                    style="background: rgba(139, 92, 246, 0.12); color: var(--primary-purple); border-color: rgba(139, 92, 246, 0.3);">
-                                    <i class="ri-bank-line"></i>
-                                </div>
-                                <h4>Transfer Rekening Kasir</h4>
-                                <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">BCA:
-                                    <b>882-901-2991</b> a/n POSify Resto
-                                </p>
-                                <p class="text-muted" style="font-size: 0.8rem;">Mandiri: <b>123-00-98212-99</b> a/n
-                                    POSify Resto</p>
+                        </label>
+                        <label class="ewallet-option-card">
+                            <input type="radio" name="ewalletOption" value="OVO">
+                            <div class="ewallet-card-body">
+                                <span>OVO</span>
                             </div>
-                        </div>
-
+                        </label>
+                        <label class="ewallet-option-card">
+                            <input type="radio" name="ewalletOption" value="DANA">
+                            <div class="ewallet-card-body">
+                                <span>DANA</span>
+                            </div>
+                        </label>
+                        <label class="ewallet-option-card">
+                            <input type="radio" name="ewalletOption" value="ShopeePay">
+                            <div class="ewallet-card-body">
+                                <span>ShopeePay</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
+
             <div class="modal-foot">
                 <button class="btn-secondary" data-close="modalCheckout">Batal</button>
-                <button class="btn-primary-action" id="btnSubmitPayment">
-                    <i class="ri-printer-line"></i>
-                    <span>Selesaikan & Cetak Struk</span>
+                <button class="btn-primary-action" id="btnConfirmPayment">
+                    <i class="ri-check-double-line"></i> Konfirmasi Pembayaran & Cetak Struk
                 </button>
             </div>
         </div>
     </div>
 
     <!-- ====================================================================
-         MODAL 2: STRUK RESI THERMAL TRANSAKSI (PRINT PREVIEW)
+         MODAL 2: KITCHEN DISPLAY SYSTEM (KDS) & BARISTA STATION
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalKDS">
+        <div class="pos-modal-box kds-modal-box">
+            <div class="modal-head">
+                <div class="kds-head-title">
+                    <div class="kds-badge-icon"><i class="ri-restaurant-2-fill"></i></div>
+                    <div>
+                        <h3>Kitchen Display System (KDS) & Barista Station</h3>
+                        <p class="kds-subtitle">Layar Antrean Pesanan Dapur & Minuman Real-Time</p>
+                    </div>
+                </div>
+                <div class="kds-head-controls">
+                    <button class="btn-kds-filter active" data-station="all">
+                        <i class="ri-apps-fill"></i> Semua (<span id="kdsCountAll">0</span>)
+                    </button>
+                    <button class="btn-kds-filter" data-station="kitchen">
+                        <i class="ri-restaurant-fill"></i> Dapur Makanan (<span id="kdsCountKitchen">0</span>)
+                    </button>
+                    <button class="btn-kds-filter" data-station="bar">
+                        <i class="ri-cup-fill"></i> Barista Minuman (<span id="kdsCountBar">0</span>)
+                    </button>
+                    <button class="modal-close-btn" data-close="modalKDS">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body-scroll kds-body-bg">
+                <!-- KDS Active Orders Grid -->
+                <div class="kds-tickets-grid" id="kdsTicketsGrid">
+                    <!-- Tickets populated dynamically -->
+                </div>
+                <!-- Empty State -->
+                <div class="kds-empty-state" id="kdsEmptyState" style="display: none;">
+                    <i class="ri-checkbox-circle-fill text-emerald"></i>
+                    <h4>Semua Pesanan Dapur Selesai Disajikan!</h4>
+                    <p>Belum ada antrean pesanan baru dari kasir maupun pemesanan mandiri meja.</p>
+                </div>
+            </div>
+            <div class="modal-foot kds-foot">
+                <div class="kds-legend">
+                    <span class="legend-item"><span class="dot dot-queue"></span> Antrean Baru</span>
+                    <span class="legend-item"><span class="dot dot-cooking"></span> Sedang Dimasak</span>
+                    <span class="legend-item"><span class="dot dot-ready"></span> Siap Saji</span>
+                </div>
+                <div class="kds-foot-actions">
+                    <button class="btn-secondary" id="btnClearCompletedKds">Bersihkan Order Selesai</button>
+                    <button class="btn-primary-action" data-close="modalKDS">Tutup Layar KDS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 3: INTERACTIVE FLOOR PLAN & DENAH MEJA
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalFloorPlan">
+        <div class="pos-modal-box floorplan-modal-box">
+            <div class="modal-head">
+                <div class="floorplan-head-title">
+                    <div class="floorplan-icon"><i class="ri-layout-grid-fill"></i></div>
+                    <div>
+                        <h3>Denah Tata Letak Meja Resto (Interactive Floor Plan)</h3>
+                        <p class="floorplan-subtitle">Pantau Meja Kosong, Meja Terisi, Durasi Makan & Tagihan Sementara</p>
+                    </div>
+                </div>
+                <div class="floorplan-head-actions">
+                    <button class="btn-header-secondary" id="btnOpenTableQrGenerator">
+                        <i class="ri-qr-code-line"></i> Cetak QR Meja
+                    </button>
+                    <button class="modal-close-btn" data-close="modalFloorPlan">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body-scroll">
+                <!-- Zone Filters -->
+                <div class="floorplan-zone-filters" id="floorPlanZoneFilters">
+                    <button class="zone-pill active" data-zone="all">Semua Meja (<span id="countZoneAll">18</span>)</button>
+                    <button class="zone-pill" data-zone="majlis">🌴 Area Majlis Lesehan Arab</button>
+                    <button class="zone-pill" data-zone="indoor">🏛️ Indoor Dining Hall</button>
+                    <button class="zone-pill" data-zone="outdoor">🌿 Outdoor Garden Terrace</button>
+                    <button class="zone-pill" data-zone="vip">👑 VIP Sultan Room</button>
+                </div>
+
+                <!-- Tables Grid Layout -->
+                <div class="floorplan-tables-grid" id="floorPlanTablesGrid">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+            <div class="modal-foot floorplan-foot">
+                <div class="floorplan-legend">
+                    <span class="legend-pill green"><span class="dot"></span> Kosong (Available)</span>
+                    <span class="legend-pill red"><span class="dot"></span> Terisi (Occupied)</span>
+                    <span class="legend-pill yellow"><span class="dot"></span> Billing / Reserved</span>
+                </div>
+                <button class="btn-secondary" data-close="modalFloorPlan">Tutup Denah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 4: GENERATOR QR CODE MEJA SELF-ORDER
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalTableQr">
+        <div class="pos-modal-box table-qr-modal-box">
+            <div class="modal-head">
+                <h3><i class="ri-qr-code-line" style="color: var(--primary-amber);"></i> Generator QR Code Self-Order Meja</h3>
+                <button class="modal-close-btn" data-close="modalTableQr">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <div class="form-group">
+                    <label>Pilih Meja Resto:</label>
+                    <select class="form-control" id="selectQrTableNumber">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <div class="qr-print-card" id="qrPrintArea">
+                    <div class="qr-card-header">
+                        <div class="qr-brand-icon"><i class="ri-cup-fill"></i></div>
+                        <h4>Sohib Caffe & Resto</h4>
+                        <span class="qr-table-banner" id="qrDisplayTableLabel">MEJA T01</span>
+                    </div>
+                    <div class="qr-code-center">
+                        <img src="" alt="QR Meja" id="qrGeneratedImg" class="qr-image-display">
+                    </div>
+                    <p class="qr-scan-guide">📱 Scan QR ini dari kamera HP Anda untuk memesan menu langsung dari meja!</p>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" data-close="modalTableQr">Tutup</button>
+                <button class="btn-primary-action" id="btnPrintTableQr">
+                    <i class="ri-printer-line"></i> Cetak Lembar QR Meja
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 5: KAS LACI, PETTY CASH & TUTUP SHIFT (Z-REPORT)
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalShiftManager">
+        <div class="pos-modal-box shift-modal-box">
+            <div class="modal-head">
+                <div class="shift-head-title">
+                    <div class="shift-icon"><i class="ri-money-dollar-circle-fill"></i></div>
+                    <div>
+                        <h3>Manajemen Kas Laci & Tutup Shift (Z-Report)</h3>
+                        <p class="shift-subtitle">Rekonsiliasi Kas Fisik Kasir, Modal Awal & Kas Keluar Kecil</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalShiftManager">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <!-- Shift Tabs -->
+                <div class="shift-nav-tabs">
+                    <button class="shift-tab active" data-shift-tab="summary">
+                        <i class="ri-dashboard-line"></i> Ringkasan Shift Aktif
+                    </button>
+                    <button class="shift-tab" data-shift-tab="petty-cash">
+                        <i class="ri-hand-coin-line"></i> Kas Keluar / Masuk Kecil
+                    </button>
+                    <button class="shift-tab" data-shift-tab="close-shift">
+                        <i class="ri-file-lock-line"></i> Tutup Shift & Z-Report
+                    </button>
+                </div>
+
+                <!-- Tab 1: Ringkasan Shift -->
+                <div class="shift-tab-pane active" id="shiftPane-summary">
+                    <div class="shift-stat-cards-grid">
+                        <div class="shift-card">
+                            <span class="lbl">Kasir Bertugas</span>
+                            <span class="val" id="shiftCashierNameDisplay">M. Ikhsan Anggara</span>
+                        </div>
+                        <div class="shift-card">
+                            <span class="lbl">Modal Awal Laci</span>
+                            <span class="val text-amber" id="shiftStartingCashDisplay">Rp 250.000</span>
+                        </div>
+                        <div class="shift-card">
+                            <span class="lbl">Total Penjualan Tunai</span>
+                            <span class="val text-emerald" id="shiftCashSalesDisplay">Rp 0</span>
+                        </div>
+                        <div class="shift-card">
+                            <span class="lbl">Total Non-Tunai (QRIS/Kartu)</span>
+                            <span class="val text-cyan" id="shiftNonCashSalesDisplay">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div class="starting-cash-edit-box">
+                        <h4><i class="ri-edit-line"></i> Perbarui Modal Awal Kasir:</h4>
+                        <div class="input-action-row">
+                            <input type="number" id="inputStartingCash" class="form-control" placeholder="Nominal modal awal...">
+                            <button class="btn-primary-action" id="btnUpdateStartingCash">Simpan Modal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Petty Cash / Kas Keluar Kecil -->
+                <div class="shift-tab-pane" id="shiftPane-petty-cash">
+                    <div class="petty-cash-form-card">
+                        <h4><i class="ri-add-circle-line"></i> Catat Kas Keluar / Masuk Kecil</h4>
+                        <div class="petty-form-grid">
+                            <div class="form-group">
+                                <label>Tipe Transaksi:</label>
+                                <select class="form-control" id="pettyCashType">
+                                    <option value="out">Kas Keluar (Pengeluaran Darurat / Beli Es Batu, Gas, dll)</option>
+                                    <option value="in">Kas Masuk (Tambah Modal Tunai)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nominal (Rp):</label>
+                                <input type="number" id="pettyCashAmount" class="form-control" placeholder="Cth: 35000">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Alasan / Keterangan Pengeluaran:</label>
+                            <input type="text" id="pettyCashReason" class="form-control" placeholder="Cth: Beli Es Kristal 2 karung">
+                        </div>
+                        <button class="btn-primary-action" id="btnAddPettyCash">
+                            <i class="ri-save-line"></i> Simpan Catatan Kas Kecil
+                        </button>
+                    </div>
+
+                    <h4 class="mt-4"><i class="ri-history-line"></i> Riwayat Kas Kecil Shift Ini:</h4>
+                    <div class="petty-cash-table-wrap">
+                        <table class="table-modern" id="pettyCashTable">
+                            <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>Tipe</th>
+                                    <th>Keterangan</th>
+                                    <th>Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pettyCashTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Form Rekonsiliasi Tutup Shift (Z-Report) -->
+                <div class="shift-tab-pane" id="shiftPane-close-shift">
+                    <div class="zreport-calc-box">
+                        <h4><i class="ri-scales-3-line"></i> Rekonsiliasi Uang Fisik Kasir:</h4>
+                        <p class="text-muted">Hitung semua uang tunai fisik yang ada di laci kasir saat ini untuk mendeteksi apakah ada selisih lebih atau kurang.</p>
+
+                        <div class="form-group">
+                            <label>Total Uang Tunai Fisik di Laci (Rp):</label>
+                            <input type="number" id="inputActualCashInDrawer" class="form-control form-control-lg" placeholder="Masukkan total uang fisik kasir...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Catatan Tutup Shift (Opsional):</label>
+                            <textarea id="inputShiftNotes" class="form-control" rows="2" placeholder="Cth: Shift 1 lancar, tidak ada kendala."></textarea>
+                        </div>
+
+                        <button class="btn-soc-danger btn-lg w-100" id="btnSubmitCloseShift">
+                            <i class="ri-file-lock-line"></i> TUTUP SHIFT & CETAK STRUK Z-REPORT
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" data-close="modalShiftManager">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 6: STRUK Z-REPORT REKONSILIASI TUTUP SHIFT
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalZReportReceipt">
+        <div class="pos-modal-box receipt-modal-box">
+            <div class="modal-head">
+                <h3><i class="ri-printer-line" style="color: var(--primary-amber);"></i> Struk Z-Report Rekonsiliasi Kas</h3>
+                <button class="modal-close-btn" data-close="modalZReportReceipt">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <div class="thermal-receipt-paper" id="zReportPaper">
+                    <div class="receipt-header">
+                        <h2 class="receipt-brand-name">SOHIB CAFFE & RESTO</h2>
+                        <p class="receipt-address">Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</p>
+                        <p class="receipt-report-title">*** LAPORAN TUTUP SHIFT (Z-REPORT) ***</p>
+                    </div>
+                    <div class="receipt-divider-dash"></div>
+                    <div class="receipt-meta-grid">
+                        <div><span>No Laporan:</span> <strong id="zrReportId">ZR-000001</strong></div>
+                        <div><span>Shift:</span> <strong id="zrShiftNo">Shift 1</strong></div>
+                        <div><span>Kasir:</span> <strong id="zrCashier">M. Ikhsan Anggara</strong></div>
+                        <div><span>Waktu Selesai:</span> <strong id="zrTime">27/08/2026 23:00</strong></div>
+                    </div>
+                    <div class="receipt-divider-dash"></div>
+                    
+                    <div class="zr-details-list">
+                        <div class="zr-row"><span>Modal Awal Kas:</span> <strong id="zrStartingCash">Rp 0</strong></div>
+                        <div class="zr-row"><span>Total Penjualan Tunai:</span> <strong id="zrCashSales">Rp 0</strong></div>
+                        <div class="zr-row"><span>Total Kas Masuk Tambahan:</span> <strong id="zrPettyIn">Rp 0</strong></div>
+                        <div class="zr-row"><span>Total Kas Keluar (Petty Cash):</span> <strong id="zrPettyOut">-Rp 0</strong></div>
+                        <div class="receipt-divider-dash"></div>
+                        <div class="zr-row highlight"><span>Ekspektasi Uang Tunai:</span> <strong id="zrExpectedCash">Rp 0</strong></div>
+                        <div class="zr-row highlight"><span>Uang Fisik Aktual di Laci:</span> <strong id="zrActualCash">Rp 0</strong></div>
+                        <div class="zr-row diff-row" id="zrDiffRow"><span>Selisih Kas (Over/Short):</span> <strong id="zrDiffVal">Rp 0</strong></div>
+                        <div class="receipt-divider-dash"></div>
+                        <div class="zr-row"><span>Total Non-Tunai QRIS:</span> <strong id="zrQrisSales">Rp 0</strong></div>
+                        <div class="zr-row"><span>Total EDC & Transfer:</span> <strong id="zrCardSales">Rp 0</strong></div>
+                        <div class="zr-row grand"><span>TOTAL OMSET SHIFT:</span> <strong id="zrTotalTurnover">Rp 0</strong></div>
+                    </div>
+                    <div class="receipt-divider-dash"></div>
+                    <div class="receipt-footer-text">
+                        <p>Dokumen ini adalah bukti sah rekonsiliasi kas kasir.</p>
+                        <p>Dicetak pada: <span id="zrPrintTimestamp">27/08/2026 23:00</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" data-close="modalZReportReceipt">Tutup</button>
+                <button class="btn-primary-action" id="btnPrintZReport">
+                    <i class="ri-printer-fill"></i> Cetak Struk Z-Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 7: CRM MEMBER PELANGGAN & POIN SULTAN
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalMemberCRM">
+        <div class="pos-modal-box member-modal-box">
+            <div class="modal-head">
+                <div class="member-head-title">
+                    <div class="member-icon"><i class="ri-vip-crown-fill"></i></div>
+                    <div>
+                        <h3>Database Member & Loyalitas Poin Sultan</h3>
+                        <p class="member-subtitle">Kelola Data Pelanggan Tetap, Tingkatan Tier & Tukar Poin</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalMemberCRM">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <!-- Member Registration Card -->
+                <div class="member-reg-card">
+                    <h4><i class="ri-user-add-line"></i> Pendaftaran Member Baru</h4>
+                    <div class="member-reg-grid">
+                        <input type="text" id="inputNewMemberName" class="form-control" placeholder="Nama Lengkap Pelanggan">
+                        <input type="text" id="inputNewMemberPhone" class="form-control" placeholder="Nomor WhatsApp (Cth: 0812...)">
+                        <button class="btn-primary-action" id="btnRegisterNewMember">
+                            <i class="ri-check-line"></i> Daftar Member (+10 Poin)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Member Search & Table List -->
+                <div class="member-list-section mt-4">
+                    <div class="member-search-row">
+                        <h4><i class="ri-contacts-book-line"></i> Daftar Member Terdaftar (<span id="memberTotalCount">0</span>)</h4>
+                        <input type="text" id="inputSearchMember" class="form-control form-control-sm" placeholder="Cari Nama / No WhatsApp...">
+                    </div>
+                    <div class="member-cards-grid" id="memberCardsGrid">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" data-close="modalMemberCRM">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 8: STRUK THERMAL TRANSAKSI PENJUALAN
          ==================================================================== -->
     <div class="pos-modal-overlay" id="modalReceipt">
         <div class="pos-modal-box receipt-modal-box">
             <div class="modal-head">
-                <h3><i class="ri-receipt-line"></i> Bukti Struk Kasir</h3>
+                <h3><i class="ri-printer-line" style="color: var(--primary-amber);"></i> Bukti Pembayaran / Struk Kasir</h3>
                 <button class="modal-close-btn" data-close="modalReceipt">&times;</button>
             </div>
             <div class="modal-body-scroll">
-                <div class="thermal-receipt-paper" id="printReceiptArea">
-                    <div class="receipt-header-center">
-                        <h4>SOHIB CAFFE & RESTO</h4>
-                        <p style="font-weight: 700; color: #111; margin-bottom: 2px;">Owner: Muhammad Ikhsan Anggara</p>
-                        <p>Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</p>
-                        <p>Telp/WA: +62 895-3254-80299 | IG: @sohibcafferesto</p>
+                <div class="thermal-receipt-paper" id="receiptPaper">
+                    <div class="receipt-header">
+                        <h2 class="receipt-brand-name">SOHIB CAFFE & RESTO</h2>
+                        <p class="receipt-sub-brand">Autentik Hidangan Arab & Kopi Rempah Timur Tengah</p>
+                        <p class="receipt-address">Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</p>
+                        <p class="receipt-contact">WhatsApp: +62 895-3254-80299 | IG: @muh_ikhsan_a</p>
                     </div>
-
-                    <div class="receipt-meta-info">
-                        <div class="receipt-meta-row">
-                            <span>No. Order:</span>
-                            <strong id="rcptOrderNo">#ORD-9021</strong>
-                        </div>
-                        <div class="receipt-meta-row">
-                            <span>Tanggal:</span>
-                            <span id="rcptDateTime">22/08/2026 00:30 WIB</span>
-                        </div>
-                        <div class="receipt-meta-row">
-                            <span>Kasir / Meja:</span>
-                            <span id="rcptCashierTable">M Ikhsan / Meja 05</span>
-                        </div>
-                        <div class="receipt-meta-row">
-                            <span>Tipe Pesanan:</span>
-                            <span id="rcptOrderType">Dine In (Makan di Tempat)</span>
-                        </div>
+                    <div class="receipt-divider-dash"></div>
+                    <div class="receipt-meta-grid">
+                        <div><span>No Order:</span> <strong id="rcptOrderNo">ORD-0001</strong></div>
+                        <div><span>Waktu:</span> <span id="rcptDateTime">27/08/2026 19:00</span></div>
+                        <div><span>Kasir / Meja:</span> <span id="rcptCashierTable">M. Ikhsan Anggara / Meja 01</span></div>
+                        <div><span>Tipe:</span> <span id="rcptOrderType">Dine In</span></div>
                     </div>
-
-                    <!-- Items List in Receipt -->
+                    <div class="receipt-divider-dash"></div>
+                    
                     <div class="receipt-items-list" id="rcptItemsList">
-                        <!-- Populated via JS -->
+                        <!-- Injected by JS -->
                     </div>
+                    <div class="receipt-divider-dash"></div>
 
-                    <!-- Calculations in Receipt -->
-                    <div class="receipt-calc-table">
-                        <div class="receipt-calc-row">
-                            <span>Subtotal:</span>
-                            <span id="rcptSubtotal">Rp 0</span>
-                        </div>
-                        <div class="receipt-calc-row" id="rcptDiscountRow">
-                            <span>Diskon:</span>
-                            <span id="rcptDiscount">Rp 0</span>
-                        </div>
-                        <div class="receipt-calc-row">
-                            <span>PB1 Resto (10%):</span>
-                            <span id="rcptTax">Rp 0</span>
-                        </div>
-                        <div class="receipt-calc-row total-row">
-                            <span>TOTAL AKHIR:</span>
-                            <span id="rcptGrandTotal">Rp 0</span>
-                        </div>
-                        <div class="receipt-calc-row">
-                            <span>Metode Bayar:</span>
-                            <span id="rcptPayMethod">Tunai (Cash)</span>
-                        </div>
-                        <div class="receipt-calc-row">
-                            <span>Jumlah Bayar:</span>
-                            <span id="rcptPayReceived">Rp 0</span>
-                        </div>
-                        <div class="receipt-calc-row">
-                            <span>Kembalian:</span>
-                            <span id="rcptChange">Rp 0</span>
-                        </div>
+                    <div class="receipt-calc-summary">
+                        <div class="rcpt-row"><span>Subtotal:</span> <span id="rcptSubtotal">Rp 0</span></div>
+                        <div class="rcpt-row" id="rcptDiscountRow" style="display: none;"><span>Diskon Voucher:</span> <span id="rcptDiscountVal">-Rp 0</span></div>
+                        <div class="rcpt-row"><span>PB1 Resto (10%):</span> <span id="rcptTax">Rp 0</span></div>
+                        <div class="receipt-divider-dash"></div>
+                        <div class="rcpt-row grand"><span>TOTAL:</span> <strong id="rcptGrandTotal">Rp 0</strong></div>
+                        <div class="rcpt-row"><span>Metode Bayar:</span> <span id="rcptPayMethod">Tunai</span></div>
+                        <div class="rcpt-row"><span>Diterima:</span> <span id="rcptAmountPaid">Rp 0</span></div>
+                        <div class="rcpt-row"><span>Kembalian:</span> <span id="rcptChange">Rp 0</span></div>
                     </div>
-
-                    <div class="receipt-footer-center">
-                        <p>Terima kasih atas kunjungan Anda!</p>
-                        <p>Kritik & Saran WA: 0812-9887-3411</p>
-                        <div class="receipt-barcode-sim"></div>
-                        <small>Sohib Caffe & Resto Point of Sale</small>
+                    <div class="receipt-divider-dash"></div>
+                    <div class="receipt-footer-text">
+                        <p class="syukron-text">*** SYUKRON WA JAZAKUMULLAHU KHAIRAN ***</p>
+                        <p>Terima kasih telah berkunjung di Sohib Caffe & Resto!</p>
+                        <p>Wi-Fi: SohibCaffe_Guest | Pass: kopisultan2026</p>
                     </div>
                 </div>
             </div>
-            <div class="modal-foot">
+            <div class="modal-foot receipt-foot">
                 <button class="btn-secondary" data-close="modalReceipt">Tutup</button>
-                <button class="btn-primary-action" id="btnPrintReceiptBtn">
-                    <i class="ri-printer-fill"></i> Cetak Struk (Print)
+                <button class="btn-secondary" id="btnShareWhatsAppReceipt">
+                    <i class="ri-whatsapp-fill" style="color: #25D366;"></i> Kirim WA
+                </button>
+                <button class="btn-primary-action" id="btnPrintReceipt">
+                    <i class="ri-printer-fill"></i> Cetak Struk Thermal (58/80mm)
                 </button>
             </div>
         </div>
     </div>
 
     <!-- ====================================================================
-         MODAL 3: INVENTORY & MANAJEMEN PRODUK
+         MODAL 9: DRINK CUSTOMIZATION & OPTIONS MODAL
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalDrinkOptions">
+        <div class="pos-modal-box drink-options-modal-box">
+            <div class="modal-head">
+                <div class="sheet-drag-handle"></div>
+                <h3><i class="ri-cup-fill" style="color: var(--primary-amber);"></i> Pilihan Variasi & Topping Minuman</h3>
+                <button class="modal-close-btn" data-close="modalDrinkOptions">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <div class="drink-preview-card">
+                    <img src="" alt="Minuman" id="optDrinkImg" class="drink-preview-img">
+                    <div class="drink-preview-details">
+                        <h4 id="optDrinkName">Kopi Gahwa Arabica</h4>
+                        <span class="drink-base-price" id="optDrinkBasePrice">Rp 28.000</span>
+                        <p class="drink-desc-sub">Pilihan suhu, takaran gula, ukuran, dan topping rempah</p>
+                    </div>
+                </div>
+
+                <!-- Option Group 1: Suhu -->
+                <div class="modifier-group">
+                    <label class="modifier-title"><i class="ri-temp-hot-line"></i> Pilihan Suhu (Temperature)</label>
+                    <div class="modifier-pills-row" id="tempOptionGroup">
+                        <button type="button" class="opt-pill active" data-group="temp" data-val="Dingin (Ice)" data-price="0">
+                            <i class="ri-snowflake-line"></i> ❄️ Dingin (Ice)
+                        </button>
+                        <button type="button" class="opt-pill" data-group="temp" data-val="Hangat / Panas (Hot)" data-price="0">
+                            <i class="ri-fire-line"></i> ☕ Hangat (Hot)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Option Group 2: Ukuran Cup -->
+                <div class="modifier-group">
+                    <label class="modifier-title"><i class="ri-cup-line"></i> Ukuran Cup (Size)</label>
+                    <div class="modifier-pills-row" id="sizeOptionGroup">
+                        <button type="button" class="opt-pill active" data-group="size" data-val="Regular" data-price="0">Regular (Standard)</button>
+                        <button type="button" class="opt-pill" data-group="size" data-val="Large (Jumbo)" data-price="5000">Large (+Rp 5.000)</button>
+                    </div>
+                </div>
+
+                <!-- Option Group 3: Level Manis -->
+                <div class="modifier-group">
+                    <label class="modifier-title"><i class="ri-drop-line"></i> Level Manis / Gula (Sugar)</label>
+                    <div class="modifier-pills-grid" id="sugarOptionGroup">
+                        <button type="button" class="opt-pill active" data-group="sugar" data-val="Normal (100%)" data-price="0">Normal (100%)</button>
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Less Sugar (50%)" data-price="0">Less (50%)</button>
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Sedikit Gula (25%)" data-price="0">Sedikit (25%)</button>
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Tanpa Gula (0%)" data-price="0">Tanpa Gula (0%)</button>
+                        <button type="button" class="opt-pill" data-group="sugar" data-val="Madu Arab" data-price="3000">🍯 Madu (+3rb)</button>
+                    </div>
+                </div>
+
+                <!-- Option Group 4: Level Es -->
+                <div class="modifier-group" id="iceModifierSection">
+                    <label class="modifier-title"><i class="ri-snowy-line"></i> Level Es Batu (Ice)</label>
+                    <div class="modifier-pills-row" id="iceOptionGroup">
+                        <button type="button" class="opt-pill active" data-group="ice" data-val="Normal Ice" data-price="0">Normal Ice</button>
+                        <button type="button" class="opt-pill" data-group="ice" data-val="Less Ice" data-price="0">Sedikit Es</button>
+                        <button type="button" class="opt-pill" data-group="ice" data-val="No Ice" data-price="0">Tanpa Es</button>
+                    </div>
+                </div>
+
+                <!-- Option Group 5: Toppings -->
+                <div class="modifier-group">
+                    <label class="modifier-title"><i class="ri-add-circle-line"></i> Topping & Tambahan Khas Arab</label>
+                    <div class="modifier-checkboxes-grid" id="toppingOptionGroup">
+                        <label class="addon-card-item">
+                            <input type="checkbox" class="addon-checkbox" data-name="Susu Kambing" data-price="4000">
+                            <div class="addon-card-inner">
+                                <span class="addon-name">🥛 Susu Kambing / Evaporasi</span>
+                                <span class="addon-price">+Rp 4.000</span>
+                            </div>
+                        </label>
+                        <label class="addon-card-item">
+                            <input type="checkbox" class="addon-checkbox" data-name="Saffron & Kapulaga" data-price="5000">
+                            <div class="addon-card-inner">
+                                <span class="addon-name">🌿 Saffron & Kapulaga</span>
+                                <span class="addon-price">+Rp 5.000</span>
+                            </div>
+                        </label>
+                        <label class="addon-card-item">
+                            <input type="checkbox" class="addon-checkbox" data-name="Kurma Ajwa" data-price="5000">
+                            <div class="addon-card-inner">
+                                <span class="addon-name">🌴 Potongan Kurma Ajwa</span>
+                                <span class="addon-price">+Rp 5.000</span>
+                            </div>
+                        </label>
+                        <label class="addon-card-item">
+                            <input type="checkbox" class="addon-checkbox" data-name="Biji Selasih" data-price="3000">
+                            <div class="addon-card-inner">
+                                <span class="addon-name">🌱 Biji Selasih Segar</span>
+                                <span class="addon-price">+Rp 3.000</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Note -->
+                <div class="modifier-group">
+                    <label class="modifier-title"><i class="ri-edit-line"></i> Catatan Khusus Minuman (Opsional)</label>
+                    <input type="text" id="optDrinkSpecialNote" class="form-control-note" placeholder="Cth: es dipisah, kurangi manis...">
+                </div>
+            </div>
+
+            <div class="modal-foot drink-options-foot">
+                <div class="opt-total-preview">
+                    <span class="lbl">Total Harga:</span>
+                    <span class="val" id="optDrinkFinalPrice">Rp 0</span>
+                </div>
+                <div class="opt-action-btns">
+                    <button class="btn-secondary" data-close="modalDrinkOptions">Batal</button>
+                    <button class="btn-primary-action" id="btnConfirmDrinkOptions">
+                        <i class="ri-shopping-cart-2-fill"></i> Tambah Ke Pesanan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 10: INVENTORI PRODUK & STOK
          ==================================================================== -->
     <div class="pos-modal-overlay" id="modalInventory">
         <div class="pos-modal-box inventory-modal-box">
             <div class="modal-head">
-                <h3><i class="ri-box-3-line"></i> Manajemen Produk & Stok Inventori</h3>
+                <h3><i class="ri-box-3-line" style="color: var(--primary-amber);"></i> Manajemen Produk & Stok Inventori</h3>
                 <button class="modal-close-btn" data-close="modalInventory">&times;</button>
             </div>
             <div class="modal-body-scroll">
-
-                <!-- Add/Edit Product Form -->
-                <div
-                    style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-                    <h4 style="margin-bottom: 1rem; font-size: 1rem;" id="productFormTitle"><i
-                            class="ri-add-circle-line"></i> Tambah Produk Baru</h4>
-                    <form id="productManageForm" onsubmit="return false;">
-                        <input type="hidden" id="editProductId" value="">
-                        <div class="form-grid-2">
-                            <div class="form-group-pos">
-                                <label for="prodNameInput">Nama Produk</label>
-                                <input type="text" id="prodNameInput" placeholder="Contoh: Nasi Goreng Spesial"
-                                    required>
-                            </div>
-                            <div class="form-group-pos">
-                                <label for="prodCategorySelect">Kategori Menu</label>
-                                <select id="prodCategorySelect" required>
-                                    <option value="makanan">Makanan Utama</option>
-                                    <option value="minuman">Minuman Segar</option>
-                                    <option value="kopi">Coffee & Tea</option>
-                                    <option value="snack">Snack & Camilan</option>
-                                    <option value="paket">Paket Hemat</option>
-                                </select>
-                            </div>
-                            <div class="form-group-pos">
-                                <label for="prodPriceInput">Harga Jual (Rp)</label>
-                                <input type="number" id="prodPriceInput" placeholder="Contoh: 28000" required>
-                            </div>
-                            <div class="form-group-pos">
-                                <label for="prodStockInput">Jumlah Stok Awal</label>
-                                <input type="number" id="prodStockInput" placeholder="Contoh: 50" required>
-                            </div>
-                            <div class="form-group-pos">
-                                <label for="prodBarcodeInput">Kode Barcode / SKU (Opsional)</label>
-                                <input type="text" id="prodBarcodeInput" placeholder="Contoh: 899100293">
-                            </div>
-                            <div class="form-group-pos">
-                                <label for="prodImgInput">URL Gambar (Unsplash / Web)</label>
-                                <input type="text" id="prodImgInput" placeholder="https://images.unsplash.com/...">
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-                            <button type="button" class="btn-secondary" id="btnCancelEditProd"
-                                style="display: none;">Batal Edit</button>
-                            <button type="submit" class="btn-primary-action" id="btnSaveProduct">
-                                <i class="ri-save-line"></i> Simpan Produk
-                            </button>
-                        </div>
-                    </form>
+                <div class="inventory-toolbar-row">
+                    <input type="text" id="invSearchInput" class="form-control form-control-sm" placeholder="Cari nama / barcode...">
+                    <button class="btn-primary-action btn-sm" id="btnAddNewProductModal">
+                        <i class="ri-add-line"></i> Tambah Menu Baru
+                    </button>
                 </div>
-
-                <!-- Products Table -->
-                <div class="inventory-table-wrap">
-                    <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem;">Daftar Produk Aktif (<span
-                            id="totalProductCount">0</span>)</h4>
-                    <table class="pos-table" id="inventoryTable">
+                <div class="table-responsive-wrapper">
+                    <table class="table-modern">
                         <thead>
                             <tr>
-                                <th>Produk</th>
+                                <th>Menu</th>
                                 <th>Kategori</th>
                                 <th>Harga</th>
                                 <th>Stok</th>
-                                <th>Status</th>
-                                <th style="text-align: right;">Aksi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
@@ -602,7 +1140,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
             <div class="modal-foot">
                 <button class="btn-secondary" data-close="modalInventory">Tutup</button>
@@ -616,7 +1153,7 @@
     <div class="pos-modal-overlay" id="modalReports">
         <div class="pos-modal-box report-modal-box">
             <div class="modal-head">
-                <h3><i class="ri-line-chart-line"></i> Laporan & Riwayat Penjualan</h3>
+                <h3><i class="ri-line-chart-line" style="color: var(--primary-amber);"></i> Laporan & Riwayat Penjualan</h3>
                 <button class="modal-close-btn" data-close="modalReports">&times;</button>
             </div>
             <div class="modal-body-scroll">
@@ -642,12 +1179,10 @@
                 </div>
 
                 <!-- Transaction History Table -->
-                <div class="inventory-table-wrap">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <h4>Riwayat Transaksi Terakhir</h4>
-                        <button class="btn-secondary" id="btnExportReportCSV"
-                            style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
+                <div class="inventory-table-wrap" style="margin-top: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h4 style="margin: 0; font-weight: 700;"><i class="ri-history-line"></i> Riwayat Transaksi Terakhir</h4>
+                        <button class="btn-secondary" id="btnExportReportCSV" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
                             <i class="ri-file-excel-2-line"></i> Ekspor CSV
                         </button>
                     </div>
@@ -660,7 +1195,6 @@
                                 <th>Tipe</th>
                                 <th>Metode</th>
                                 <th>Total</th>
-                                <th style="text-align: right;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="transactionHistoryTableBody">
@@ -677,18 +1211,16 @@
     </div>
 
     <!-- ====================================================================
-         MODAL 5: DRAFT / HOLD BILLS
+         MODAL 12: HOLD BILLS / DRAFT PESANAN
          ==================================================================== -->
     <div class="pos-modal-overlay" id="modalHoldBills">
         <div class="pos-modal-box" style="max-width: 550px;">
             <div class="modal-head">
-                <h3><i class="ri-draft-line"></i> Pesanan Tersimpan (Hold Bills)</h3>
+                <h3><i class="ri-draft-line" style="color: var(--primary-amber);"></i> Pesanan Ditahan (Hold Bills)</h3>
                 <button class="modal-close-btn" data-close="modalHoldBills">&times;</button>
             </div>
-            <div class="modal-body-scroll">
-                <div id="holdBillsContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <!-- Populated via JS -->
-                </div>
+            <div class="modal-body-scroll" id="holdBillsContainer">
+                <!-- Populated via JS -->
             </div>
             <div class="modal-foot">
                 <button class="btn-secondary" data-close="modalHoldBills">Tutup</button>
@@ -697,164 +1229,94 @@
     </div>
 
     <!-- ====================================================================
-         MODAL 7: DRINK CUSTOMIZATION & OPTIONS MODAL
+         MODAL 13: GOOGLE MAPS & LOKASI RESTO
          ==================================================================== -->
-    <div class="pos-modal-overlay" id="modalDrinkOptions">
-        <div class="pos-modal-box drink-options-modal-box">
+    <div class="pos-modal-overlay" id="modalLocationMap">
+        <div class="pos-modal-box maps-modal-box">
             <div class="modal-head">
                 <div class="sheet-drag-handle"></div>
-                <h3><i class="ri-cup-fill" style="color: var(--primary-amber);"></i> Pilihan Variasi & Topping Minuman
-                </h3>
-                <button class="modal-close-btn" data-close="modalDrinkOptions">&times;</button>
+                <h3><i class="ri-map-pin-2-fill" style="color: var(--primary-amber);"></i> Lokasi & Rute Google Maps</h3>
+                <button class="modal-close-btn" data-close="modalLocationMap">&times;</button>
             </div>
             <div class="modal-body-scroll">
-                <!-- Product Header Preview -->
-                <div class="drink-preview-card">
-                    <img src="" alt="Minuman" id="optDrinkImg" class="drink-preview-img">
-                    <div class="drink-preview-details">
-                        <h4 id="optDrinkName">Kopi Gahwa Arabica</h4>
-                        <span class="drink-base-price" id="optDrinkBasePrice">Rp 28.000</span>
-                        <p class="drink-desc-sub">Pilihan suhu, takaran gula, ukuran, dan topping rempah</p>
+                <div class="maps-info-card">
+                    <div class="maps-info-header">
+                        <div class="maps-store-icon"><i class="ri-cup-fill"></i></div>
+                        <div>
+                            <h4>Sohib Caffe & Resto</h4>
+                            <p class="maps-owner-sub">Owner: Muhammad Ikhsan Anggara</p>
+                        </div>
+                    </div>
+                    <div class="maps-details-list">
+                        <div class="maps-detail-item">
+                            <i class="ri-map-pin-2-fill text-amber"></i>
+                            <span><b>Alamat:</b> Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</span>
+                        </div>
+                        <div class="maps-detail-item">
+                            <i class="ri-whatsapp-fill text-emerald"></i>
+                            <span><b>WhatsApp:</b> +62 895-3254-80299</span>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Option Group 1: Suhu / Temperature -->
-                <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-temp-hot-line"></i> Pilihan Suhu (Temperature)</label>
-                    <div class="modifier-pills-row" id="tempOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="temp" data-val="Dingin (Ice)"
-                            data-price="0">
-                            <i class="ri-snowflake-line"></i> ❄️ Dingin (Ice)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="temp" data-val="Hangat / Panas (Hot)"
-                            data-price="0">
-                            <i class="ri-fire-line"></i> ☕ Hangat (Hot)
-                        </button>
-                    </div>
+                <div class="google-maps-frame-wrap">
+                    <iframe id="gmapIframe" title="Peta Lokasi Sohib Caffe"
+                        src="https://maps.google.com/maps?q=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24,+36+Ilir,+Gandus,+Kota+Palembang,+Sumatera+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
                 </div>
-
-                <!-- Option Group 2: Ukuran Cup (Size) -->
-                <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-cup-line"></i> Ukuran Cup (Size)</label>
-                    <div class="modifier-pills-row" id="sizeOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="size" data-val="Regular"
-                            data-price="0">
-                            Regular (Standard)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="size" data-val="Large (Jumbo)"
-                            data-price="5000">
-                            Large (+Rp 5.000)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Option Group 3: Level Manis (Sugar Level) -->
-                <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-drop-line"></i> Level Manis / Gula (Sugar)</label>
-                    <div class="modifier-pills-grid" id="sugarOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="sugar" data-val="Normal (100%)"
-                            data-price="0">
-                            Normal (100%)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Less Sugar (50%)"
-                            data-price="0">
-                            Less (50%)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Sedikit Gula (25%)"
-                            data-price="0">
-                            Sedikit (25%)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Tanpa Gula (0%)"
-                            data-price="0">
-                            Tanpa Gula (0%)
-                        </button>
-                        <button type="button" class="opt-pill" data-group="sugar" data-val="Madu Arab"
-                            data-price="3000">
-                            🍯 Madu (+3rb)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Option Group 4: Level Es (Ice Level) -->
-                <div class="modifier-group" id="iceModifierSection">
-                    <label class="modifier-title"><i class="ri-snowy-line"></i> Level Es Batu (Ice)</label>
-                    <div class="modifier-pills-row" id="iceOptionGroup">
-                        <button type="button" class="opt-pill active" data-group="ice" data-val="Normal Ice"
-                            data-price="0">
-                            Normal Ice
-                        </button>
-                        <button type="button" class="opt-pill" data-group="ice" data-val="Less Ice" data-price="0">
-                            Sedikit Es
-                        </button>
-                        <button type="button" class="opt-pill" data-group="ice" data-val="No Ice" data-price="0">
-                            Tanpa Es
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Option Group 5: Extra Toppings / Add-ons (Checkbox Multi-select) -->
-                <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-add-circle-line"></i> Topping & Tambahan Khas
-                        Arab</label>
-                    <div class="modifier-checkboxes-grid" id="toppingOptionGroup">
-                        <label class="addon-card-item">
-                            <input type="checkbox" class="addon-checkbox" data-name="Susu Kambing" data-price="4000">
-                            <div class="addon-card-inner">
-                                <span class="addon-name">🥛 Susu Kambing / Evaporasi</span>
-                                <span class="addon-price">+Rp 4.000</span>
-                            </div>
-                        </label>
-                        <label class="addon-card-item">
-                            <input type="checkbox" class="addon-checkbox" data-name="Saffron & Kapulaga"
-                                data-price="5000">
-                            <div class="addon-card-inner">
-                                <span class="addon-name">🌿 Saffron & Kapulaga</span>
-                                <span class="addon-price">+Rp 5.000</span>
-                            </div>
-                        </label>
-                        <label class="addon-card-item">
-                            <input type="checkbox" class="addon-checkbox" data-name="Kurma Ajwa" data-price="5000">
-                            <div class="addon-card-inner">
-                                <span class="addon-name">🌴 Potongan Kurma Ajwa</span>
-                                <span class="addon-price">+Rp 5.000</span>
-                            </div>
-                        </label>
-                        <label class="addon-card-item">
-                            <input type="checkbox" class="addon-checkbox" data-name="Biji Selasih" data-price="3000">
-                            <div class="addon-card-inner">
-                                <span class="addon-name">🌱 Biji Selasih Segar</span>
-                                <span class="addon-price">+Rp 3.000</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Special Note -->
-                <div class="modifier-group">
-                    <label class="modifier-title"><i class="ri-edit-line"></i> Catatan Khusus Minuman (Opsional)</label>
-                    <input type="text" id="optDrinkSpecialNote" class="form-control-note"
-                        placeholder="Cth: kurangi manisnya, es dipisah...">
+                <div class="maps-action-grid">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang"
+                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-app">
+                        <i class="ri-google-fill"></i>
+                        <span>Buka di Google Maps</span>
+                    </a>
+                    <a href="https://wa.me/62895325480299?text=Halo%20Sohib%20Caffe" target="_blank" rel="noopener"
+                        class="btn-maps-action btn-maps-wa">
+                        <i class="ri-whatsapp-fill"></i>
+                        <span>WhatsApp Resto</span>
+                    </a>
                 </div>
             </div>
-
-            <!-- Footer Action & Total Price -->
-            <div class="modal-foot drink-options-foot">
-                <div class="opt-total-preview">
-                    <span class="lbl">Total Harga:</span>
-                    <span class="val" id="optDrinkFinalPrice">Rp 0</span>
-                </div>
-                <div class="opt-action-btns">
-                    <button class="btn-secondary" data-close="modalDrinkOptions">Batal</button>
-                    <button class="btn-primary-action" id="btnConfirmDrinkOptions">
-                        <i class="ri-shopping-cart-2-fill"></i> Tambah Ke Pesanan
-                    </button>
-                </div>
+            <div class="modal-foot">
+                <button class="btn-secondary w-100" data-close="modalLocationMap">Tutup Peta</button>
             </div>
         </div>
     </div>
 
     <!-- ====================================================================
-         MODAL 6: MOBILE MENU / SETTINGS SHEET
+         MODAL 14: CYBER SECURITY SOC MONITOR (WAF)
+         ==================================================================== -->
+    <div class="modal-overlay" id="modalSecuritySOC">
+        <div class="modal-container modal-soc-container">
+            <div class="modal-head modal-head-soc">
+                <div class="modal-title-with-badge">
+                    <div class="soc-shield-icon"><i class="ri-shield-keyhole-fill"></i></div>
+                    <div>
+                        <h2 class="modal-title">Cyber Security Operations Center (SOC)</h2>
+                        <span class="soc-subtitle">Web Application Firewall (WAF v2.5) &bull; Sistem Proteksi Real-Time</span>
+                    </div>
+                </div>
+                <button class="modal-close" data-close="modalSecuritySOC">&times;</button>
+            </div>
+            <div class="modal-body modal-body-soc">
+                <div class="soc-terminal-wrapper">
+                    <div class="soc-terminal-header">
+                        <span class="terminal-title">live_security_audit_stream.log</span>
+                        <span class="terminal-badge">ONLINE</span>
+                    </div>
+                    <div class="soc-terminal-body" id="socTerminalLogsBody">
+                        <div class="terminal-log-empty">WAF Aktif & Memproteksi Sistem POS...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot modal-foot-soc">
+                <button class="btn-secondary" data-close="modalSecuritySOC">Tutup SOC Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: MOBILE MENU / SETTINGS SHEET
          ==================================================================== -->
     <div class="pos-modal-overlay" id="modalMobileMenu">
         <div class="pos-modal-box mobile-menu-modal-box">
@@ -904,408 +1366,46 @@
                         </div>
                         <span>Ganti Tema</span>
                     </button>
+                    <button class="mobile-menu-tile" id="mMenuMaps">
+                        <div class="tile-icon"
+                            style="background: rgba(234, 88, 12, 0.15); color: #ea580c;">
+                            <i class="ri-map-pin-2-fill"></i>
+                        </div>
+                        <span>Peta Lokasi</span>
+                    </button>
                     <button class="mobile-menu-tile logout-tile" id="mMenuLogout">
                         <div class="tile-icon" style="background: rgba(225, 29, 72, 0.15); color: #f43f5e;">
                             <i class="ri-logout-box-r-line"></i>
                         </div>
-                        <span style="color: #f43f5e; font-weight: 700;">Logout Akun</span>
+                        <span>Logout</span>
                     </button>
                 </div>
 
                 <!-- Mobile Store Address & Contact Card -->
-                <div class="mobile-store-contact-card">
-                    <h5><i class="ri-store-2-fill"></i> Sohib Caffe & Resto</h5>
-                    <div class="contact-entry">
-                        <i class="ri-map-pin-2-fill"></i>
-                        <span>Jl. Pangeran sidong ing kenayan. 24, kel 36 ilir. kec. gandus,Kota Palembang Sumatera
-                            Selatan</span>
+                <div class="mobile-store-contact-card" style="margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+                    <h5 style="font-weight: 800; color: var(--primary-amber); margin: 0 0 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="ri-store-2-fill"></i> Sohib Caffe & Resto
+                    </h5>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                        <i class="ri-user-star-fill" style="color: var(--primary-amber); margin-top: 2px;"></i>
+                        <span>Owner: <b style="color: var(--text-primary);">Muhammad Ikhsan Anggara</b></span>
                     </div>
-                    <div class="contact-entry">
-                        <i class="ri-whatsapp-fill"></i>
-                        <span>WhatsApp / Telp: +62 895-3254-80299</span>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                        <i class="ri-map-pin-2-fill" style="color: var(--primary-amber); margin-top: 2px;"></i>
+                        <span>Jl. Pangeran Sidong Ing Kenayan No. 24, 36 Ilir, Gandus, Palembang</span>
                     </div>
-                    <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank"
-                        rel="noopener" class="contact-entry" style="color: inherit; text-decoration: none;">
-                        <i class="ri-instagram-fill" style="color: #E1306C;"></i>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="ri-whatsapp-fill" style="color: var(--primary-emerald);"></i>
+                        <span>WhatsApp: <b style="color: var(--text-primary);">+62 895-3254-80299</b></span>
+                    </div>
+                    <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank" rel="noopener" style="font-size: 0.8rem; color: #E1306C; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+                        <i class="ri-instagram-fill"></i>
                         <span>Instagram: @muh_ikhsan_a</span>
                     </a>
-                    <div class="contact-entry">
-                        <i class="ri-time-fill"></i>
-                        <span>Operasional: 10:00 - 23:00 WIB</span>
-                    </div>
-                    <div class="contact-entry">
-                        <i class="ri-user-star-fill"></i>
-                        <span>Owner: Muhammad Ikhsan Anggara</span>
-                    </div>
-                    <button class="btn-maps-mobile-trigger" id="btnMobileOpenMaps">
-                        <i class="ri-map-pin-2-fill"></i> Buka Peta Lokasi & Rute Maps
-                    </button>
                 </div>
             </div>
             <div class="modal-foot">
                 <button class="btn-secondary w-100" data-close="modalMobileMenu">Tutup Menu</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ====================================================================
-         MODAL 8: GOOGLE MAPS & LOKASI RESTO
-         ==================================================================== -->
-    <div class="pos-modal-overlay" id="modalLocationMap">
-        <div class="pos-modal-box maps-modal-box">
-            <div class="modal-head">
-                <div class="sheet-drag-handle"></div>
-                <h3><i class="ri-map-pin-2-fill" style="color: var(--primary-amber);"></i> Lokasi & Rute Google Maps
-                </h3>
-                <button class="modal-close-btn" data-close="modalLocationMap">&times;</button>
-            </div>
-            <div class="modal-body-scroll">
-                <!-- Location Summary Card -->
-                <div class="maps-info-card">
-                    <div class="maps-info-header">
-                        <div class="maps-store-icon"><i class="ri-cup-fill"></i></div>
-                        <div>
-                            <h4>Sohib Caffe & Resto</h4>
-                            <p class="maps-owner-sub">Owner: Muhammad Ikhsan Anggara</p>
-                        </div>
-                    </div>
-                    <div class="maps-details-list">
-                        <div class="maps-detail-item">
-                            <i class="ri-map-pin-2-fill text-amber"></i>
-                            <span><b>Alamat:</b> Jl. Pangeran Sidong Ing Kenayan No.25 Rt 24 Rw 07, Kel. 36 Ilir, Kec.
-                                Gandus, Kota Palembang, Sumatera Selatan</span>
-                        </div>
-                        <div class="maps-detail-item">
-                            <i class="ri-whatsapp-fill text-emerald"></i>
-                            <span><b>WhatsApp / Reservasi:</b> +62 895-3254-80299</span>
-                        </div>
-                        <div class="maps-detail-item">
-                            <i class="ri-instagram-fill" style="color: #E1306C;"></i>
-                            <span><b>Instagram:</b> <a
-                                    href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr"
-                                    target="_blank" rel="noopener"
-                                    style="color: inherit; text-decoration: underline;">@muh_ikhsan_a</a></span>
-                        </div>
-                        <div class="maps-detail-item">
-                            <i class="ri-time-fill text-amber"></i>
-                            <span><b>Jam Operasional:</b> 10:00 - 23:00 WIB (Buka Setiap Hari)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Google Maps Embed Frame -->
-                <div class="google-maps-frame-wrap">
-                    <iframe id="gmapIframe" title="Peta Lokasi Sohib Caffe & Resto Palembang"
-                        src="https://maps.google.com/maps?q=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24,+36+Ilir,+Gandus,+Kota+Palembang,+Sumatera+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                        loading="lazy" allowfullscreen>
-                    </iframe>
-                </div>
-
-                <!-- Quick Navigation Action Buttons -->
-                <div class="maps-action-grid">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang"
-                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-app">
-                        <i class="ri-google-fill"></i>
-                        <span>Buka di Aplikasi Google Maps</span>
-                    </a>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Pangeran+Sidong+Ing+Kenayan+No.+24+36+Ilir+Gandus+Palembang"
-                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-directions">
-                        <i class="ri-navigation-fill"></i>
-                        <span>Petunjuk Rute Jalan (Directions)</span>
-                    </a>
-                    <a href="https://wa.me/62895325480299?text=Halo%20Sohib%20Coffe%20%26%20Resto%2C%20saya%20ingin%20bertanya%20lokasi%20atau%20reservasi"
-                        target="_blank" rel="noopener" class="btn-maps-action btn-maps-wa">
-                        <i class="ri-whatsapp-fill"></i>
-                        <span>Chat WhatsApp Resto</span>
-                    </a>
-                    <a href="https://www.instagram.com/muh_ikhsan_a?igsi=a2gxNW1kMmtyN2Rr&utm_source=qr" target="_blank"
-                        rel="noopener" class="btn-maps-action btn-maps-ig">
-                        <i class="ri-instagram-fill"></i>
-                        <span>Kunjungi Instagram (@muh_ikhsan_a)</span>
-                    </a>
-                </div>
-            </div>
-            <div class="modal-foot">
-                <button class="btn-secondary w-100" data-close="modalLocationMap">Tutup Peta</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cyber Security Operations Center (SOC) Modal -->
-    <div class="modal-overlay" id="modalSecuritySOC">
-        <div class="modal-container modal-soc-container">
-            <div class="modal-head modal-head-soc">
-                <div class="modal-title-with-badge">
-                    <div class="soc-shield-icon">
-                        <i class="ri-shield-keyhole-fill"></i>
-                    </div>
-                    <div>
-                        <h2 class="modal-title">Cyber Security Operations Center (SOC)</h2>
-                        <span class="soc-subtitle">Web Application Firewall (WAF v2.5) &bull; Sistem Proteksi
-                            Real-Time</span>
-                    </div>
-                </div>
-                <div class="soc-head-actions">
-                    <span class="soc-live-status-badge" id="socServerStatusBadge">
-                        <span class="live-blink-dot"></span> WAF ONLINE
-                    </span>
-                    <button class="modal-close" data-close="modalSecuritySOC">&times;</button>
-                </div>
-            </div>
-
-            <div class="modal-body modal-body-soc">
-                <!-- Top Threat Metrics Grid -->
-                <div class="soc-metrics-grid">
-                    <div class="soc-metric-card">
-                        <div class="soc-metric-icon icon-req">
-                            <i class="ri-radar-line"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">Total Permintaan WAF</span>
-                            <span class="soc-metric-value" id="socTotalRequests">0</span>
-                        </div>
-                    </div>
-                    <div class="soc-metric-card card-danger">
-                        <div class="soc-metric-icon icon-blocked">
-                            <i class="ri-shield-cross-fill"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">Serangan Dicegah</span>
-                            <span class="soc-metric-value" id="socTotalBlocked">0</span>
-                        </div>
-                    </div>
-                    <div class="soc-metric-card">
-                        <div class="soc-metric-icon icon-sqli">
-                            <i class="ri-database-2-line"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">SQLi Blocked</span>
-                            <span class="soc-metric-value" id="socSqliBlocked">0</span>
-                        </div>
-                    </div>
-                    <div class="soc-metric-card">
-                        <div class="soc-metric-icon icon-xss">
-                            <i class="ri-code-box-line"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">XSS Blocked</span>
-                            <span class="soc-metric-value" id="socXssBlocked">0</span>
-                        </div>
-                    </div>
-                    <div class="soc-metric-card">
-                        <div class="soc-metric-icon icon-bot">
-                            <i class="ri-robot-2-line"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">Scanner / Bot</span>
-                            <span class="soc-metric-value" id="socBotBlocked">0</span>
-                        </div>
-                    </div>
-                    <div class="soc-metric-card">
-                        <div class="soc-metric-icon icon-ddos">
-                            <i class="ri-fire-line"></i>
-                        </div>
-                        <div class="soc-metric-info">
-                            <span class="soc-metric-label">DDoS Rate Limit</span>
-                            <span class="soc-metric-value" id="socDdosBlocked">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SOC Navigation Tabs -->
-                <div class="soc-tabs">
-                    <button class="soc-tab active" data-soc-tab="logs">
-                        <i class="ri-file-list-3-line"></i> Log Forensik Real-Time
-                    </button>
-                    <button class="soc-tab" data-soc-tab="ip-manager">
-                        <i class="ri-shield-user-line"></i> Manajemen IP Terblokir (<span
-                            id="socBlockedIpCount">0</span>)
-                    </button>
-                    <button class="soc-tab" data-soc-tab="test-center">
-                        <i class="ri-flask-line"></i> Lab Uji Serangan WAF
-                    </button>
-                    <button class="soc-tab" data-soc-tab="protections">
-                        <i class="ri-lock-2-line"></i> Lapisan Enkripsi & Header
-                    </button>
-                </div>
-
-                <!-- Tab 1: Live Audit Logs -->
-                <div class="soc-tab-content active" id="socTabContent-logs">
-                    <div class="soc-toolbar">
-                        <div class="soc-search-box">
-                            <i class="ri-search-line"></i>
-                            <input type="text" id="socLogFilterInput"
-                                placeholder="Filter log berdasarkan IP, SQLi, XSS, URL...">
-                        </div>
-                        <div class="soc-actions-row">
-                            <button class="btn-soc-action" id="btnRefreshSocLogs">
-                                <i class="ri-refresh-line"></i> Refresh
-                            </button>
-                            <button class="btn-soc-action" id="btnClearTerminalLogs">
-                                <i class="ri-delete-bin-7-line"></i> Bersihkan Layar
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="soc-terminal-wrapper">
-                        <div class="soc-terminal-header">
-                            <div class="terminal-dots">
-                                <span class="dot red"></span>
-                                <span class="dot yellow"></span>
-                                <span class="dot green"></span>
-                            </div>
-                            <span class="terminal-title">live_security_audit_stream.log</span>
-                            <span class="terminal-badge">LIVE 200 FPS</span>
-                        </div>
-                        <div class="soc-terminal-body" id="socTerminalLogsBody">
-                            <div class="terminal-log-empty">Memuat data log forensik keamanan...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 2: IP Blacklist Management -->
-                <div class="soc-tab-content" id="socTabContent-ip-manager">
-                    <div class="soc-ip-management-layout">
-                        <div class="soc-ip-form-card">
-                            <h4><i class="ri-user-unfollow-line"></i> Blokir / Buka Blokir IP Manual</h4>
-                            <p class="text-muted">Masukkan IP address untuk dimasukkan ke daftar blacklist atau
-                                whitelist.</p>
-                            <div class="soc-ip-input-group">
-                                <input type="text" id="socTargetIpInput"
-                                    placeholder="Contoh: 192.168.1.100 atau 10.0.0.5">
-                                <div class="soc-ip-btn-row">
-                                    <button class="btn-soc-danger" id="btnManualBlockIp">
-                                        <i class="ri-forbid-2-line"></i> Blokir IP
-                                    </button>
-                                    <button class="btn-soc-success" id="btnManualUnblockIp">
-                                        <i class="ri-checkbox-circle-line"></i> Buka Blokir (Unblock)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="soc-ip-list-card">
-                            <h4><i class="ri-shield-fill text-danger"></i> Daftar IP yang Sedang Diblokir</h4>
-                            <div class="soc-blocked-ip-list" id="socBlockedIpListContainer">
-                                <div class="terminal-log-empty">Tidak ada IP yang sedang diblokir.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 3: Test Attack Lab -->
-                <div class="soc-tab-content" id="socTabContent-test-center">
-                    <div class="soc-test-lab-header">
-                        <h4><i class="ri-flask-fill text-warning"></i> Simulator Uji Penetrasi & Kekuatan WAF</h4>
-                        <p class="text-muted">Uji secara langsung respons Web Application Firewall (WAF) terhadap
-                            berbagai variasi payload serangan siber.</p>
-                    </div>
-
-                    <div class="soc-test-grid">
-                        <div class="soc-test-card">
-                            <div class="test-card-head">
-                                <span class="badge-test-type">SQL INJECTION</span>
-                                <button class="btn-run-sim-test" data-test-type="sqli"
-                                    data-payload="' OR '1'='1' UNION SELECT username, password FROM users--">
-                                    <i class="ri-play-fill"></i> Jalankan Uji
-                                </button>
-                            </div>
-                            <code
-                                class="test-payload-sample">' OR '1'='1' UNION SELECT username, password FROM users--</code>
-                            <p class="test-desc">Menguji apakah WAF memblokir upaya manipulasi query SQL form / URL.</p>
-                        </div>
-
-                        <div class="soc-test-card">
-                            <div class="test-card-head">
-                                <span class="badge-test-type">CROSS-SITE SCRIPTING</span>
-                                <button class="btn-run-sim-test" data-test-type="xss"
-                                    data-payload="&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;">
-                                    <i class="ri-play-fill"></i> Jalankan Uji
-                                </button>
-                            </div>
-                            <code
-                                class="test-payload-sample">&lt;script&gt;alert('XSS_ATTACK_DETECTED')&lt;/script&gt;</code>
-                            <p class="test-desc">Menguji apakah filter XSS menangkap injeksi script browser berbahaya.
-                            </p>
-                        </div>
-
-                        <div class="soc-test-card">
-                            <div class="test-card-head">
-                                <span class="badge-test-type">PATH TRAVERSAL / LFI</span>
-                                <button class="btn-run-sim-test" data-test-type="traversal"
-                                    data-payload="../../../../etc/passwd%00.html">
-                                    <i class="ri-play-fill"></i> Jalankan Uji
-                                </button>
-                            </div>
-                            <code class="test-payload-sample">../../../../etc/passwd%00.html</code>
-                            <p class="test-desc">Menguji pencegahan peretasan direktori sistem file server.</p>
-                        </div>
-
-                        <div class="soc-test-card">
-                            <div class="test-card-head">
-                                <span class="badge-test-type">COMMAND INJECTION / RCE</span>
-                                <button class="btn-run-sim-test" data-test-type="rce"
-                                    data-payload="; whoami && cat /etc/shadow">
-                                    <i class="ri-play-fill"></i> Jalankan Uji
-                                </button>
-                            </div>
-                            <code class="test-payload-sample">; whoami && cat /etc/shadow</code>
-                            <p class="test-desc">Menguji penangkalan eksekusi perintah shell berbahaya pada server.</p>
-                        </div>
-                    </div>
-
-                    <div class="soc-test-result-box" id="socTestResultOutput">
-                        <div class="text-muted"><i class="ri-information-line"></i> Klik salah satu tombol "Jalankan
-                            Uji" di atas untuk melihat respon WAF secara langsung.</div>
-                    </div>
-                </div>
-
-                <!-- Tab 4: Protections & Cryptography Info -->
-                <div class="soc-tab-content" id="socTabContent-protections">
-                    <div class="soc-protections-grid">
-                        <div class="protection-item">
-                            <div class="protection-icon"><i class="ri-lock-password-line"></i></div>
-                            <div class="protection-info">
-                                <h5>Password Hashing PBKDF2-SHA256</h5>
-                                <p>Setiap kata sandi pengguna di-hash menggunakan 100.000 iterasi PBKDF2 dengan salt
-                                    acak 128-bit untuk mencegah serangan brute force dan rainbow table.</p>
-                            </div>
-                        </div>
-                        <div class="protection-item">
-                            <div class="protection-icon"><i class="ri-key-2-line"></i></div>
-                            <div class="protection-info">
-                                <h5>HMAC SHA-256 Digitally Signed Tokens</h5>
-                                <p>Sesi autentikasi diamankan dengan tanda tangan kriptografi HMAC 256-bit untuk
-                                    mencegah pemalsuan identitas (token tampering).</p>
-                            </div>
-                        </div>
-                        <div class="protection-item">
-                            <div class="protection-icon"><i class="ri-shield-star-line"></i></div>
-                            <div class="protection-info">
-                                <h5>HTTP Security Headers (Grade A+)</h5>
-                                <p>Disematkan Content-Security-Policy (CSP), X-Frame-Options: SAMEORIGIN
-                                    (Anti-Clickjacking), X-Content-Type-Options: nosniff, dan Referrer-Policy.</p>
-                            </div>
-                        </div>
-                        <div class="protection-item">
-                            <div class="protection-icon"><i class="ri-speed-line"></i></div>
-                            <div class="protection-info">
-                                <h5>Anti-DDoS & Rate Limiter</h5>
-                                <p>Membatasi maksimal 120 request/menit per IP. IP yang terdeteksi melakukan spam flood
-                                    akan diblokir otomatis selama 5 menit.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-foot modal-foot-soc">
-                <div class="soc-foot-meta">
-                    <span><i class="ri-user-shield-line"></i> System Admin: <strong>Muh Ikhsan Anggara</strong></span>
-                    <span>&bull;</span>
-                    <span id="socUptimeText">Uptime: 0j 0m 0d</span>
-                </div>
-                <button class="btn-secondary" data-close="modalSecuritySOC">Tutup SOC Dashboard</button>
             </div>
         </div>
     </div>

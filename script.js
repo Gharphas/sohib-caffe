@@ -1,426 +1,87 @@
 /* ==========================================================================
-   POSify Pro - Intelligent Point of Sale & Cash Register System Logic
+   SOHIB CAFFE & RESTO (POSify Pro v3.0) — COMPLETE SYSTEM LOGIC
+   Features:
+   - 1. Middle Eastern & Arabian Resto Menu (42 items)
+   - 2. Drink Customization & Modifier Engine
+   - 3. Web Audio API Sound Synthesizer Engine (Zero-dependency)
+   - 4. Kitchen Display System (KDS) & Bar Station
+   - 5. Interactive Floor Plan & Table Management
+   - 6. Customer Self-Order QR Mode
+   - 7. Cash Drawer, Shift Management & Z-Report
+   - 8. Member CRM & Promo Voucher Engine
+   - 9. PWA Service Worker & Offline Sync
+   - 10. Thermal Receipt & WAF Cyber Security SOC
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+
     // ----------------------------------------------------------------------
-    // 1. DEFAULT DATA & INITIALIZATION
-    // ----------------------------------------------------------------------
-    // ----------------------------------------------------------------------
-    // 2. MIDDLE EASTERN & ARABIAN RESTO DEFAULT PRODUCTS DATA
+    // 1. DEFAULT ARABIAN RESTO PRODUCTS (42 MENU)
     // ----------------------------------------------------------------------
     const DEFAULT_PRODUCTS = [
         // HIDANGAN UTAMA ARAB (MAKANAN)
-        {
-            id: 'ARAB-001',
-            name: 'Nasi Mandhi Kambing Muda Oven',
-            category: 'makanan',
-            price: 68000,
-            stock: 35,
-            barcode: '8992001',
-            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80'
-        },
-        {
-            id: 'ARAB-002',
-            name: 'Nasi Kebuli Daging Sapi Spesial',
-            category: 'makanan',
-            price: 52000,
-            stock: 40,
-            barcode: '8992002',
-            img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80'
-        },
-        {
-            id: 'ARAB-003',
-            name: 'Nasi Biryani Ayam Tandoori',
-            category: 'makanan',
-            price: 45000,
-            stock: 30,
-            barcode: '8992003',
-            img: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&q=80'
-        },
-        {
-            id: 'ARAB-004',
-            name: 'Nasi Kabsah Daging Kambing Hadramaut',
-            category: 'makanan',
-            price: 65000,
-            stock: 25,
-            barcode: '8992004',
-            img: 'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=400&q=80'
-        },
-        {
-            id: 'ARAB-005',
-            name: 'Shawarma Daging Kebab Jumbo',
-            category: 'makanan',
-            price: 35000,
-            stock: 45,
-            barcode: '8992005',
-            img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80'
-        },
-        {
-            id: 'ARAB-006',
-            name: 'Shish Tawook Ayam Rempah Arab',
-            category: 'makanan',
-            price: 42000,
-            stock: 28,
-            barcode: '8992006',
-            img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80'
-        },
+        { id: 'ARAB-001', name: 'Nasi Mandhi Kambing Muda Oven', category: 'makanan', price: 68000, stock: 35, barcode: '8992001', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+        { id: 'ARAB-002', name: 'Nasi Kebuli Daging Sapi Spesial', category: 'makanan', price: 52000, stock: 40, barcode: '8992002', img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+        { id: 'ARAB-003', name: 'Nasi Biryani Ayam Tandoori', category: 'makanan', price: 45000, stock: 30, barcode: '8992003', img: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&q=80' },
+        { id: 'ARAB-004', name: 'Nasi Kabsah Daging Kambing Hadramaut', category: 'makanan', price: 65000, stock: 25, barcode: '8992004', img: 'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=400&q=80' },
+        { id: 'ARAB-005', name: 'Shawarma Daging Kebab Jumbo', category: 'makanan', price: 35000, stock: 45, barcode: '8992005', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80' },
+        { id: 'ARAB-006', name: 'Shish Tawook Ayam Rempah Arab', category: 'makanan', price: 42000, stock: 28, barcode: '8992006', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80' },
+        { id: 'ARAB-023', name: 'Nasi Mandhi Daging Unta Rempah Zafaran', category: 'makanan', price: 85000, stock: 15, barcode: '8992023', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+        { id: 'ARAB-024', name: 'Kebab Kofta Daging Domba Panggang', category: 'makanan', price: 48000, stock: 30, barcode: '8992024', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80' },
+        { id: 'ARAB-025', name: 'Lamb Shank Hadramaut Panggang Kuah Kental', category: 'makanan', price: 95000, stock: 12, barcode: '8992025', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+        { id: 'ARAB-026', name: 'Nasi Bukhari Ayam Panggang Kismis', category: 'makanan', price: 46000, stock: 32, barcode: '8992026', img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+        { id: 'ARAB-027', name: 'Falafel Wrap with Tahini & Pickles', category: 'makanan', price: 32000, stock: 40, barcode: '8992027', img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&q=80' },
+        { id: 'ARAB-028', name: 'Shakshuka Telur Pedas Tomat & Warm Pita Bread', category: 'makanan', price: 35000, stock: 25, barcode: '8992028', img: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=400&q=80' },
 
         // KOPI TIMUR TENGAH & GAHWA
-        {
-            id: 'ARAB-007',
-            name: 'Kopi Gahwa Arabica Cardamom & Saffron',
-            category: 'kopi',
-            price: 28000,
-            stock: 50,
-            barcode: '8992007',
-            img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80'
-        },
-        {
-            id: 'ARAB-008',
-            name: 'Karak Chai Spiced Tea Latte',
-            category: 'kopi',
-            price: 22000,
-            stock: 60,
-            barcode: '8992008',
-            img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80'
-        },
-        {
-            id: 'ARAB-009',
-            name: 'Turkish Coffee Espresso Pasir',
-            category: 'kopi',
-            price: 25000,
-            stock: 35,
-            barcode: '8992009',
-            img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80'
-        },
+        { id: 'ARAB-007', name: 'Kopi Gahwa Arabica Cardamom & Saffron', category: 'kopi', price: 28000, stock: 50, barcode: '8992007', img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80' },
+        { id: 'ARAB-008', name: 'Karak Chai Spiced Tea Latte', category: 'kopi', price: 22000, stock: 60, barcode: '8992008', img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80' },
+        { id: 'ARAB-009', name: 'Turkish Coffee Espresso Pasir', category: 'kopi', price: 25000, stock: 35, barcode: '8992009', img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80' },
+        { id: 'ARAB-029', name: 'Gahwa Hijau Rempah Cardamom Pot (Teko Arab)', category: 'kopi', price: 35000, stock: 40, barcode: '8992029', img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80' },
+        { id: 'ARAB-030', name: 'Es Kopi Susu Kurma Ajwa Creamy', category: 'kopi', price: 25000, stock: 50, barcode: '8992030', img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80' },
+        { id: 'ARAB-031', name: 'Arabian Saffron Gold Latte', category: 'kopi', price: 32000, stock: 45, barcode: '8992031', img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80' },
 
         // MINUMAN KHAS ARAB & TEH ADEN
-        {
-            id: 'ARAB-010',
-            name: 'Shahi Adani (Teh Susu Rempah Yaman)',
-            category: 'minuman',
-            price: 22000,
-            stock: 55,
-            barcode: '8992010',
-            img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80'
-        },
-        {
-            id: 'ARAB-011',
-            name: 'Jus Kurma Madu Ajwa Royal',
-            category: 'minuman',
-            price: 26000,
-            stock: 40,
-            barcode: '8992011',
-            img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&q=80'
-        },
-        {
-            id: 'ARAB-012',
-            name: 'Moroccan Fresh Mint Iced Tea',
-            category: 'minuman',
-            price: 18000,
-            stock: 50,
-            barcode: '8992012',
-            img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80'
-        },
-        {
-            id: 'ARAB-013',
-            name: 'Limonana (Mint Lemonade Dingin Khas Arab)',
-            category: 'minuman',
-            price: 20000,
-            stock: 45,
-            barcode: '8992013',
-            img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80'
-        },
+        { id: 'ARAB-010', name: 'Shahi Adani (Teh Susu Rempah Yaman)', category: 'minuman', price: 22000, stock: 55, barcode: '8992010', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80' },
+        { id: 'ARAB-011', name: 'Jus Kurma Madu Ajwa Royal', category: 'minuman', price: 26000, stock: 40, barcode: '8992011', img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&q=80' },
+        { id: 'ARAB-012', name: 'Moroccan Fresh Mint Iced Tea', category: 'minuman', price: 18000, stock: 50, barcode: '8992012', img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+        { id: 'ARAB-013', name: 'Limonana (Mint Lemonade Dingin Khas Arab)', category: 'minuman', price: 20000, stock: 45, barcode: '8992013', img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80' },
+        { id: 'ARAB-032', name: 'Teh Karkadeh Mesir (Hibiscus Iced Tea Segar)', category: 'minuman', price: 19000, stock: 60, barcode: '8992032', img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+        { id: 'ARAB-033', name: 'Jus Delima Pomegranate Segar Arab', category: 'minuman', price: 28000, stock: 35, barcode: '8992033', img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&q=80' },
+        { id: 'ARAB-034', name: 'Sahlab Warm Milk Drink with Cinnamon & Coconut', category: 'minuman', price: 24000, stock: 40, barcode: '8992034', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80' },
+        { id: 'ARAB-035', name: 'Es Sirup Rooh Afza Mawar Rempah', category: 'minuman', price: 18000, stock: 50, barcode: '8992035', img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80' },
 
         // SNACK, ROTI MARYAM & DESSERT
-        {
-            id: 'ARAB-014',
-            name: 'Roti Maryam Madu Yaman & Keju Melt',
-            category: 'snack',
-            price: 24000,
-            stock: 35,
-            barcode: '8992014',
-            img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80'
-        },
-        {
-            id: 'ARAB-015',
-            name: 'Hummus & Fresh Warm Pita Bread',
-            category: 'snack',
-            price: 32000,
-            stock: 25,
-            barcode: '8992015',
-            img: 'https://images.unsplash.com/photo-1577906096429-f73c2c312435?w=400&q=80'
-        },
-        {
-            id: 'ARAB-016',
-            name: 'Samosa Daging Kambing Rempah (4 pcs)',
-            category: 'snack',
-            price: 28000,
-            stock: 30,
-            barcode: '8992016',
-            img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80'
-        },
-        {
-            id: 'ARAB-017',
-            name: 'Baklava Pistachio Turkish Gold (3 pcs)',
-            category: 'snack',
-            price: 36000,
-            stock: 20,
-            barcode: '8992017',
-            img: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=400&q=80'
-        },
-        {
-            id: 'ARAB-018',
-            name: 'Umm Ali (Puding Roti Susu Hangat Arab)',
-            category: 'snack',
-            price: 30000,
-            stock: 20,
-            barcode: '8992018',
-            img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80'
-        },
+        { id: 'ARAB-014', name: 'Roti Maryam Madu Yaman & Keju Melt', category: 'snack', price: 24000, stock: 35, barcode: '8992014', img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+        { id: 'ARAB-015', name: 'Hummus & Fresh Warm Pita Bread', category: 'snack', price: 32000, stock: 25, barcode: '8992015', img: 'https://images.unsplash.com/photo-1577906096429-f73c2c312435?w=400&q=80' },
+        { id: 'ARAB-016', name: 'Samosa Daging Kambing Rempah (4 pcs)', category: 'snack', price: 28000, stock: 30, barcode: '8992016', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+        { id: 'ARAB-017', name: 'Baklava Pistachio Turkish Gold (3 pcs)', category: 'snack', price: 36000, stock: 20, barcode: '8992017', img: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=400&q=80' },
+        { id: 'ARAB-018', name: 'Umm Ali (Puding Roti Susu Hangat Arab)', category: 'snack', price: 30000, stock: 20, barcode: '8992018', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+        { id: 'ARAB-036', name: 'Kunafa Keju Molor Turkish Pistachio (Warm)', category: 'snack', price: 45000, stock: 25, barcode: '8992036', img: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=400&q=80' },
+        { id: 'ARAB-037', name: 'Mutabbaq Manis / Martabak Arab Pisang Keju', category: 'snack', price: 26000, stock: 30, barcode: '8992037', img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+        { id: 'ARAB-038', name: 'Kibbeh Daging Cincang & Pine Nuts (3 pcs)', category: 'snack', price: 32000, stock: 25, barcode: '8992038', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+        { id: 'ARAB-039', name: 'Baba Ganoush Terong Panggang & Olive Oil', category: 'snack', price: 29000, stock: 20, barcode: '8992039', img: 'https://images.unsplash.com/photo-1577906096429-f73c2c312435?w=400&q=80' },
+        { id: 'ARAB-040', name: 'Ma\'amoul Kurma & Walnut Cookies (4 pcs)', category: 'snack', price: 22000, stock: 40, barcode: '8992040', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
 
-        // PAKET SULTAN NAMPAN TIMUR TENGAH
-        {
-            id: 'ARAB-019',
-            name: 'Paket Sultan Nampan Mandhi (4-5 Orang)',
-            category: 'paket',
-            price: 245000,
-            stock: 15,
-            barcode: '8992019',
-            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80'
-        },
-        {
-            id: 'ARAB-020',
-            name: 'Paket Kencan Berdua (Kebuli Sapi + Biryani + 2 Shahi Adani)',
-            category: 'paket',
-            price: 110000,
-            stock: 20,
-            barcode: '8992020',
-            img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80'
-        },
-        {
-            id: 'ARAB-021',
-            name: 'Paket Ngemil Arab (Shawarma + Samosa + Limonana)',
-            category: 'paket',
-            price: 68000,
-            stock: 25,
-            barcode: '8992021',
-            img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80'
-        },
-
-        // HIDANGAN UTAMA & GRILL ARAB TAMBAHAN
-        {
-            id: 'ARAB-022',
-            name: 'Nasi Mandhi Daging Unta Rempah Zafaran',
-            category: 'makanan',
-            price: 85000,
-            stock: 20,
-            barcode: '8992022',
-            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80'
-        },
-        {
-            id: 'ARAB-023',
-            name: 'Kebab Kofta Daging Domba Panggang',
-            category: 'makanan',
-            price: 48000,
-            stock: 35,
-            barcode: '8992023',
-            img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80'
-        },
-        {
-            id: 'ARAB-024',
-            name: 'Lamb Shank Hadramaut Panggang Kuah Kental',
-            category: 'makanan',
-            price: 95000,
-            stock: 18,
-            barcode: '8992024',
-            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80'
-        },
-        {
-            id: 'ARAB-025',
-            name: 'Arayes Daging Kambing Roti Panggang Gurih',
-            category: 'makanan',
-            price: 38000,
-            stock: 30,
-            barcode: '8992025',
-            img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80'
-        },
-        {
-            id: 'ARAB-026',
-            name: 'Nasi Bukhari Ayam Panggang Kismis',
-            category: 'makanan',
-            price: 46000,
-            stock: 32,
-            barcode: '8992026',
-            img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80'
-        },
-        {
-            id: 'ARAB-027',
-            name: 'Falafel Wrap with Tahini & Pickles',
-            category: 'makanan',
-            price: 32000,
-            stock: 40,
-            barcode: '8992027',
-            img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&q=80'
-        },
-        {
-            id: 'ARAB-028',
-            name: 'Shakshuka Telur Pedas Tomat & Warm Pita Bread',
-            category: 'makanan',
-            price: 35000,
-            stock: 25,
-            barcode: '8992028',
-            img: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=400&q=80'
-        },
-
-        // KOPI & MINUMAN ARAB TAMBAHAN
-        {
-            id: 'ARAB-029',
-            name: 'Gahwa Hijau Rempah Cardamom Pot (Teko Arab)',
-            category: 'kopi',
-            price: 35000,
-            stock: 40,
-            barcode: '8992029',
-            img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80'
-        },
-        {
-            id: 'ARAB-030',
-            name: 'Es Kopi Susu Kurma Ajwa Creamy',
-            category: 'kopi',
-            price: 25000,
-            stock: 50,
-            barcode: '8992030',
-            img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=80'
-        },
-        {
-            id: 'ARAB-031',
-            name: 'Arabian Saffron Gold Latte',
-            category: 'kopi',
-            price: 32000,
-            stock: 45,
-            barcode: '8992031',
-            img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80'
-        },
-        {
-            id: 'ARAB-032',
-            name: 'Teh Karkadeh Mesir (Hibiscus Iced Tea Segar)',
-            category: 'minuman',
-            price: 19000,
-            stock: 60,
-            barcode: '8992032',
-            img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80'
-        },
-        {
-            id: 'ARAB-033',
-            name: 'Jus Delima Pomegranate Segar Arab',
-            category: 'minuman',
-            price: 28000,
-            stock: 35,
-            barcode: '8992033',
-            img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&q=80'
-        },
-        {
-            id: 'ARAB-034',
-            name: 'Sahlab Warm Milk Drink with Cinnamon & Coconut',
-            category: 'minuman',
-            price: 24000,
-            stock: 40,
-            barcode: '8992034',
-            img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80'
-        },
-        {
-            id: 'ARAB-035',
-            name: 'Es Sirup Rooh Afza Mawar Rempah',
-            category: 'minuman',
-            price: 18000,
-            stock: 50,
-            barcode: '8992035',
-            img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80'
-        },
-
-        // SNACK & DESSERT ARAB TAMBAHAN
-        {
-            id: 'ARAB-036',
-            name: 'Kunafa Keju Molor Turkish Pistachio (Warm)',
-            category: 'snack',
-            price: 45000,
-            stock: 25,
-            barcode: '8992036',
-            img: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=400&q=80'
-        },
-        {
-            id: 'ARAB-037',
-            name: 'Mutabbaq Manis / Martabak Arab Pisang Keju',
-            category: 'snack',
-            price: 26000,
-            stock: 35,
-            barcode: '8992037',
-            img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80'
-        },
-        {
-            id: 'ARAB-038',
-            name: 'Kibbeh Daging Cincang & Pine Nuts (3 pcs)',
-            category: 'snack',
-            price: 32000,
-            stock: 30,
-            barcode: '8992038',
-            img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80'
-        },
-        {
-            id: 'ARAB-039',
-            name: 'Baba Ganoush Terong Panggang & Olive Oil',
-            category: 'snack',
-            price: 29000,
-            stock: 25,
-            barcode: '8992039',
-            img: 'https://images.unsplash.com/photo-1577906096429-f73c2c312435?w=400&q=80'
-        },
-        {
-            id: 'ARAB-040',
-            name: 'Ma\'amoul Kurma & Walnut Cookies (4 pcs)',
-            category: 'snack',
-            price: 22000,
-            stock: 40,
-            barcode: '8992040',
-            img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80'
-        },
-
-        // PAKET SULTAN TAMBAHAN
-        {
-            id: 'ARAB-041',
-            name: 'Paket Sultan Kambing Guling Mini (3-4 Orang)',
-            category: 'paket',
-            price: 280000,
-            stock: 12,
-            barcode: '8992041',
-            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80'
-        },
-        {
-            id: 'ARAB-042',
-            name: 'Paket Sarapan Arab (Shakshuka + Falafel + 2 Shahi Adani)',
-            category: 'paket',
-            price: 68000,
-            stock: 20,
-            barcode: '8992042',
-            img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80'
-        }
+        // PAKET SULTAN NAMPAN
+        { id: 'ARAB-019', name: 'Paket Sultan Nampan Mandhi (4-5 Orang)', category: 'paket', price: 245000, stock: 15, barcode: '8992019', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+        { id: 'ARAB-020', name: 'Paket Kencan Berdua (Kebuli + Biryani + 2 Shahi Adani)', category: 'paket', price: 110000, stock: 20, barcode: '8992020', img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+        { id: 'ARAB-021', name: 'Paket Ngemil Arab (Shawarma + Samosa + Limonana)', category: 'paket', price: 68000, stock: 25, barcode: '8992021', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80' },
+        { id: 'ARAB-041', name: 'Paket Sultan Kambing Guling Mini (3-4 Orang)', category: 'paket', price: 280000, stock: 12, barcode: '8992041', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+        { id: 'ARAB-042', name: 'Paket Sarapan Arab (Shakshuka + Falafel + 2 Shahi Adani)', category: 'paket', price: 68000, stock: 20, barcode: '8992042', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' }
     ];
 
-    // Reactive State (with Arabian Menu Auto-Migration v3)
-    const isArabianMenuLoaded = localStorage.getItem('posify_arabian_menu_v3');
+    // Load / Persist Products State
     let loadedProducts = DEFAULT_PRODUCTS;
-    if (isArabianMenuLoaded && localStorage.getItem('posify_products')) {
-        try {
-            loadedProducts = JSON.parse(localStorage.getItem('posify_products')) || DEFAULT_PRODUCTS;
-        } catch (e) {
-            loadedProducts = DEFAULT_PRODUCTS;
-        }
-    } else {
-        localStorage.setItem('posify_products', JSON.stringify(DEFAULT_PRODUCTS));
-        localStorage.setItem('posify_arabian_menu_v3', 'true');
+    try {
+        const stored = localStorage.getItem('posify_products');
+        if (stored) loadedProducts = JSON.parse(stored);
+        else localStorage.setItem('posify_products', JSON.stringify(DEFAULT_PRODUCTS));
+    } catch (e) {
+        loadedProducts = DEFAULT_PRODUCTS;
     }
 
+    // Main App State
     let state = {
         products: loadedProducts,
         cart: JSON.parse(localStorage.getItem('posify_cart')) || [],
@@ -433,85 +94,134 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategory: 'all',
         searchQuery: '',
         theme: localStorage.getItem('posify_theme') || 'dark',
-        activePayTab: 'tab-cash'
+        activePayTab: 'tab-cash',
+        appliedVoucher: null,
+        activeMember: null,
+        soundEnabled: localStorage.getItem('posify_sound') !== 'false',
+        activeKdsStation: 'all',
+        activeZoneFilter: 'all',
+        isCustomerMode: false
     };
 
     // ----------------------------------------------------------------------
-    // 2. AUDIO SYNTHESIZER (WEB AUDIO API)
+    // 2. WEB AUDIO API SOUND SYNTHESIZER ENGINE (ZERO-DEPENDENCY)
     // ----------------------------------------------------------------------
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
+    const SoundEngine = (function () {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        let ctx = null;
 
-    function getAudioContext() {
-        if (!audioCtx) {
-            audioCtx = new AudioContextClass();
+        function getCtx() {
+            if (!ctx) ctx = new AudioContextClass();
+            if (ctx.state === 'suspended') ctx.resume();
+            return ctx;
         }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-        return audioCtx;
-    }
 
-    function playBeepSound() {
-        try {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
-            gain.gain.setValueAtTime(0.08, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.08);
-        } catch (e) { }
-    }
+        return {
+            beep() {
+                if (!state.soundEnabled) return;
+                try {
+                    const c = getCtx();
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, c.currentTime);
+                    gain.gain.setValueAtTime(0.08, c.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.08);
+                    osc.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start();
+                    osc.stop(c.currentTime + 0.08);
+                } catch (e) {}
+            },
 
-    function playCheckoutChime() {
-        try {
-            const ctx = getAudioContext();
-            const now = ctx.currentTime;
-            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(freq, now + i * 0.07);
-                gain.gain.setValueAtTime(0.12, now + i * 0.07);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.25);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now + i * 0.07);
-                osc.stop(now + i * 0.07 + 0.25);
-            });
-        } catch (e) { }
-    }
+            ding() {
+                if (!state.soundEnabled) return;
+                try {
+                    const c = getCtx();
+                    const now = c.currentTime;
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(587.33, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start();
+                    osc.stop(now + 0.25);
+                } catch (e) {}
+            },
 
-    function playErrorSound() {
-        try {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(160, ctx.currentTime);
-            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.2);
-        } catch (e) { }
-    }
+            kitchenAlert() {
+                if (!state.soundEnabled) return;
+                try {
+                    const c = getCtx();
+                    const now = c.currentTime;
+                    [440, 659.25, 880].forEach((freq, i) => {
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.1);
+                        gain.gain.setValueAtTime(0.15, now + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now + i * 0.1);
+                        osc.stop(now + i * 0.1 + 0.3);
+                    });
+                } catch (e) {}
+            },
+
+            success() {
+                if (!state.soundEnabled) return;
+                try {
+                    const c = getCtx();
+                    const now = c.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.15, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.3);
+                    });
+                } catch (e) {}
+            },
+
+            buzz() {
+                if (!state.soundEnabled) return;
+                try {
+                    const c = getCtx();
+                    const now = c.currentTime;
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start();
+                    osc.stop(now + 0.2);
+                } catch (e) {}
+            }
+        };
+    })();
 
     // ----------------------------------------------------------------------
-    // 3. UTILITIES & FORMATTING
+    // 3. UTILITIES & HELPER FUNCTIONS
     // ----------------------------------------------------------------------
     function formatRupiah(num) {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
             currency: 'IDR',
             maximumFractionDigits: 0
-        }).format(num);
+        }).format(num || 0);
     }
 
     function generateOrderId() {
@@ -520,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
+        if (!container) return;
         const toast = document.createElement('div');
         toast.className = 'pos-toast';
         const icon = type === 'success' ? 'ri-checkbox-circle-fill' : type === 'warning' ? 'ri-error-warning-fill' : 'ri-information-fill';
@@ -555,21 +266,34 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateLiveClock, 1000);
     updateLiveClock();
 
+    function openModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('active');
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+        }
+    }
+
     function saveState() {
         localStorage.setItem('posify_products', JSON.stringify(state.products));
         localStorage.setItem('posify_cart', JSON.stringify(state.cart));
         localStorage.setItem('posify_transactions', JSON.stringify(state.transactions));
         localStorage.setItem('posify_hold_bills', JSON.stringify(state.holdBills));
-        localStorage.setItem('posify_theme', state.theme);
     }
 
     // ----------------------------------------------------------------------
-    // 4. RENDERING ENGINES
+    // 4. PRODUCT CATALOG RENDERING & SEARCH
     // ----------------------------------------------------------------------
-
-    // Render Product Catalog Cards
     function renderProductCatalog() {
-        const grid = document.getElementById('productsGrid');
+        const grid = document.getElementById('productsGrid') || document.getElementById('productGridContainer');
         if (!grid) return;
 
         let filtered = state.products;
@@ -591,8 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filtered.length === 0) {
             grid.innerHTML = `
-                <div class="empty-catalog-state" style="grid-column: 1 / -1;">
-                    <i class="ri-search-eye-line"></i>
+                <div class="empty-catalog-state" style="grid-column: 1 / -1; padding: 3rem 1rem; text-align: center; color: var(--text-muted);">
+                    <i class="ri-search-eye-line" style="font-size: 3rem; margin-bottom: 0.5rem; display: block;"></i>
                     <h3>Menu Tidak Ditemukan</h3>
                     <p>Coba kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
                 </div>
@@ -631,11 +355,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const product = state.products.find(p => p.id === prodId);
                 if (product) {
                     if (product.stock <= 0) {
-                        playErrorSound();
+                        SoundEngine.buzz();
                         showToast(`Stok ${product.name} telah habis!`, 'warning');
                         return;
                     }
-                    
+
                     // If product is drink or coffee, open options modal
                     if (product.category === 'minuman' || product.category === 'kopi') {
                         openDrinkOptionsModal(product);
@@ -648,61 +372,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------------------------
-    // 4B. DRINK CUSTOMIZATION & MODIFIER MODAL LOGIC
+    // 5. DRINK CUSTOMIZATION MODAL LOGIC
     // ----------------------------------------------------------------------
     let currentCustomizingDrink = null;
 
     function openDrinkOptionsModal(product) {
         currentCustomizingDrink = product;
-        
         const imgEl = document.getElementById('optDrinkImg');
         const nameEl = document.getElementById('optDrinkName');
         const priceEl = document.getElementById('optDrinkBasePrice');
         const noteInput = document.getElementById('optDrinkSpecialNote');
 
-        if (imgEl) imgEl.src = product.img || 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80';
+        if (imgEl) imgEl.src = product.img || '';
         if (nameEl) nameEl.textContent = product.name;
         if (priceEl) priceEl.textContent = formatRupiah(product.price);
         if (noteInput) noteInput.value = '';
 
-        // Reset pills to defaults
+        // Reset pills
         document.querySelectorAll('#modalDrinkOptions .opt-pill').forEach(pill => {
-            const group = pill.getAttribute('data-group');
-            if (pill.getAttribute('data-val').includes('Dingin') || 
-                pill.getAttribute('data-val') === 'Regular' || 
-                pill.getAttribute('data-val').includes('Normal')) {
+            if (pill.getAttribute('data-val').includes('Dingin') || pill.getAttribute('data-val') === 'Regular' || pill.getAttribute('data-val').includes('Normal')) {
                 pill.classList.add('active');
             } else {
                 pill.classList.remove('active');
             }
         });
 
-        // Uncheck all addon checkboxes
-        document.querySelectorAll('#modalDrinkOptions .addon-checkbox').forEach(cb => {
-            cb.checked = false;
-        });
-
-        const iceSection = document.getElementById('iceModifierSection');
-        if (iceSection) iceSection.style.display = 'block';
+        document.querySelectorAll('#modalDrinkOptions .addon-checkbox').forEach(cb => cb.checked = false);
 
         updateDrinkFinalPricePreview();
         openModal('modalDrinkOptions');
     }
 
     function calculateCurrentDrinkModifiers() {
-        if (!currentCustomizingDrink) return { finalPrice: 0, optionsText: '', modifiersList: [] };
-
+        if (!currentCustomizingDrink) return { finalPrice: 0, optionsText: '' };
         let extraPrice = 0;
         let selectedOptions = [];
 
-        // Temperature
         const activeTemp = document.querySelector('#tempOptionGroup .opt-pill.active');
-        if (activeTemp) {
-            const val = activeTemp.getAttribute('data-val');
-            selectedOptions.push(val);
-        }
+        if (activeTemp) selectedOptions.push(activeTemp.getAttribute('data-val'));
 
-        // Size
         const activeSize = document.querySelector('#sizeOptionGroup .opt-pill.active');
         if (activeSize) {
             const val = activeSize.getAttribute('data-val');
@@ -711,7 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (val !== 'Regular') selectedOptions.push(val);
         }
 
-        // Sugar
         const activeSugar = document.querySelector('#sugarOptionGroup .opt-pill.active');
         if (activeSugar) {
             const val = activeSugar.getAttribute('data-val');
@@ -720,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedOptions.push(val);
         }
 
-        // Ice Level (only if cold)
         const isHot = activeTemp && activeTemp.getAttribute('data-val').includes('Hangat');
         if (!isHot) {
             const activeIce = document.querySelector('#iceOptionGroup .opt-pill.active');
@@ -730,7 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Add-ons
         document.querySelectorAll('#toppingOptionGroup .addon-checkbox:checked').forEach(cb => {
             const name = cb.getAttribute('data-name');
             const price = parseInt(cb.getAttribute('data-price')) || 0;
@@ -739,36 +444,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const finalPrice = currentCustomizingDrink.price + extraPrice;
-        const optionsText = selectedOptions.join(' • ');
-
-        return {
-            basePrice: currentCustomizingDrink.price,
-            extraPrice,
-            finalPrice,
-            optionsText,
-            selectedOptions
-        };
+        return { finalPrice, optionsText: selectedOptions.join(' • ') };
     }
 
     function updateDrinkFinalPricePreview() {
-        const previewEl = document.getElementById('optDrinkFinalPrice');
-        if (!previewEl || !currentCustomizingDrink) return;
-
-        const { finalPrice } = calculateCurrentDrinkModifiers();
-        previewEl.textContent = formatRupiah(finalPrice);
+        const preview = calculateCurrentDrinkModifiers();
+        const finalPriceEl = document.getElementById('optDrinkFinalPrice');
+        if (finalPriceEl) finalPriceEl.textContent = formatRupiah(preview.finalPrice);
     }
 
-    // Modal Drink Options Pill Click Delegation
+    // Modal Option Click Handlers
     document.querySelectorAll('#modalDrinkOptions .opt-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            const group = pill.getAttribute('data-group');
-            document.querySelectorAll(`#modalDrinkOptions .opt-pill[data-group="${group}"]`).forEach(p => p.classList.remove('active'));
+        pill.addEventListener('click', (e) => {
+            const parent = pill.parentElement;
+            parent.querySelectorAll('.opt-pill').forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
 
-            if (group === 'temp') {
+            if (pill.getAttribute('data-group') === 'temp') {
                 const isHot = pill.getAttribute('data-val').includes('Hangat');
-                const iceSection = document.getElementById('iceModifierSection');
-                if (iceSection) iceSection.style.display = isHot ? 'none' : 'block';
+                const iceSec = document.getElementById('iceModifierSection');
+                if (iceSec) iceSec.style.display = isHot ? 'none' : 'block';
             }
 
             updateDrinkFinalPricePreview();
@@ -779,59 +474,100 @@ document.addEventListener('DOMContentLoaded', () => {
         cb.addEventListener('change', updateDrinkFinalPricePreview);
     });
 
-    // Confirm Drink Options to Cart
     document.getElementById('btnConfirmDrinkOptions')?.addEventListener('click', () => {
         if (!currentCustomizingDrink) return;
+        const mod = calculateCurrentDrinkModifiers();
+        const note = document.getElementById('optDrinkSpecialNote')?.value.trim() || '';
 
-        const { finalPrice, optionsText } = calculateCurrentDrinkModifiers();
-        const specialNote = document.getElementById('optDrinkSpecialNote')?.value.trim() || '';
+        addToCart(currentCustomizingDrink, 1, mod.finalPrice, mod.optionsText, note);
+        closeModal('modalDrinkOptions');
+    });
 
-        // Generate unique cart item ID based on product ID and options signature
-        const optionsSignature = optionsText + (specialNote ? `_${specialNote}` : '');
-        const existing = state.cart.find(i => i.productId === currentCustomizingDrink.id && i.optionsText === optionsText && i.note === specialNote);
+    // ----------------------------------------------------------------------
+    // 6. CART MANAGEMENT & BILLING CALCULATIONS
+    // ----------------------------------------------------------------------
+    function addToCart(product, qty = 1, customPrice = null, optionsText = '', note = '') {
+        const itemPrice = customPrice !== null ? customPrice : product.price;
+        const cartItemKey = `${product.id}_${optionsText}_${note}`;
 
+        const existing = state.cart.find(it => it.key === cartItemKey);
         if (existing) {
-            if (existing.qty + 1 > currentCustomizingDrink.stock) {
-                playErrorSound();
-                showToast(`Stok tidak mencukupi (Tersisa: ${currentCustomizingDrink.stock})`, 'warning');
+            if (existing.qty + qty > product.stock) {
+                SoundEngine.buzz();
+                showToast(`Stok tidak mencukupi! Sisa stok: ${product.stock}`, 'warning');
                 return;
             }
-            existing.qty += 1;
+            existing.qty += qty;
         } else {
+            if (qty > product.stock) {
+                SoundEngine.buzz();
+                showToast(`Stok tidak mencukupi! Sisa stok: ${product.stock}`, 'warning');
+                return;
+            }
             state.cart.push({
-                id: 'CART-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
-                productId: currentCustomizingDrink.id,
-                name: currentCustomizingDrink.name,
-                price: finalPrice,
-                basePrice: currentCustomizingDrink.price,
+                key: cartItemKey,
+                id: product.id,
+                name: product.name,
+                category: product.category,
+                price: itemPrice,
+                qty: qty,
                 optionsText: optionsText,
-                qty: 1,
-                note: specialNote
+                note: note
             });
         }
 
-        playBeepSound();
+        SoundEngine.ding();
         saveState();
         renderCart();
-        closeModal('modalDrinkOptions');
-        showToast(`${currentCustomizingDrink.name} berhasil ditambahkan!`, 'success');
-    });
+        showToast(`${product.name} ditambahkan ke pesanan!`, 'success');
+    }
 
-    // Render Cart / Order Slip
+    function updateCartQty(key, delta) {
+        const item = state.cart.find(it => it.key === key || it.id === key);
+        if (!item) return;
+
+        const product = state.products.find(p => p.id === item.id);
+        const newQty = item.qty + delta;
+
+        if (newQty <= 0) {
+            removeFromCart(key);
+            return;
+        }
+
+        if (product && newQty > product.stock) {
+            SoundEngine.buzz();
+            showToast(`Stok tidak mencukupi! Sisa: ${product.stock}`, 'warning');
+            return;
+        }
+
+        item.qty = newQty;
+        saveState();
+        renderCart();
+    }
+
+    function removeFromCart(key) {
+        state.cart = state.cart.filter(it => it.key !== key && it.id !== key);
+        saveState();
+        renderCart();
+    }
+
     function renderCart() {
         const listEl = document.getElementById('cartItemsList');
         const countEl = document.getElementById('cartTotalItemsCount');
         const subtotalEl = document.getElementById('calcSubtotal');
+        const discountRow = document.getElementById('discountRow');
+        const discountRowLabel = document.getElementById('discountRowLabel');
+        const calcDiscountEl = document.getElementById('calcDiscount');
         const taxEl = document.getElementById('calcTax');
         const grandTotalEl = document.getElementById('calcGrandTotal');
         const checkoutBtn = document.getElementById('btnProceedCheckout');
         const holdBillCountEl = document.getElementById('holdBillCount');
+        const mMenuHoldCount = document.getElementById('mMenuHoldCount');
         const floatingBar = document.getElementById('mobileFloatingCartBar');
         const floatingBadge = document.getElementById('floatingCartBadge');
         const floatingTotal = document.getElementById('floatingCartTotal');
         const floatingCount = document.getElementById('floatingCartCount');
         const mobileNavBadge = document.getElementById('mobileNavCartBadge');
-        const mMenuHoldCount = document.getElementById('mMenuHoldCount');
 
         if (holdBillCountEl) holdBillCountEl.textContent = state.holdBills.length;
         if (mMenuHoldCount) mMenuHoldCount.textContent = state.holdBills.length;
@@ -841,15 +577,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="cart-empty-view">
                     <i class="ri-shopping-cart-2-line"></i>
                     <h3>Keranjang Masih Kosong</h3>
-                    <p>Klik menu di katalog atau gunakan pemindai barcode untuk menambahkan pesanan.</p>
+                    <p>Klik menu di katalog untuk menambahkan hidangan Arab & minuman.</p>
                 </div>
             `;
             if (countEl) countEl.textContent = '0';
             if (subtotalEl) subtotalEl.textContent = 'Rp 0';
+            if (discountRow) discountRow.style.display = 'none';
             if (taxEl) taxEl.textContent = 'Rp 0';
             if (grandTotalEl) grandTotalEl.textContent = 'Rp 0';
             if (checkoutBtn) checkoutBtn.disabled = true;
-
             if (floatingBar) floatingBar.classList.remove('active');
             if (floatingBadge) floatingBadge.textContent = '0';
             if (mobileNavBadge) mobileNavBadge.textContent = '0';
@@ -858,8 +594,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalItemsCount = state.cart.reduce((sum, item) => sum + item.qty, 0);
         const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const tax = Math.round(subtotal * 0.10); // 10% PB1 Restaurant Tax
-        const grandTotal = subtotal + tax;
+
+        // Voucher Calculation
+        let discountAmount = 0;
+        if (state.appliedVoucher) {
+            const vRes = SohibDB.validateVoucher(state.appliedVoucher.code, subtotal);
+            if (vRes.valid) {
+                discountAmount = vRes.discountAmount;
+                if (discountRow) {
+                    discountRow.style.display = 'flex';
+                    if (discountRowLabel) discountRowLabel.textContent = `Diskon (${state.appliedVoucher.title})`;
+                    if (calcDiscountEl) calcDiscountEl.textContent = `- ${formatRupiah(discountAmount)}`;
+                }
+            } else {
+                state.appliedVoucher = null;
+                if (discountRow) discountRow.style.display = 'none';
+            }
+        } else {
+            if (discountRow) discountRow.style.display = 'none';
+        }
+
+        const taxableAmount = Math.max(0, subtotal - discountAmount);
+        const tax = Math.round(taxableAmount * 0.10); // 10% PB1
+        const grandTotal = taxableAmount + tax;
 
         if (countEl) countEl.textContent = totalItemsCount;
         if (subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
@@ -867,7 +624,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (grandTotalEl) grandTotalEl.textContent = formatRupiah(grandTotal);
         if (checkoutBtn) checkoutBtn.disabled = false;
 
-        // Mobile Floating Cart & Badges update
         if (floatingBar) floatingBar.classList.add('active');
         if (floatingBadge) floatingBadge.textContent = totalItemsCount;
         if (floatingTotal) floatingTotal.textContent = formatRupiah(grandTotal);
@@ -875,214 +631,366 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobileNavBadge) mobileNavBadge.textContent = totalItemsCount;
 
         listEl.innerHTML = state.cart.map(item => `
-            <div class="cart-item" data-id="${item.id}">
+            <div class="cart-item" data-id="${item.key || item.id}">
                 <div class="cart-item-header">
                     <div>
                         <h5 class="cart-item-title">${item.name}</h5>
                         <span class="cart-item-unit-price">${formatRupiah(item.price)} / pcs</span>
                     </div>
-                    <button class="btn-remove-item" data-remove="${item.id}" title="Hapus item">
-                        <i class="ri-close-circle-line"></i>
+                    <button class="btn-remove-item" data-remove="${item.key || item.id}" title="Hapus dari Pesanan">
+                        <i class="ri-delete-bin-line"></i>
                     </button>
                 </div>
-                ${item.optionsText ? `<div class="cart-item-options-badge"><i class="ri-sound-module-line"></i> ${item.optionsText}</div>` : ''}
+                ${item.optionsText ? `<div class="cart-item-options-badge"><i class="ri-cup-fill"></i> ${item.optionsText}</div>` : ''}
                 <div class="cart-item-controls">
                     <div class="qty-stepper">
-                        <button class="qty-btn" data-minus="${item.id}">-</button>
+                        <button class="qty-btn" data-minus="${item.key || item.id}" title="Kurangi">-</button>
                         <span class="qty-val">${item.qty}</span>
-                        <button class="qty-btn" data-plus="${item.id}">+</button>
+                        <button class="qty-btn" data-plus="${item.key || item.id}" title="Tambah">+</button>
                     </div>
                     <span class="cart-item-subtotal">${formatRupiah(item.price * item.qty)}</span>
                 </div>
-                <input type="text" class="cart-item-note-input" data-note="${item.id}" placeholder="Catatan khusus (cth: pedas, es dipisah)..." value="${item.note || ''}">
+                <div class="cart-item-note-row">
+                    <i class="ri-edit-2-line"></i>
+                    <input type="text" class="cart-item-note-input" data-note-key="${item.key || item.id}" placeholder="Tambah catatan (cth: jangan terlalu manis, extra sambal)..." value="${item.note || ''}">
+                </div>
             </div>
         `).join('');
 
-        // Attach Stepper & Remove Event Handlers
-        listEl.querySelectorAll('[data-plus]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-plus');
-                updateCartQty(id, 1);
-            });
-        });
+        listEl.querySelectorAll('[data-plus]').forEach(b => b.addEventListener('click', () => updateCartQty(b.getAttribute('data-plus'), 1)));
+        listEl.querySelectorAll('[data-minus]').forEach(b => b.addEventListener('click', () => updateCartQty(b.getAttribute('data-minus'), -1)));
+        listEl.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', () => removeFromCart(b.getAttribute('data-remove'))));
 
-        listEl.querySelectorAll('[data-minus]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-minus');
-                updateCartQty(id, -1);
-            });
-        });
-
-        listEl.querySelectorAll('[data-remove]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-remove');
-                removeFromCart(id);
-            });
-        });
-
-        listEl.querySelectorAll('.cart-item-note-input').forEach(input => {
-            input.addEventListener('change', (e) => {
-                const id = input.getAttribute('data-note');
-                const target = state.cart.find(i => i.id === id);
-                if (target) {
-                    target.note = e.target.value;
+        listEl.querySelectorAll('.cart-item-note-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const key = inp.getAttribute('data-note-key');
+                const it = state.cart.find(item => (item.key || item.id) === key);
+                if (it) {
+                    it.note = e.target.value;
                     saveState();
                 }
             });
         });
     }
 
-    // ----------------------------------------------------------------------
-    // 5. CART OPERATIONS
-    // ----------------------------------------------------------------------
-    function addToCart(product) {
-        const existing = state.cart.find(item => item.id === product.id);
-
-        if (existing) {
-            if (existing.qty + 1 > product.stock) {
-                playErrorSound();
-                showToast(`Stok tidak mencukupi (Tersisa: ${product.stock})`, 'warning');
-                return;
-            }
-            existing.qty += 1;
-        } else {
-            state.cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                qty: 1,
-                note: ''
-            });
-        }
-
-        playBeepSound();
-        saveState();
-        renderCart();
-    }
-
-    function updateCartQty(id, delta) {
-        const item = state.cart.find(i => i.id === id);
-        const product = state.products.find(p => p.id === id);
-
-        if (!item) return;
-
-        const newQty = item.qty + delta;
-
-        if (newQty <= 0) {
-            removeFromCart(id);
-            return;
-        }
-
-        if (product && newQty > product.stock) {
-            playErrorSound();
-            showToast(`Maksimal stok tercapai (${product.stock} pcs)`, 'warning');
-            return;
-        }
-
-        item.qty = newQty;
-        playBeepSound();
-        saveState();
-        renderCart();
-    }
-
-    function removeFromCart(id) {
-        state.cart = state.cart.filter(i => i.id !== id);
-        saveState();
-        renderCart();
-    }
-
-    function clearCart() {
-        if (state.cart.length === 0) return;
-        state.cart = [];
-        state.customerName = '';
-        state.tableNumber = '';
-        document.getElementById('customerNameInput').value = '';
-        document.getElementById('tableNumberInput').value = '';
-        saveState();
-        renderCart();
-        showToast('Keranjang pesanan telah dikosongkan.', 'info');
-    }
-
-    // ----------------------------------------------------------------------
-    // 6. CHECKOUT & PAYMENT PROCESSING
-    // ----------------------------------------------------------------------
-    function openCheckoutModal() {
-        if (state.cart.length === 0) {
-            showToast('Pilih menu terlebih dahulu sebelum bayar!', 'warning');
+    // Voucher & CRM Event Handlers
+    document.getElementById('btnApplyVoucher')?.addEventListener('click', () => {
+        const input = document.getElementById('voucherCodeInput');
+        const code = input ? input.value.trim() : '';
+        if (!code) {
+            showToast('Masukkan kode voucher terlebih dahulu!', 'warning');
             return;
         }
 
         const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const tax = Math.round(subtotal * 0.10);
-        const grandTotal = subtotal + tax;
+        const res = SohibDB.validateVoucher(code, subtotal);
+        if (res.valid) {
+            state.appliedVoucher = { code: res.voucher.code, title: res.voucher.title, discountAmount: res.discountAmount };
+            document.getElementById('activeVoucherTag').style.display = 'flex';
+            document.getElementById('activeVoucherText').textContent = res.message;
+            document.getElementById('cartVoucherInputRow').style.display = 'none';
+            SoundEngine.ding();
+            renderCart();
+            showToast(res.message, 'success');
+        } else {
+            SoundEngine.buzz();
+            showToast(res.message, 'warning');
+        }
+    });
 
-        const dueDisplay = document.getElementById('checkoutCashTotalDue');
+    // ----------------------------------------------------------------------
+    // 7. CHECKOUT, ORDER PROCESSING & KDS DISPATCH
+    // ----------------------------------------------------------------------
+    document.getElementById('btnProceedCheckout')?.addEventListener('click', () => {
+        if (state.cart.length === 0) {
+            SoundEngine.buzz();
+            showToast('Keranjang pesanan masih kosong!', 'warning');
+            return;
+        }
+
+        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const discount = state.appliedVoucher ? state.appliedVoucher.discountAmount : 0;
+        const taxable = Math.max(0, subtotal - discount);
+        const tax = Math.round(taxable * 0.10);
+        const grandTotal = taxable + tax;
+
+        // Populate Amounts in Checkout Modal
+        const dueEl = document.getElementById('checkoutDueAmountDisplay');
+        const qrisTag = document.getElementById('qrisExactAmountTag');
         const cashInput = document.getElementById('cashReceivedInput');
-        const changeVal = document.getElementById('changeAmountDisplay');
-        const changeBox = document.getElementById('changeResultBox');
 
-        if (dueDisplay) dueDisplay.textContent = formatRupiah(grandTotal);
-        if (cashInput) cashInput.value = grandTotal; // Default uang pas
+        if (dueEl) dueEl.textContent = formatRupiah(grandTotal);
+        if (qrisTag) qrisTag.textContent = `Total Pas: ${formatRupiah(grandTotal)}`;
+        if (cashInput) {
+            cashInput.value = grandTotal; // Default uang pas
+        }
 
         calculateCashChange(grandTotal, grandTotal);
 
+        // Reset to active pay tab
+        state.activePayTab = state.activePayTab || 'tab-cash';
+        document.querySelectorAll('.pay-tab').forEach(t => {
+            if (t.getAttribute('data-tab') === state.activePayTab) t.classList.add('active');
+            else t.classList.remove('active');
+        });
+        document.querySelectorAll('.pay-tab-content').forEach(c => {
+            if (c.id === state.activePayTab) c.classList.add('active');
+            else c.classList.remove('active');
+        });
+
         openModal('modalCheckout');
-    }
+        SoundEngine.ding();
+    });
+
+    // Payment Tabs Switcher Listener
+    document.querySelectorAll('.pay-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.pay-tab-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            const targetTab = tab.getAttribute('data-tab');
+            state.activePayTab = targetTab;
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) targetContent.classList.add('active');
+            SoundEngine.beep();
+        });
+    });
+
+    // Quick Cash Preset Buttons Listener
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discount = state.appliedVoucher ? state.appliedVoucher.discountAmount : 0;
+            const taxable = Math.max(0, subtotal - discount);
+            const tax = Math.round(taxable * 0.10);
+            const grandTotal = taxable + tax;
+
+            const val = btn.getAttribute('data-val');
+            const cashInput = document.getElementById('cashReceivedInput');
+            if (val === 'exact') {
+                if (cashInput) cashInput.value = grandTotal;
+                calculateCashChange(grandTotal, grandTotal);
+            } else {
+                const amt = parseFloat(val) || 0;
+                if (cashInput) cashInput.value = amt;
+                calculateCashChange(grandTotal, amt);
+            }
+            SoundEngine.beep();
+        });
+    });
 
     function calculateCashChange(dueAmount, receivedAmount) {
         const changeBox = document.getElementById('changeResultBox');
         const changeLabel = document.getElementById('changeLabel');
         const changeVal = document.getElementById('changeAmountDisplay');
-
         const diff = receivedAmount - dueAmount;
 
         if (diff >= 0) {
-            changeBox.classList.remove('insufficient');
-            changeLabel.textContent = 'Kembalian:';
-            changeVal.textContent = formatRupiah(diff);
+            if (changeBox) changeBox.classList.remove('insufficient');
+            if (changeLabel) changeLabel.textContent = 'Kembalian:';
+            if (changeVal) changeVal.textContent = formatRupiah(diff);
         } else {
-            changeBox.classList.add('insufficient');
-            changeLabel.textContent = 'Kurang:';
-            changeVal.textContent = formatRupiah(Math.abs(diff));
+            if (changeBox) changeBox.classList.add('insufficient');
+            if (changeLabel) changeLabel.textContent = 'Kurang:';
+            if (changeVal) changeVal.textContent = formatRupiah(Math.abs(diff));
         }
     }
 
-    function processPaymentSubmission() {
+    document.getElementById('cashReceivedInput')?.addEventListener('input', (e) => {
         const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const tax = Math.round(subtotal * 0.10);
-        const grandTotal = subtotal + tax;
+        const discount = state.appliedVoucher ? state.appliedVoucher.discountAmount : 0;
+        const taxable = Math.max(0, subtotal - discount);
+        const tax = Math.round(taxable * 0.10);
+        const grandTotal = taxable + tax;
+        calculateCashChange(grandTotal, parseFloat(e.target.value) || 0);
+    });
 
-        let payMethodName = 'Tunai (Cash)';
+    // Order Type Selector Switch (Dine In, Take Away, Delivery)
+    document.querySelectorAll('.order-type-switch .type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.order-type-switch .type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.orderType = btn.getAttribute('data-type') || 'dine-in';
+            SoundEngine.beep();
+            showToast(`Tipe pesanan: ${btn.textContent.trim()}`, 'info');
+        });
+    });
+
+    // Clear / Reset Cart
+    document.getElementById('btnClearCart')?.addEventListener('click', () => {
+        if (state.cart.length === 0) return;
+        state.cart = [];
+        state.appliedVoucher = null;
+        document.getElementById('activeVoucherTag').style.display = 'none';
+        document.getElementById('cartVoucherInputRow').style.display = 'flex';
+        saveState();
+        renderCart();
+        showToast('Keranjang pesanan berhasil dikosongkan.', 'info');
+    });
+
+    // Hold Current Bill Logic
+    document.getElementById('btnHoldCurrentBill')?.addEventListener('click', () => {
+        if (state.cart.length === 0) {
+            showToast('Tidak ada pesanan di keranjang untuk disimpan.', 'warning');
+            return;
+        }
+
+        const customerName = document.getElementById('customerNameInput')?.value.trim() || 'Umum';
+        const tableNumber = document.getElementById('tableNumberInput')?.value.trim() || '-';
+        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+        const draft = {
+            id: 'DRAFT-' + Date.now().toString().slice(-4),
+            orderId: state.currentOrderId,
+            cart: [...state.cart],
+            customerName: customerName,
+            tableNumber: tableNumber,
+            orderType: state.orderType,
+            subtotal: subtotal,
+            appliedVoucher: state.appliedVoucher,
+            time: new Date().toISOString()
+        };
+
+        state.holdBills.unshift(draft);
+        state.cart = [];
+        state.appliedVoucher = null;
+        state.currentOrderId = generateOrderId();
+        document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
+        document.getElementById('customerNameInput').value = '';
+        document.getElementById('tableNumberInput').value = '';
+
+        saveState();
+        renderCart();
+        SoundEngine.ding();
+        showToast(`Pesanan ${draft.orderId} (${customerName}) berhasil disimpan sebagai Draft!`, 'success');
+    });
+
+    // Hold Bills Modal Viewer
+    function renderHoldBills() {
+        const container = document.getElementById('holdBillsContainer');
+        if (!container) return;
+
+        if (state.holdBills.length === 0) {
+            container.innerHTML = `
+                <div class="cart-empty-view" style="padding: 2rem 1rem; text-align: center; color: var(--text-muted);">
+                    <i class="ri-draft-line" style="font-size: 3rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <h4>Tidak Ada Pesanan yang Ditahan</h4>
+                    <p>Pesanan yang disimpan sementara (Hold Bill) akan muncul di sini.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = state.holdBills.map((draft, idx) => `
+            <div class="hold-bill-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h5 style="font-weight: 800; color: var(--primary-amber); margin: 0 0 2px;">${draft.orderId} &bull; ${draft.customerName}</h5>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">${draft.tableNumber} &bull; ${draft.cart.length} menu &bull; ${formatRupiah(draft.subtotal)}</div>
+                    <small style="color: #6b7280; font-size: 0.7rem;">${new Date(draft.time).toLocaleTimeString()}</small>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                    <button class="btn-primary-action btn-sm btn-restore-draft" data-draft-idx="${idx}">
+                        <i class="ri-refresh-line"></i> Pulihkan
+                    </button>
+                    <button class="btn-secondary btn-sm btn-delete-draft" data-draft-idx="${idx}" style="color: #ef4444;">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        container.querySelectorAll('.btn-restore-draft').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-draft-idx'));
+                const draft = state.holdBills[idx];
+                if (draft) {
+                    state.cart = [...draft.cart];
+                    state.currentOrderId = draft.orderId;
+                    state.orderType = draft.orderType || 'dine-in';
+                    state.appliedVoucher = draft.appliedVoucher || null;
+                    document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
+                    document.getElementById('customerNameInput').value = draft.customerName || '';
+                    document.getElementById('tableNumberInput').value = draft.tableNumber || '';
+
+                    state.holdBills.splice(idx, 1);
+                    saveState();
+                    renderCart();
+                    closeModal('modalHoldBills');
+                    SoundEngine.ding();
+                    showToast(`Pesanan ${draft.orderId} dipulihkan ke keranjang!`, 'success');
+                }
+            });
+        });
+
+        container.querySelectorAll('.btn-delete-draft').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-draft-idx'));
+                state.holdBills.splice(idx, 1);
+                saveState();
+                renderHoldBills();
+                renderCart();
+                showToast('Draft pesanan dihapus.', 'info');
+            });
+        });
+    }
+
+    document.getElementById('btnOpenHoldBills')?.addEventListener('click', () => {
+        renderHoldBills();
+        openModal('modalHoldBills');
+    });
+
+    // Mobile View Cart Button Click -> Proceeds to Checkout
+    document.getElementById('btnFloatingViewCart')?.addEventListener('click', () => {
+        if (state.cart.length > 0) {
+            document.getElementById('btnProceedCheckout')?.click();
+        }
+    });
+
+    document.getElementById('btnConfirmPayment')?.addEventListener('click', () => {
+        processPaymentSubmission();
+    });
+
+    function processPaymentSubmission() {
+        if (state.cart.length === 0) {
+            showToast('Keranjang kosong!', 'warning');
+            return;
+        }
+
+        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const discount = state.appliedVoucher ? state.appliedVoucher.discountAmount : 0;
+        const taxable = Math.max(0, subtotal - discount);
+        const tax = Math.round(taxable * 0.10);
+        const grandTotal = taxable + tax;
+
+        let payMethod = 'Tunai (Cash)';
         let receivedAmount = grandTotal;
 
         if (state.activePayTab === 'tab-cash') {
-            const cashInputVal = parseFloat(document.getElementById('cashReceivedInput').value) || 0;
-            if (cashInputVal < grandTotal) {
-                playErrorSound();
-                showToast('Nominal uang diterima kurang dari total pembayaran!', 'warning');
+            const cashVal = parseFloat(document.getElementById('cashReceivedInput').value) || 0;
+            if (cashVal < grandTotal) {
+                SoundEngine.buzz();
+                showToast('Nominal uang diterima kurang dari total tagihan!', 'warning');
                 return;
             }
-            receivedAmount = cashInputVal;
-            payMethodName = 'Tunai (Cash)';
+            receivedAmount = cashVal;
+            payMethod = 'Tunai (Cash)';
         } else if (state.activePayTab === 'tab-qris') {
-            payMethodName = 'QRIS Instan';
+            payMethod = 'Dynamic QRIS';
             receivedAmount = grandTotal;
         } else if (state.activePayTab === 'tab-card') {
-            payMethodName = 'Kartu Debit/EDC';
-            receivedAmount = grandTotal;
-        } else if (state.activePayTab === 'tab-ewallet') {
-            payMethodName = 'E-Wallet';
+            const edc = document.getElementById('edcBankSelect')?.value || 'BCA';
+            payMethod = `Kartu Debit/EDC (${edc})`;
             receivedAmount = grandTotal;
         } else {
-            payMethodName = 'Transfer Bank';
+            const selectedEwallet = document.querySelector('input[name="ewalletOption"]:checked')?.value || 'GoPay';
+            payMethod = `E-Wallet (${selectedEwallet})`;
             receivedAmount = grandTotal;
         }
 
-        const changeAmount = receivedAmount - grandTotal;
-        const customerName = document.getElementById('customerNameInput').value.trim() || 'Umum';
-        const tableNumber = document.getElementById('tableNumberInput').value.trim() || '-';
+        const customerName = document.getElementById('customerNameInput')?.value.trim() || 'Umum';
+        const tableNumber = document.getElementById('tableNumberInput')?.value.trim() || '-';
 
-        // Deduct Stock from Products
+        // 1. Deduct Product Stocks
         state.cart.forEach(cartItem => {
             const prod = state.products.find(p => p.id === cartItem.id);
             if (prod) {
@@ -1090,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Save Transaction Record
+        // 2. Save Transaction Record
         const transactionRecord = {
             orderId: state.currentOrderId,
             dateTime: new Date().toISOString(),
@@ -1099,41 +1007,67 @@ document.addEventListener('DOMContentLoaded', () => {
             orderType: state.orderType,
             items: [...state.cart],
             subtotal: subtotal,
+            discount: discount,
             tax: tax,
             grandTotal: grandTotal,
-            payMethod: payMethodName,
+            payMethod: payMethod,
             receivedAmount: receivedAmount,
-            changeAmount: changeAmount,
-            cashier: 'M. Ikhsan Anggara (Owner)'
+            changeAmount: Math.max(0, receivedAmount - grandTotal),
+            cashier: 'Muh Ikhsan Anggara (Owner)'
         };
 
         state.transactions.unshift(transactionRecord);
+        SohibDB.addSale(transactionRecord);
 
-        // Play Sound Feedback
-        playCheckoutChime();
+        // 3. Dispatch Order to Kitchen Display System (KDS)
+        SohibDB.addKdsOrder({
+            orderId: state.currentOrderId,
+            customerName: customerName,
+            tableNumber: tableNumber,
+            orderType: state.orderType,
+            items: [...state.cart]
+        });
 
-        // Close Checkout & Show Thermal Receipt
+        // 4. Update Table Status in Floor Plan
+        if (tableNumber && tableNumber !== '-') {
+            SohibDB.updateTableStatus(tableNumber, 'occupied', {
+                orderId: state.currentOrderId,
+                customer: customerName,
+                amount: grandTotal,
+                activeItems: [...state.cart]
+            });
+        }
+
+        // 5. Update Member Points
+        if (state.activeMember) {
+            SohibDB.addMemberPointsAndSpend(state.activeMember.phone, grandTotal);
+        }
+
+        // 6. Sound & Thermal Receipt
+        SoundEngine.success();
         closeModal('modalCheckout');
         populateThermalReceipt(transactionRecord);
         openModal('modalReceipt');
 
-        // Reset Cart and New Order ID
+        // Reset Cart
         state.cart = [];
+        state.appliedVoucher = null;
         state.currentOrderId = generateOrderId();
         document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
         document.getElementById('customerNameInput').value = '';
         document.getElementById('tableNumberInput').value = '';
+        document.getElementById('activeVoucherTag').style.display = 'none';
+        document.getElementById('cartVoucherInputRow').style.display = 'flex';
 
         saveState();
         renderProductCatalog();
         renderCart();
-        renderReports();
-        showToast('Transaksi pembayaran berhasil diselesaikan!', 'success');
+        renderKDS();
+        renderFloorPlan();
+        updateKdsBadge();
+        showToast('Transaksi pembayaran berhasil diselesaikan & terkirim ke dapur!', 'success');
     }
 
-    // ----------------------------------------------------------------------
-    // 7. THERMAL RECEIPT GENERATOR
-    // ----------------------------------------------------------------------
     function populateThermalReceipt(tx) {
         document.getElementById('rcptOrderNo').textContent = tx.orderId;
         const d = new Date(tx.dateTime);
@@ -1141,260 +1075,689 @@ document.addEventListener('DOMContentLoaded', () => {
             day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
         }) + ' WIB';
 
-        document.getElementById('rcptCashierTable').textContent = `${tx.cashier} / ${tx.tableNumber || 'Take Away'}`;
+        document.getElementById('rcptCashierTable').textContent = `${tx.cashier} / ${tx.tableNumber || 'Walk-in'}`;
         document.getElementById('rcptOrderType').textContent = tx.orderType === 'dine-in' ? 'Dine In' : tx.orderType === 'take-away' ? 'Take Away' : 'Delivery';
 
         const itemsContainer = document.getElementById('rcptItemsList');
         itemsContainer.innerHTML = tx.items.map(it => `
-            <div class="receipt-item-row">
+            <div class="receipt-item-row" style="display:flex; justify-content:space-between; margin-bottom:0.35rem; font-size:0.8rem;">
                 <div>
-                    <span class="receipt-item-name">${it.name}</span>
-                    ${it.optionsText ? `<div style="font-size: 0.72rem; color: #374151; margin: 0.15rem 0;">• ${it.optionsText}</div>` : ''}
-                    <div class="receipt-item-qty-price">${it.qty} x ${formatRupiah(it.price)}</div>
-                    ${it.note ? `<small style="font-style: italic; color: #666;">Note: ${it.note}</small>` : ''}
+                    <strong>${it.name}</strong>
+                    ${it.optionsText ? `<div style="font-size:0.72rem; color:#4b5563;">• ${it.optionsText}</div>` : ''}
+                    <div style="color:#6b7280; font-size:0.75rem;">${it.qty} x ${formatRupiah(it.price)}</div>
+                    ${it.note ? `<div style="color:#9ca3af; font-size:0.7rem; font-style:italic;">Note: ${it.note}</div>` : ''}
                 </div>
                 <strong>${formatRupiah(it.price * it.qty)}</strong>
             </div>
         `).join('');
 
         document.getElementById('rcptSubtotal').textContent = formatRupiah(tx.subtotal);
+        if (tx.discount > 0) {
+            document.getElementById('rcptDiscountRow').style.display = 'flex';
+            document.getElementById('rcptDiscountVal').textContent = `- ${formatRupiah(tx.discount)}`;
+        } else {
+            document.getElementById('rcptDiscountRow').style.display = 'none';
+        }
         document.getElementById('rcptTax').textContent = formatRupiah(tx.tax);
         document.getElementById('rcptGrandTotal').textContent = formatRupiah(tx.grandTotal);
         document.getElementById('rcptPayMethod').textContent = tx.payMethod;
-        document.getElementById('rcptPayReceived').textContent = formatRupiah(tx.receivedAmount);
+        document.getElementById('rcptAmountPaid').textContent = formatRupiah(tx.receivedAmount);
         document.getElementById('rcptChange').textContent = formatRupiah(tx.changeAmount);
     }
 
+    document.getElementById('btnPrintReceipt')?.addEventListener('click', () => {
+        window.print();
+    });
+
+    // Share Receipt via WhatsApp
+    document.getElementById('btnShareWhatsAppReceipt')?.addEventListener('click', () => {
+        const orderNo = document.getElementById('rcptOrderNo')?.textContent || '';
+        const total = document.getElementById('rcptGrandTotal')?.textContent || '';
+        const msg = `*STRUK SOHIB CAFFE & RESTO*\nNo Order: ${orderNo}\nTotal Pembayaran: ${total}\nTerima kasih telah berkunjung di Sohib Caffe & Resto!`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+
     // ----------------------------------------------------------------------
-    // 8. HOLD BILL (DRAFT ORDERS)
+    // 8. KITCHEN DISPLAY SYSTEM (KDS) LOGIC
     // ----------------------------------------------------------------------
-    function holdCurrentBill() {
-        if (state.cart.length === 0) {
-            showToast('Tidak ada item di keranjang untuk di-hold.', 'warning');
+    function renderKDS() {
+        const grid = document.getElementById('kdsTicketsGrid');
+        const emptyState = document.getElementById('kdsEmptyState');
+        if (!grid) return;
+
+        let orders = SohibDB.getKdsOrders();
+        if (state.activeKdsStation === 'kitchen') {
+            orders = orders.filter(o => o.items.some(it => it.category === 'makanan' || it.category === 'snack' || it.category === 'paket'));
+        } else if (state.activeKdsStation === 'bar') {
+            orders = orders.filter(o => o.items.some(it => it.category === 'kopi' || it.category === 'minuman'));
+        }
+
+        // Count stats
+        const allOrders = SohibDB.getKdsOrders().filter(o => o.status !== 'served');
+        document.getElementById('kdsCountAll').textContent = allOrders.length;
+        document.getElementById('kdsCountKitchen').textContent = allOrders.filter(o => o.items.some(it => it.category !== 'kopi' && it.category !== 'minuman')).length;
+        document.getElementById('kdsCountBar').textContent = allOrders.filter(o => o.items.some(it => it.category === 'kopi' || it.category === 'minuman')).length;
+
+        if (orders.length === 0) {
+            grid.innerHTML = '';
+            if (emptyState) emptyState.style.display = 'block';
             return;
         }
 
-        const draft = {
-            id: 'HOLD-' + Math.floor(1000 + Math.random() * 9000),
-            orderId: state.currentOrderId,
-            dateTime: new Date().toISOString(),
-            customerName: document.getElementById('customerNameInput').value.trim() || 'Pelanggan',
-            tableNumber: document.getElementById('tableNumberInput').value.trim() || '-',
-            orderType: state.orderType,
-            items: [...state.cart],
-            totalAmount: state.cart.reduce((sum, i) => sum + (i.price * i.qty), 0)
-        };
+        if (emptyState) emptyState.style.display = 'none';
 
-        state.holdBills.push(draft);
-        state.cart = [];
-        state.currentOrderId = generateOrderId();
-        document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
-        document.getElementById('customerNameInput').value = '';
-        document.getElementById('tableNumberInput').value = '';
+        grid.innerHTML = orders.map(order => {
+            const elapsedMins = Math.floor((Date.now() - new Date(order.createdAt).getTime()) / 60000);
+            const statusClass = order.status === 'queue' ? 'ticket-queue' : order.status === 'cooking' ? 'ticket-cooking' : 'ticket-ready';
+            const statusLabel = order.status === 'queue' ? '🟡 Antrean' : order.status === 'cooking' ? '🔵 Dimasak' : '🟢 Siap Saji';
 
-        saveState();
-        renderCart();
-        renderHoldBills();
-        showToast(`Pesanan ${draft.customerName} berhasil disimpan sementara (Hold).`, 'success');
+            return `
+                <div class="kds-ticket-card ${statusClass}">
+                    <div class="ticket-header">
+                        <span class="ticket-order-id">${order.orderId}</span>
+                        <span class="ticket-table-badge"><i class="ri-map-pin-user-fill"></i> ${order.tableNumber || 'Take Away'}</span>
+                    </div>
+                    <div class="ticket-meta-bar">
+                        <span><i class="ri-user-3-line"></i> ${order.customerName}</span>
+                        <span class="ticket-timer ${elapsedMins >= 15 ? 'timer-warn' : ''}">
+                            <i class="ri-time-line"></i> ${elapsedMins}m lalu
+                        </span>
+                    </div>
+                    <div class="ticket-items-body">
+                        ${order.items.map(it => `
+                            <div class="ticket-item-row">
+                                <div>
+                                    <span class="ticket-item-name">${it.name}</span>
+                                    ${it.optionsText ? `<div class="ticket-item-modifier">${it.optionsText}</div>` : ''}
+                                    ${it.note ? `<div class="ticket-item-modifier" style="color:#fbbf24;">Note: ${it.note}</div>` : ''}
+                                </div>
+                                <span class="ticket-item-qty">${it.qty}x</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="ticket-actions-foot">
+                        ${order.status === 'queue' ? `
+                            <button class="btn-ticket-action btn-ticket-cooking" data-kds-action="cooking" data-kds-id="${order.id}">
+                                <i class="ri-fire-line"></i> Mulai Masak
+                            </button>
+                        ` : order.status === 'cooking' ? `
+                            <button class="btn-ticket-action btn-ticket-ready" data-kds-action="ready" data-kds-id="${order.id}">
+                                <i class="ri-checkbox-circle-line"></i> Siap Saji
+                            </button>
+                        ` : `
+                            <button class="btn-ticket-action btn-ticket-done" data-kds-action="served" data-kds-id="${order.id}">
+                                <i class="ri-check-double-line"></i> Selesai Saji
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Action Handlers
+        grid.querySelectorAll('[data-kds-action]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const kdsId = btn.getAttribute('data-kds-id');
+                const action = btn.getAttribute('data-kds-action');
+                SohibDB.updateKdsStatus(kdsId, action);
+                SoundEngine.ding();
+                renderKDS();
+                updateKdsBadge();
+                showToast(`Status pesanan diperbarui menjadi ${action}!`, 'info');
+            });
+        });
     }
 
-    function renderHoldBills() {
-        const container = document.getElementById('holdBillsContainer');
-        if (!container) return;
+    function updateKdsBadge() {
+        const orders = SohibDB.getKdsOrders().filter(o => o.status !== 'served');
+        const badge = document.getElementById('kdsActiveBadge');
+        if (badge) badge.textContent = orders.length;
+    }
 
-        if (state.holdBills.length === 0) {
-            container.innerHTML = '<p class="text-muted text-center py-4">Tidak ada pesanan yang di-hold saat ini.</p>';
+    document.querySelectorAll('.btn-kds-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.btn-kds-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.activeKdsStation = btn.getAttribute('data-station');
+            renderKDS();
+        });
+    });
+
+    document.getElementById('btnClearCompletedKds')?.addEventListener('click', () => {
+        SohibDB.clearCompletedKdsOrders();
+        renderKDS();
+        showToast('Antrean pesanan selesai telah dibersihkan.', 'info');
+    });
+
+    document.getElementById('btnOpenKDS')?.addEventListener('click', () => {
+        renderKDS();
+        openModal('modalKDS');
+    });
+
+    // ----------------------------------------------------------------------
+    // 9. FLOOR PLAN & RESTAURANT TABLE MANAGEMENT LOGIC
+    // ----------------------------------------------------------------------
+    function renderFloorPlan() {
+        const grid = document.getElementById('floorPlanTablesGrid');
+        if (!grid) return;
+
+        let tables = SohibDB.getTables();
+        if (state.activeZoneFilter !== 'all') {
+            tables = tables.filter(t => t.zone === state.activeZoneFilter);
+        }
+
+        const totalActiveOccupied = SohibDB.getTables().filter(t => t.status === 'occupied').length;
+        const activeBadge = document.getElementById('activeTablesBadge');
+        if (activeBadge) activeBadge.textContent = totalActiveOccupied;
+
+        grid.innerHTML = tables.map(tbl => {
+            const isOcc = tbl.status === 'occupied';
+            const isBill = tbl.status === 'billing';
+            const statusClass = isOcc ? 'status-occupied' : isBill ? 'status-billing' : 'status-available';
+            const statusLabel = isOcc ? 'Terisi' : isBill ? 'Billing' : 'Kosong';
+
+            return `
+                <div class="table-card-item ${statusClass}" data-table-id="${tbl.id}">
+                    <div class="table-card-header">
+                        <span class="table-card-name">${tbl.name}</span>
+                        <span class="table-status-pill ${tbl.status}">${statusLabel}</span>
+                    </div>
+                    <div class="table-card-details">
+                        <span><i class="ri-group-line"></i> Kapasitas: ${tbl.capacity} Orang</span>
+                        ${isOcc ? `<span><i class="ri-user-3-line"></i> Tamu: <b>${tbl.customer || 'Pelanggan'}</b></span>` : ''}
+                        ${isOcc && tbl.amount ? `<span class="table-bill-amount">${formatRupiah(tbl.amount)}</span>` : ''}
+                    </div>
+                    <div class="table-card-actions">
+                        <button class="btn-table-action-sm btn-pick-table" data-table-name="${tbl.name}">
+                            <i class="ri-checkbox-circle-line"></i> Pilih Meja
+                        </button>
+                        ${isOcc ? `
+                            <button class="btn-table-action-sm btn-clear-table" data-table-id="${tbl.id}" style="color:#ef4444;">
+                                <i class="ri-refresh-line"></i> Kosongkan
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Table Selection Event Handlers
+        grid.querySelectorAll('.btn-pick-table').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tblName = btn.getAttribute('data-table-name');
+                const tableInput = document.getElementById('tableNumberInput');
+                if (tableInput) tableInput.value = tblName;
+                closeModal('modalFloorPlan');
+                showToast(`${tblName} dipilih untuk pesanan saat ini!`, 'success');
+            });
+        });
+
+        grid.querySelectorAll('.btn-clear-table').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tblId = btn.getAttribute('data-table-id');
+                SohibDB.updateTableStatus(tblId, 'available');
+                renderFloorPlan();
+                showToast(`Meja berhasil dikosongkan!`, 'info');
+            });
+        });
+    }
+
+    document.querySelectorAll('#floorPlanZoneFilters .zone-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#floorPlanZoneFilters .zone-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            state.activeZoneFilter = pill.getAttribute('data-zone');
+            renderFloorPlan();
+        });
+    });
+
+    document.getElementById('btnOpenFloorPlan')?.addEventListener('click', () => {
+        renderFloorPlan();
+        openModal('modalFloorPlan');
+    });
+
+    document.getElementById('btnQuickPickTable')?.addEventListener('click', () => {
+        renderFloorPlan();
+        openModal('modalFloorPlan');
+    });
+
+    // ----------------------------------------------------------------------
+    // 10. TABLE QR CODE GENERATOR FOR SELF-ORDER
+    // ----------------------------------------------------------------------
+    function initTableQrGenerator() {
+        const select = document.getElementById('selectQrTableNumber');
+        if (!select) return;
+        const tables = SohibDB.getTables();
+        select.innerHTML = tables.map(t => `<option value="${t.id}">${t.name} (${t.zone.toUpperCase()})</option>`).join('');
+
+        function updateQrPreview() {
+            const tableId = select.value;
+            const table = tables.find(t => t.id === tableId);
+            const labelEl = document.getElementById('qrDisplayTableLabel');
+            const imgEl = document.getElementById('qrGeneratedImg');
+
+            if (labelEl && table) labelEl.textContent = table.name.toUpperCase();
+            const selfOrderUrl = `${window.location.origin}${window.location.pathname}?mode=customer&table=${encodeURIComponent(tableId)}`;
+            if (imgEl) imgEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(selfOrderUrl)}`;
+        }
+
+        select.addEventListener('change', updateQrPreview);
+        updateQrPreview();
+    }
+
+    document.getElementById('btnOpenTableQrGenerator')?.addEventListener('click', () => {
+        initTableQrGenerator();
+        openModal('modalTableQr');
+    });
+
+    document.getElementById('btnPrintTableQr')?.addEventListener('click', () => {
+        window.print();
+    });
+
+    // ----------------------------------------------------------------------
+    // 11. CASH DRAWER, SHIFT & Z-REPORT LOGIC
+    // ----------------------------------------------------------------------
+    function renderShiftManager() {
+        const shift = SohibDB.getActiveShift();
+        const sales = SohibDB.getSales();
+        const shiftStart = new Date(shift.startTime).getTime();
+        const shiftSales = sales.filter(s => new Date(s.created_at || s.dateTime).getTime() >= shiftStart);
+
+        let cashTotal = 0;
+        let nonCashTotal = 0;
+
+        shiftSales.forEach(s => {
+            const total = s.total_amount || s.grandTotal || 0;
+            const method = (s.payment_method || s.payMethod || '').toLowerCase();
+            if (method.includes('tunai') || method.includes('cash')) cashTotal += total;
+            else nonCashTotal += total;
+        });
+
+        document.getElementById('shiftCashierNameDisplay').textContent = shift.cashierName || 'Kasir';
+        document.getElementById('shiftStartingCashDisplay').textContent = formatRupiah(shift.startingCash || 0);
+        document.getElementById('shiftCashSalesDisplay').textContent = formatRupiah(cashTotal);
+        document.getElementById('shiftNonCashSalesDisplay').textContent = formatRupiah(nonCashTotal);
+        document.getElementById('inputStartingCash').value = shift.startingCash || 0;
+
+        // Render Petty Cash Logs
+        const tbody = document.getElementById('pettyCashTableBody');
+        if (tbody) {
+            tbody.innerHTML = (shift.pettyCashLogs || []).map(log => `
+                <tr>
+                    <td>${new Date(log.time).toLocaleTimeString()}</td>
+                    <td><span class="badge ${log.type === 'in' ? 'bg-success' : 'bg-danger'}" style="color:${log.type === 'in' ? '#34d399' : '#f87171'}; font-weight:700;">${log.type === 'in' ? 'Kas Masuk' : 'Kas Keluar'}</span></td>
+                    <td>${log.reason}</td>
+                    <td><strong>${formatRupiah(log.amount)}</strong></td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    document.querySelectorAll('.shift-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.shift-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.shift-tab-pane').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.getAttribute('data-shift-tab');
+            document.getElementById(`shiftPane-${target}`)?.classList.add('active');
+        });
+    });
+
+    document.getElementById('btnUpdateStartingCash')?.addEventListener('click', () => {
+        const val = parseFloat(document.getElementById('inputStartingCash').value) || 0;
+        SohibDB.updateStartingCash(val);
+        renderShiftManager();
+        showToast('Modal awal laci kasir berhasil diperbarui!', 'success');
+    });
+
+    document.getElementById('btnAddPettyCash')?.addEventListener('click', () => {
+        const type = document.getElementById('pettyCashType').value;
+        const amount = parseFloat(document.getElementById('pettyCashAmount').value) || 0;
+        const reason = document.getElementById('pettyCashReason').value.trim();
+
+        if (amount <= 0 || !reason) {
+            showToast('Nominal dan alasan kas kecil wajib diisi!', 'warning');
             return;
         }
 
-        container.innerHTML = state.holdBills.map(b => `
-            <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h5 style="font-size: 0.95rem; font-weight: 700;">${b.customerName} (${b.tableNumber})</h5>
-                    <span style="font-size: 0.775rem; color: var(--text-muted);">${b.items.length} item • ${formatRupiah(b.totalAmount)}</span>
+        SohibDB.addPettyCash(type, amount, reason);
+        document.getElementById('pettyCashAmount').value = '';
+        document.getElementById('pettyCashReason').value = '';
+        renderShiftManager();
+        showToast('Catatan kas kecil berhasil disimpan!', 'success');
+    });
+
+    document.getElementById('btnSubmitCloseShift')?.addEventListener('click', () => {
+        const actualCash = parseFloat(document.getElementById('inputActualCashInDrawer').value);
+        if (isNaN(actualCash)) {
+            showToast('Masukkan nominal total uang fisik yang dihitung di laci!', 'warning');
+            return;
+        }
+
+        const notes = document.getElementById('inputShiftNotes')?.value || '';
+        const zReport = SohibDB.closeShiftAndGenerateZReport(actualCash, notes);
+
+        // Populate Z-Report Receipt
+        document.getElementById('zrReportId').textContent = zReport.reportId;
+        document.getElementById('zrShiftNo').textContent = `Shift ${zReport.shiftNumber}`;
+        document.getElementById('zrCashier').textContent = zReport.cashierName;
+        document.getElementById('zrTime').textContent = new Date().toLocaleString('id-ID');
+        document.getElementById('zrStartingCash').textContent = formatRupiah(zReport.startingCash);
+        document.getElementById('zrCashSales').textContent = formatRupiah(zReport.totalCashSales);
+        document.getElementById('zrPettyIn').textContent = formatRupiah(zReport.totalPettyCashIn);
+        document.getElementById('zrPettyOut').textContent = `- ${formatRupiah(zReport.totalPettyCashOut)}`;
+        document.getElementById('zrExpectedCash').textContent = formatRupiah(zReport.expectedCash);
+        document.getElementById('zrActualCash').textContent = formatRupiah(zReport.actualCashInDrawer);
+        document.getElementById('zrDiffVal').textContent = `${zReport.cashDifference >= 0 ? '+' : ''}${formatRupiah(zReport.cashDifference)}`;
+        document.getElementById('zrQrisSales').textContent = formatRupiah(zReport.totalQrisSales);
+        document.getElementById('zrCardSales').textContent = formatRupiah(zReport.totalCardSales + zReport.totalTransferSales);
+        document.getElementById('zrTotalTurnover').textContent = formatRupiah(zReport.totalTurnover);
+
+        closeModal('modalShiftManager');
+        openModal('modalZReportReceipt');
+        SoundEngine.success();
+        showToast('Tutup shift & Z-Report berhasil digenerate!', 'success');
+    });
+
+    document.getElementById('btnPrintZReport')?.addEventListener('click', () => {
+        window.print();
+    });
+
+    document.getElementById('btnOpenShiftManager')?.addEventListener('click', () => {
+        renderShiftManager();
+        openModal('modalShiftManager');
+    });
+
+    // ----------------------------------------------------------------------
+    // 12. CRM MEMBER & POIN SULTAN LOGIC
+    // ----------------------------------------------------------------------
+    function renderMemberCRM() {
+        const grid = document.getElementById('memberCardsGrid');
+        const countEl = document.getElementById('memberTotalCount');
+        if (!grid) return;
+
+        const members = SohibDB.getMembers();
+        if (countEl) countEl.textContent = members.length;
+
+        grid.innerHTML = members.map(m => `
+            <div class="member-item-card">
+                <span class="member-tier-tag ${m.tier.toLowerCase()}">${m.tier}</span>
+                <h5 style="font-weight:700; color:var(--text-main); margin-bottom:2px;">${m.name}</h5>
+                <span style="font-size:0.75rem; color:#9ca3af;"><i class="ri-whatsapp-line"></i> ${m.phone}</span>
+                <span style="font-size:0.85rem; font-weight:800; color:#34d399; margin-top:4px;"><i class="ri-copper-coin-fill"></i> ${m.points} Poin Sultan</span>
+                <span style="font-size:0.72rem; color:#6b7280;">Total Belanja: ${formatRupiah(m.totalSpend || 0)}</span>
+                <button class="btn-table-action-sm btn-use-member-cart" data-phone="${m.phone}" style="margin-top:6px;">
+                    <i class="ri-check-line"></i> Pilih Member untuk Pesanan
+                </button>
+            </div>
+        `).join('');
+
+        grid.querySelectorAll('.btn-use-member-cart').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const phone = btn.getAttribute('data-phone');
+                const member = SohibDB.getMemberByPhone(phone);
+                if (member) {
+                    state.activeMember = member;
+                    document.getElementById('cartMemberBadgeRow').style.display = 'flex';
+                    document.getElementById('cartMemberName').textContent = member.name;
+                    document.getElementById('cartMemberTier').textContent = member.tier;
+                    document.getElementById('cartMemberPoints').textContent = member.points;
+                    document.getElementById('customerNameInput').value = member.name;
+                    closeModal('modalMemberCRM');
+                    showToast(`Member ${member.name} (${member.tier}) aktif pada pesanan!`, 'success');
+                }
+            });
+        });
+    }
+
+    document.getElementById('btnRegisterNewMember')?.addEventListener('click', () => {
+        const name = document.getElementById('inputNewMemberName')?.value.trim();
+        const phone = document.getElementById('inputNewMemberPhone')?.value.trim();
+
+        if (!name || !phone) {
+            showToast('Nama dan No. WhatsApp wajib diisi!', 'warning');
+            return;
+        }
+
+        const res = SohibDB.registerMember(name, phone);
+        if (res.success) {
+            document.getElementById('inputNewMemberName').value = '';
+            document.getElementById('inputNewMemberPhone').value = '';
+            renderMemberCRM();
+            SoundEngine.success();
+            showToast(`Member ${name} berhasil didaftarkan dengan bonus 10 Poin Sultan!`, 'success');
+        } else {
+            showToast(res.message, 'warning');
+        }
+    });
+
+    document.getElementById('btnRemoveMemberCart')?.addEventListener('click', () => {
+        state.activeMember = null;
+        document.getElementById('cartMemberBadgeRow').style.display = 'none';
+        showToast('Member dilepas dari keranjang.', 'info');
+    });
+
+    document.getElementById('btnOpenMemberCRM')?.addEventListener('click', () => {
+        renderMemberCRM();
+        openModal('modalMemberCRM');
+    });
+
+    // ----------------------------------------------------------------------
+    // 13. CUSTOMER SELF-ORDER MODE LOGIC
+    // ----------------------------------------------------------------------
+    function initCustomerSelfOrder() {
+        const params = new URLSearchParams(window.location.search);
+        const mode = params.get('mode');
+        const table = params.get('table');
+
+        if (mode === 'customer' || state.isCustomerMode) {
+            enableCustomerMode(table || 'Meja Walk-in');
+        }
+    }
+
+    function enableCustomerMode(tableName) {
+        state.isCustomerMode = true;
+        document.getElementById('posMainView').style.display = 'none';
+        document.getElementById('mainHeader').style.display = 'none';
+        document.getElementById('mainFooterBar').style.display = 'none';
+        document.getElementById('customerSelfOrderView').style.display = 'flex';
+        document.getElementById('custActiveTableLabel').textContent = tableName;
+
+        renderCustomerMenu('all');
+    }
+
+    function disableCustomerMode() {
+        state.isCustomerMode = false;
+        document.getElementById('customerSelfOrderView').style.display = 'none';
+        document.getElementById('posMainView').style.display = 'flex';
+        document.getElementById('mainHeader').style.display = 'flex';
+        document.getElementById('mainFooterBar').style.display = 'flex';
+    }
+
+    function renderCustomerMenu(category = 'all') {
+        const grid = document.getElementById('custProductGrid');
+        if (!grid) return;
+
+        let filtered = state.products.filter(p => category === 'all' || p.category === category);
+        grid.innerHTML = filtered.map(prod => `
+            <div class="product-card">
+                <div class="product-img-wrap">
+                    <img src="${prod.img || ''}" alt="${prod.name}" loading="lazy" class="product-img">
                 </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn-secondary" data-delete-hold="${b.id}" style="padding: 0.4rem 0.75rem; color: var(--primary-rose);"><i class="ri-delete-bin-line"></i></button>
-                    <button class="btn-primary-action" data-restore-hold="${b.id}" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;"><i class="ri-play-line"></i> Lanjutkan</button>
+                <div class="product-info">
+                    <span class="product-category-tag">${prod.category.toUpperCase()}</span>
+                    <h4 class="product-title">${prod.name}</h4>
+                    <div class="product-foot">
+                        <span class="product-price">${formatRupiah(prod.price)}</span>
+                        <button class="btn-add-cart btn-cust-add" data-id="${prod.id}">
+                            <i class="ri-add-line"></i> Pesan
+                        </button>
+                    </div>
                 </div>
             </div>
         `).join('');
 
-        container.querySelectorAll('[data-restore-hold]').forEach(btn => {
+        grid.querySelectorAll('.btn-cust-add').forEach(btn => {
             btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-restore-hold');
-                restoreHoldBill(id);
-            });
-        });
-
-        container.querySelectorAll('[data-delete-hold]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-delete-hold');
-                state.holdBills = state.holdBills.filter(b => b.id !== id);
-                saveState();
-                renderHoldBills();
-                renderCart();
+                const prodId = btn.getAttribute('data-id');
+                const product = state.products.find(p => p.id === prodId);
+                if (product) {
+                    if (product.category === 'kopi' || product.category === 'minuman') {
+                        openDrinkOptionsModal(product);
+                    } else {
+                        addToCart(product);
+                    }
+                    updateCustomerCartBar();
+                }
             });
         });
     }
 
-    function restoreHoldBill(id) {
-        const draft = state.holdBills.find(b => b.id === id);
-        if (!draft) return;
+    function updateCustomerCartBar() {
+        const bar = document.getElementById('custFloatingCartBar');
+        const badge = document.getElementById('custCartBadge');
+        const total = document.getElementById('custCartTotal');
+        const items = document.getElementById('custCartItemsInfo');
 
-        state.cart = [...draft.items];
-        state.currentOrderId = draft.orderId;
-        document.getElementById('currentOrderIdDisplay').textContent = draft.orderId;
-        document.getElementById('customerNameInput').value = draft.customerName;
-        document.getElementById('tableNumberInput').value = draft.tableNumber;
-        state.orderType = draft.orderType;
+        const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
+        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-        // Remove from hold
-        state.holdBills = state.holdBills.filter(b => b.id !== id);
-
-        closeModal('modalHoldBills');
-        saveState();
-        renderCart();
-        showToast(`Pesanan ${draft.customerName} siap dilanjutkan!`, 'success');
+        if (totalItems > 0) {
+            bar.style.display = 'flex';
+            badge.textContent = totalItems;
+            total.textContent = formatRupiah(subtotal);
+            items.textContent = `${totalItems} menu dipilih`;
+        } else {
+            bar.style.display = 'none';
+        }
     }
 
+    document.querySelectorAll('.cust-cat-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('.cust-cat-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            renderCustomerMenu(pill.getAttribute('data-category'));
+        });
+    });
+
+    document.getElementById('btnCustOpenCartDrawer')?.addEventListener('click', () => {
+        const tableLabel = document.getElementById('custActiveTableLabel').textContent;
+        document.getElementById('tableNumberInput').value = tableLabel;
+        document.getElementById('customerNameInput').value = 'Tamu Self-Order';
+        processPaymentSubmission();
+    });
+
+    document.getElementById('btnSwitchCustomerView')?.addEventListener('click', () => {
+        enableCustomerMode('Meja T01');
+    });
+
+    document.getElementById('btnExitCustomerMode')?.addEventListener('click', () => {
+        disableCustomerMode();
+    });
+
     // ----------------------------------------------------------------------
-    // 9. INVENTORY MANAGEMENT
+    // 14. SOUND FX & PWA SERVICE WORKER REGISTRATION
     // ----------------------------------------------------------------------
-    function renderInventoryTable() {
+    document.getElementById('btnToggleAudioFx')?.addEventListener('click', () => {
+        state.soundEnabled = !state.soundEnabled;
+        localStorage.setItem('posify_sound', state.soundEnabled);
+        const icon = document.getElementById('audioFxIcon');
+        if (icon) {
+            icon.className = state.soundEnabled ? 'ri-volume-up-fill' : 'ri-volume-mute-fill';
+        }
+        showToast(state.soundEnabled ? 'Efek Suara Aktif 🔊' : 'Efek Suara Dinonaktifkan 🔇', 'info');
+    });
+
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                console.log('✅ Service Worker Registered:', reg.scope);
+            }).catch(err => {
+                console.log('❌ Service Worker Registration Failed:', err);
+            });
+        });
+    }
+
+    // Network Online / Offline Detection
+    window.addEventListener('offline', () => {
+        const banner = document.getElementById('networkBanner');
+        if (banner) banner.style.display = 'flex';
+        showToast('Koneksi internet terputus — POSify berjalan dalam mode offline lokal!', 'warning');
+    });
+
+    // ----------------------------------------------------------------------
+    // 14B. INVENTORY & SALES REPORTS MODAL
+    // ----------------------------------------------------------------------
+    function renderInventory() {
         const tbody = document.getElementById('inventoryTableBody');
-        const countEl = document.getElementById('totalProductCount');
         if (!tbody) return;
+        const query = (document.getElementById('invSearchInput')?.value || '').toLowerCase();
+        const filtered = state.products.filter(p => p.name.toLowerCase().includes(query) || (p.barcode && p.barcode.includes(query)));
 
-        if (countEl) countEl.textContent = state.products.length;
-
-        tbody.innerHTML = state.products.map(prod => `
+        tbody.innerHTML = filtered.map(p => `
             <tr>
+                <td><strong>${p.name}</strong><br><small style="color:var(--text-muted);">Barcode: ${p.barcode || p.id}</small></td>
+                <td><span class="product-category-tag">${p.category.toUpperCase()}</span></td>
+                <td>${formatRupiah(p.price)}</td>
                 <td>
-                    <div style="display: flex; align-items: center; gap: 0.6rem;">
-                        <img src="${prod.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100'}" style="width: 34px; height: 34px; border-radius: 6px; object-fit: cover;">
-                        <div>
-                            <strong>${prod.name}</strong>
-                            <div style="font-size: 0.725rem; color: var(--text-muted);">SKU: ${prod.barcode || '-'}</div>
-                        </div>
-                    </div>
+                    <span style="font-weight:800; color:${p.stock <= 5 ? '#f87171' : '#34d399'};">${p.stock} pcs</span>
                 </td>
-                <td><span style="text-transform: capitalize;">${prod.category}</span></td>
-                <td><strong>${formatRupiah(prod.price)}</strong></td>
-                <td>${prod.stock} pcs</td>
                 <td>
-                    <span class="product-badge-stock ${prod.stock <= 0 ? 'stock-out' : prod.stock <= 10 ? 'stock-low' : 'stock-in'}" style="position: static;">
-                        ${prod.stock <= 0 ? 'Habis' : prod.stock <= 10 ? 'Menipis' : 'Tersedia'}
-                    </span>
-                </td>
-                <td style="text-align: right;">
-                    <button class="btn-header-icon" data-edit-prod="${prod.id}" style="width: 30px; height: 30px; font-size: 0.9rem; display: inline-flex;" title="Edit Produk"><i class="ri-edit-line"></i></button>
-                    <button class="btn-header-icon" data-delete-prod="${prod.id}" style="width: 30px; height: 30px; font-size: 0.9rem; display: inline-flex; color: var(--primary-rose);" title="Hapus Produk"><i class="ri-delete-bin-line"></i></button>
+                    <button class="btn-primary-action btn-sm btn-edit-stock" data-prod-id="${p.id}" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
+                        <i class="ri-add-circle-line"></i> +5 Stok
+                    </button>
                 </td>
             </tr>
         `).join('');
 
-        tbody.querySelectorAll('[data-edit-prod]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-edit-prod');
+        tbody.querySelectorAll('.btn-edit-stock').forEach(b => {
+            b.addEventListener('click', () => {
+                const id = b.getAttribute('data-prod-id');
                 const prod = state.products.find(p => p.id === id);
                 if (prod) {
-                    document.getElementById('editProductId').value = prod.id;
-                    document.getElementById('prodNameInput').value = prod.name;
-                    document.getElementById('prodCategorySelect').value = prod.category;
-                    document.getElementById('prodPriceInput').value = prod.price;
-                    document.getElementById('prodStockInput').value = prod.stock;
-                    document.getElementById('prodBarcodeInput').value = prod.barcode || '';
-                    document.getElementById('prodImgInput').value = prod.img || '';
-
-                    document.getElementById('productFormTitle').innerHTML = '<i class="ri-edit-line"></i> Edit Produk';
-                    document.getElementById('btnCancelEditProd').style.display = 'inline-block';
-                }
-            });
-        });
-
-        tbody.querySelectorAll('[data-delete-prod]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-delete-prod');
-                if (confirm('Yakin ingin menghapus produk ini dari daftar katalog?')) {
-                    state.products = state.products.filter(p => p.id !== id);
+                    prod.stock += 5;
                     saveState();
-                    renderInventoryTable();
+                    renderInventory();
                     renderProductCatalog();
-                    showToast('Produk berhasil dihapus.', 'info');
+                    SoundEngine.ding();
+                    showToast(`Stok ${prod.name} ditambah 5 pcs (Total: ${prod.stock})`, 'success');
                 }
             });
         });
     }
 
-    // Save New / Edited Product
-    document.getElementById('productManageForm')?.addEventListener('submit', () => {
-        const editId = document.getElementById('editProductId').value;
-        const name = document.getElementById('prodNameInput').value.trim();
-        const category = document.getElementById('prodCategorySelect').value;
-        const price = parseInt(document.getElementById('prodPriceInput').value) || 0;
-        const stock = parseInt(document.getElementById('prodStockInput').value) || 0;
-        const barcode = document.getElementById('prodBarcodeInput').value.trim();
-        const img = document.getElementById('prodImgInput').value.trim();
-
-        if (editId) {
-            const prod = state.products.find(p => p.id === editId);
-            if (prod) {
-                prod.name = name;
-                prod.category = category;
-                prod.price = price;
-                prod.stock = stock;
-                prod.barcode = barcode;
-                if (img) prod.img = img;
-            }
-            showToast('Data produk berhasil diperbarui!', 'success');
-        } else {
-            const newProd = {
-                id: 'PROD-' + String(state.products.length + 1).padStart(3, '0'),
-                name: name,
-                category: category,
-                price: price,
-                stock: stock,
-                barcode: barcode || String(8991000 + state.products.length + 1),
-                img: img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80'
-            };
-            state.products.push(newProd);
-            showToast('Produk baru berhasil ditambahkan!', 'success');
-        }
-
-        // Reset form
-        document.getElementById('productManageForm').reset();
-        document.getElementById('editProductId').value = '';
-        document.getElementById('productFormTitle').innerHTML = '<i class="ri-add-circle-line"></i> Tambah Produk Baru';
-        document.getElementById('btnCancelEditProd').style.display = 'none';
-
-        saveState();
-        renderInventoryTable();
-        renderProductCatalog();
+    document.getElementById('btnOpenInventory')?.addEventListener('click', () => {
+        renderInventory();
+        openModal('modalInventory');
     });
 
-    document.getElementById('btnCancelEditProd')?.addEventListener('click', () => {
-        document.getElementById('productManageForm').reset();
-        document.getElementById('editProductId').value = '';
-        document.getElementById('productFormTitle').innerHTML = '<i class="ri-add-circle-line"></i> Tambah Produk Baru';
-        document.getElementById('btnCancelEditProd').style.display = 'none';
-    });
+    document.getElementById('invSearchInput')?.addEventListener('input', renderInventory);
 
-    // ----------------------------------------------------------------------
-    // 10. SALES REPORTS & ANALYTICS
-    // ----------------------------------------------------------------------
     function renderReports() {
-        const totalRevEl = document.getElementById('reportTotalRevenue');
-        const totalTxEl = document.getElementById('reportTotalTxCount');
+        const totalRevEl = document.getElementById('reportTotalRevenue') || document.getElementById('repTotalTurnover');
+        const totalTxEl = document.getElementById('reportTotalTxCount') || document.getElementById('repTotalOrders');
         const totalItemsEl = document.getElementById('reportTotalItemsSold');
         const avgOrderEl = document.getElementById('reportAvgOrderValue');
-        const tbody = document.getElementById('transactionHistoryTableBody');
+        const tbody = document.getElementById('transactionHistoryTableBody') || document.getElementById('reportsTableBody');
 
-        const totalRevenue = state.transactions.reduce((sum, t) => sum + t.grandTotal, 0);
-        const totalTxCount = state.transactions.length;
-        const totalItemsSold = state.transactions.reduce((sum, t) => {
-            return sum + t.items.reduce((s, it) => s + it.qty, 0);
-        }, 0);
+        const sales = SohibDB.getSales();
+        let totalRevenue = 0;
+        let totalItemsSold = 0;
+
+        sales.forEach(s => {
+            const amount = (s.total_amount || s.grandTotal || 0);
+            totalRevenue += amount;
+            if (s.items && Array.isArray(s.items)) {
+                totalItemsSold += s.items.reduce((acc, it) => acc + (it.qty || 1), 0);
+            } else {
+                totalItemsSold += 1;
+            }
+        });
+
+        const totalTxCount = sales.length;
         const avgOrder = totalTxCount > 0 ? Math.round(totalRevenue / totalTxCount) : 0;
 
         if (totalRevEl) totalRevEl.textContent = formatRupiah(totalRevenue);
@@ -1402,255 +1765,67 @@ document.addEventListener('DOMContentLoaded', () => {
         if (totalItemsEl) totalItemsEl.textContent = `${totalItemsSold} Pcs`;
         if (avgOrderEl) avgOrderEl.textContent = formatRupiah(avgOrder);
 
-        if (!tbody) return;
+        if (tbody) {
+            if (sales.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center py-4" style="text-align:center; padding:1.5rem; color:var(--text-muted);">Belum ada riwayat transaksi penjualan hari ini.</td></tr>';
+                return;
+            }
 
-        if (state.transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-muted text-center py-4">Belum ada riwayat transaksi penjualan.</td></tr>';
-            return;
+            tbody.innerHTML = sales.slice(0, 50).map(s => {
+                const orderNo = s.invoice_no || s.orderId || '-';
+                const timeStr = new Date(s.created_at || s.dateTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                const customerStr = `${s.customer_name || s.customerName || 'Umum'} (${s.table_number || s.tableNumber || '-'})`;
+                const orderTypeStr = (s.order_type || s.orderType || 'dine-in') === 'dine-in' ? 'Dine In' : (s.order_type || s.orderType) === 'take-away' ? 'Take Away' : 'Delivery';
+                const methodStr = s.payment_method || s.payMethod || 'Tunai';
+                const amountStr = formatRupiah(s.total_amount || s.grandTotal || 0);
+
+                return `
+                    <tr>
+                        <td><strong>${orderNo}</strong></td>
+                        <td>${timeStr}</td>
+                        <td>${customerStr}</td>
+                        <td><span class="badge" style="background:rgba(212,163,115,0.12); color:var(--primary-amber); padding:0.2rem 0.5rem; border-radius:4px; font-size:0.75rem;">${orderTypeStr}</span></td>
+                        <td><span class="badge" style="background:rgba(16,185,129,0.12); color:#34d399; padding:0.2rem 0.5rem; border-radius:4px; font-size:0.75rem;">${methodStr}</span></td>
+                        <td><strong>${amountStr}</strong></td>
+                    </tr>
+                `;
+            }).join('');
         }
-
-        tbody.innerHTML = state.transactions.map(tx => {
-            const d = new Date(tx.dateTime);
-            const dateStr = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            return `
-                <tr>
-                    <td><strong>${tx.orderId}</strong></td>
-                    <td style="font-size: 0.775rem; color: var(--text-muted);">${dateStr}</td>
-                    <td>${tx.customerName}</td>
-                    <td><span style="text-transform: capitalize;">${tx.orderType}</span></td>
-                    <td><span style="font-size: 0.8rem; font-weight: 600;">${tx.payMethod}</span></td>
-                    <td><strong style="color: var(--primary-cyan);">${formatRupiah(tx.grandTotal)}</strong></td>
-                    <td style="text-align: right;">
-                        <button class="btn-header" data-reprint="${tx.orderId}" style="height: 30px; font-size: 0.775rem; padding: 0 0.5rem; display: inline-flex;">
-                            <i class="ri-printer-line"></i> Cetak Ulang
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        tbody.querySelectorAll('[data-reprint]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-reprint');
-                const tx = state.transactions.find(t => t.orderId === id);
-                if (tx) {
-                    populateThermalReceipt(tx);
-                    openModal('modalReceipt');
-                }
-            });
-        });
     }
 
-    // Export CSV Feature
+    // CSV Export Handler
     document.getElementById('btnExportReportCSV')?.addEventListener('click', () => {
-        if (state.transactions.length === 0) {
-            showToast('Belum ada transaksi untuk diekspor.', 'warning');
+        const sales = SohibDB.getSales();
+        if (sales.length === 0) {
+            showToast('Tidak ada data transaksi untuk diekspor.', 'warning');
             return;
         }
 
-        let csv = 'No. Order,Tanggal,Pelanggan,Meja,Tipe,Metode Bayar,Subtotal,Pajak,Total Akhir\n';
-        state.transactions.forEach(t => {
-            csv += `"${t.orderId}","${t.dateTime}","${t.customerName}","${t.tableNumber}","${t.orderType}","${t.payMethod}",${t.subtotal},${t.tax},${t.grandTotal}\n`;
+        let csv = 'No Order,Waktu,Pelanggan,Meja,Tipe,Metode Pembayaran,Total Tagihan\n';
+        sales.forEach(s => {
+            const no = s.invoice_no || s.orderId || '';
+            const t = new Date(s.created_at || s.dateTime).toLocaleString('id-ID');
+            const c = (s.customer_name || s.customerName || 'Umum').replace(/,/g, ' ');
+            const m = s.table_number || s.tableNumber || '-';
+            const ty = s.order_type || s.orderType || 'dine-in';
+            const pm = (s.payment_method || s.payMethod || 'Tunai').replace(/,/g, ' ');
+            const tot = s.total_amount || s.grandTotal || 0;
+            csv += `"${no}","${t}","${c}","${m}","${ty}","${pm}",${tot}\n`;
         });
 
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `Laporan_Penjualan_POSify_${new Date().toISOString().slice(0, 10)}.csv`;
-        link.click();
-        showToast('Laporan penjualan berhasil diekspor ke CSV!', 'success');
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Laporan_Penjualan_SohibCaffe_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        SoundEngine.ding();
+        showToast('Laporan penjualan CSV berhasil diunduh!', 'success');
     });
 
     // ----------------------------------------------------------------------
-    // 11. MODAL SYSTEM & SECURITY ACCESS CONTROL
-    // ----------------------------------------------------------------------
-    function isSecurityAuthorized() {
-        try {
-            const rawUser = localStorage.getItem('sohib_active_user');
-            if (!rawUser) return false;
-            const user = JSON.parse(rawUser);
-            const role = (user.rawRole || user.role || '').toLowerCase();
-            const badge = (user.roleBadge || '').toLowerCase();
-            const email = (user.email || '').toLowerCase();
-            return role === 'admin' || role === 'owner' || role.includes('admin') || role.includes('security') ||
-                   badge.includes('admin') || badge.includes('owner') ||
-                   email === 'admin@sohibcaffe.com' || email === 'owner@sohibcaffe.com';
-        } catch (e) {
-            return false;
-        }
-    }
-
-    function openModal(modalId) {
-        if (modalId === 'modalSecuritySOC' && !isSecurityAuthorized()) {
-            showToast('Akses Ditolak: Fitur Cyber Security SOC hanya diizinkan untuk Admin Keamanan atau Owner.', 'warning');
-            return;
-        }
-        const modal = document.getElementById(modalId);
-        if (modal) modal.classList.add('active');
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) modal.classList.remove('active');
-    }
-
-    document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const target = btn.getAttribute('data-close');
-            closeModal(target);
-        });
-    });
-
-    document.querySelectorAll('.pos-modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.classList.remove('active');
-        });
-    });
-
-    // ----------------------------------------------------------------------
-    // 12. EVENT LISTENERS & SHORTCUTS
-    // ----------------------------------------------------------------------
-
-    // Header buttons
-    document.getElementById('btnOpenInventory')?.addEventListener('click', () => {
-        renderInventoryTable();
-        openModal('modalInventory');
-    });
-
-    document.getElementById('btnOpenReports')?.addEventListener('click', () => {
-        renderReports();
-        openModal('modalReports');
-    });
-
-    document.getElementById('btnOpenHoldBills')?.addEventListener('click', () => {
-        renderHoldBills();
-        openModal('modalHoldBills');
-    });
-
-    document.getElementById('btnClearCart')?.addEventListener('click', clearCart);
-    document.getElementById('btnProceedCheckout')?.addEventListener('click', openCheckoutModal);
-    document.getElementById('btnSubmitPayment')?.addEventListener('click', processPaymentSubmission);
-    document.getElementById('btnHoldCurrentBill')?.addEventListener('click', holdCurrentBill);
-    document.getElementById('btnPrintReceiptBtn')?.addEventListener('click', () => window.print());
-
-    // Category Pill Filters
-    document.querySelectorAll('.category-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            state.selectedCategory = pill.getAttribute('data-category');
-            renderProductCatalog();
-        });
-    });
-
-    // Search Input
-    const searchInput = document.getElementById('productSearchInput');
-    const clearSearchBtn = document.getElementById('clearSearchBtn');
-
-    searchInput?.addEventListener('input', (e) => {
-        state.searchQuery = e.target.value;
-        if (clearSearchBtn) clearSearchBtn.style.display = state.searchQuery ? 'block' : 'none';
-        renderProductCatalog();
-    });
-
-    clearSearchBtn?.addEventListener('click', () => {
-        state.searchQuery = '';
-        searchInput.value = '';
-        clearSearchBtn.style.display = 'none';
-        renderProductCatalog();
-    });
-
-    // Barcode Simulation Button
-    document.getElementById('btnScanBarcode')?.addEventListener('click', () => {
-        const randomProduct = state.products[Math.floor(Math.random() * state.products.length)];
-        if (randomProduct) {
-            showToast(`Barcode Scanned: ${randomProduct.barcode} (${randomProduct.name})`, 'info');
-            addToCart(randomProduct);
-        }
-    });
-
-    // Order Type Buttons
-    document.querySelectorAll('.order-type-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.orderType = btn.getAttribute('data-type');
-        });
-    });
-
-    // Payment Nav Tabs in Checkout
-    document.querySelectorAll('.payment-nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            document.querySelectorAll('.payment-nav-item').forEach(i => i.classList.remove('active'));
-            document.querySelectorAll('.payment-tab-content').forEach(p => p.classList.remove('active'));
-
-            item.classList.add('active');
-            const targetPane = item.getAttribute('data-paytab');
-            state.activePayTab = targetPane;
-            const paneEl = document.getElementById(targetPane);
-            if (paneEl) paneEl.classList.add('active');
-        });
-    });
-
-    // Cash Input in Checkout Modal
-    const cashInput = document.getElementById('cashReceivedInput');
-    cashInput?.addEventListener('input', (e) => {
-        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const grandTotal = subtotal + Math.round(subtotal * 0.10);
-        const enteredVal = parseFloat(e.target.value) || 0;
-        calculateCashChange(grandTotal, enteredVal);
-    });
-
-    // Quick Cash Chips
-    document.querySelectorAll('.cash-chip-btn').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const grandTotal = subtotal + Math.round(subtotal * 0.10);
-            const type = chip.getAttribute('data-type');
-
-            if (type === 'exact') {
-                cashInput.value = grandTotal;
-                calculateCashChange(grandTotal, grandTotal);
-            } else {
-                const val = parseFloat(chip.getAttribute('data-val')) || 0;
-                cashInput.value = val;
-                calculateCashChange(grandTotal, val);
-            }
-        });
-    });
-
-    // Theme Toggle
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const themeIcon = document.getElementById('themeIcon');
-
-    function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        state.theme = theme;
-        if (themeIcon) {
-            themeIcon.className = theme === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
-        }
-        saveState();
-    }
-
-    applyTheme(state.theme);
-
-    themeToggleBtn?.addEventListener('click', () => {
-        const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
-        applyTheme(nextTheme);
-        showToast(`Tema diganti ke mode ${nextTheme.toUpperCase()}`, 'info');
-    });
-
-    // Fullscreen Toggle
-    document.getElementById('fullscreenToggleBtn')?.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
-        } else {
-            document.exitFullscreen().catch(() => {});
-        }
-    });
-
-    // ----------------------------------------------------------------------
-    // 13. MOBILE SPECIFIC NAVIGATION & INTERACTIONS
+    // 14C. MOBILE BOTTOM NAVIGATION & QUICK MENU SHEET
     // ----------------------------------------------------------------------
     const posCartPanel = document.getElementById('posCartPanel');
     const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
@@ -1675,11 +1850,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setActiveMobileNav('catalog');
     }
 
-    // Floating Cart Click
     document.getElementById('btnFloatingViewCart')?.addEventListener('click', openMobileCartView);
     document.getElementById('btnMobileCloseCart')?.addEventListener('click', closeMobileCartView);
 
-    // Mobile Bottom Nav Tabs
+    // Mobile Bottom Nav Tabs Click Handlers
     document.getElementById('mobileNavCatalog')?.addEventListener('click', () => {
         closeMobileCartView();
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1698,10 +1872,10 @@ document.addEventListener('DOMContentLoaded', () => {
         openModal('modalMobileMenu');
     });
 
-    // Mobile Quick Menu Sheet Tiles
+    // Mobile Menu Sheet Tiles Actions
     document.getElementById('mMenuInventory')?.addEventListener('click', () => {
         closeModal('modalMobileMenu');
-        renderInventoryTable();
+        renderInventory();
         openModal('modalInventory');
     });
 
@@ -1718,418 +1892,108 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('mMenuTheme')?.addEventListener('click', () => {
-        const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
-        applyTheme(nextTheme);
-        const mThemeIcon = document.getElementById('mMenuThemeIcon');
-        if (mThemeIcon) {
-            mThemeIcon.className = nextTheme === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
-        }
-        showToast(`Tema diganti ke mode ${nextTheme.toUpperCase()}`, 'info');
+        document.getElementById('themeToggleBtn')?.click();
     });
 
-    // Google Maps Location Modal Handlers
-    document.getElementById('btnOpenMapsFooter')?.addEventListener('click', () => {
-        openModal('modalLocationMap');
-    });
-
-    document.getElementById('btnMobileOpenMaps')?.addEventListener('click', () => {
+    document.getElementById('mMenuMaps')?.addEventListener('click', () => {
         closeModal('modalMobileMenu');
         openModal('modalLocationMap');
     });
 
-    // Keyboard Shortcuts (F1, F2, F4, F8, Escape)
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'F1') {
-            e.preventDefault();
-            searchInput?.focus();
-        } else if (e.key === 'F2') {
-            e.preventDefault();
-            renderInventoryTable();
-            openModal('modalInventory');
-        } else if (e.key === 'F4') {
-            e.preventDefault();
-            renderHoldBills();
-            openModal('modalHoldBills');
-        } else if (e.key === 'F8') {
-            e.preventDefault();
-            if (state.cart.length > 0) openCheckoutModal();
-        } else if (e.key === 'Escape') {
-            document.querySelectorAll('.pos-modal-overlay.active').forEach(m => m.classList.remove('active'));
-            closeMobileCartView();
-        }
+    document.getElementById('mMenuLogout')?.addEventListener('click', () => {
+        closeModal('modalMobileMenu');
+        document.getElementById('btnLogoutHeader')?.click();
+    });
+
+    document.getElementById('btnMobileUserLogout')?.addEventListener('click', () => {
+        closeModal('modalMobileMenu');
+        document.getElementById('btnLogoutHeader')?.click();
     });
 
     // ----------------------------------------------------------------------
-    // 14. INITIAL APP RENDER
+    // 15. INITIALIZATION & CONTROLLERS
     // ----------------------------------------------------------------------
-    document.getElementById('currentOrderIdDisplay').textContent = state.currentOrderId;
     renderProductCatalog();
     renderCart();
+    renderKDS();
+    renderFloorPlan();
+    initCustomerSelfOrder();
+    updateKdsBadge();
 
-    // ----------------------------------------------------------------------
-    // 15. AUTH USER SESSION SYNC & LOGOUT (From login.html)
-    // ----------------------------------------------------------------------
-    function performLogout(userName) {
-        const nameToDisplay = userName || 'staf';
-        if (confirm(`Apakah Anda yakin ingin logout dari akun ${nameToDisplay} dan kembali ke halaman Login?`)) {
-            try {
-                localStorage.removeItem('sohib_active_user');
-            } catch (e) {}
-            showToast('Berhasil logout. Mengarahkan ke Login...', 'info');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 400);
+    // Auto-update KDS Timers every 10 seconds
+    setInterval(() => {
+        if (document.getElementById('modalKDS')?.classList.contains('active')) {
+            renderKDS();
         }
-    }
+    }, 10000);
 
-    function syncAuthUser() {
-        let currentUserName = 'M. Ikhsan Anggara';
-        try {
-            const rawUser = localStorage.getItem('sohib_active_user');
-            if (rawUser) {
-                const user = JSON.parse(rawUser);
-                currentUserName = user.name || currentUserName;
+    // Global Modal Close Buttons
+    document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-close');
+            closeModal(modalId);
+        });
+    });
 
-                // Desktop Header Profile Elements
-                const cashierNameEl = document.querySelector('.cashier-name');
-                const cashierAvatarEl = document.querySelector('.cashier-avatar');
-                const cashierRoleEl = document.querySelector('.cashier-role');
+    // Category Pill Filters in Main POS
+    document.querySelectorAll('#categoryPillContainer .category-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#categoryPillContainer .category-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            state.selectedCategory = pill.getAttribute('data-category');
+            renderProductCatalog();
+        });
+    });
 
-                if (cashierNameEl && user.name) cashierNameEl.textContent = user.name;
-                if (cashierAvatarEl && user.avatar) cashierAvatarEl.textContent = user.avatar;
-                if (cashierRoleEl && user.roleBadge) {
-                    const iconClass = user.roleBadge.includes('Admin') ? 'ri-shield-keyhole-fill' : 'ri-vip-crown-fill';
-                    const iconColor = user.roleBadge.includes('Admin') ? '#10b981' : '#f59e0b';
-                    cashierRoleEl.innerHTML = `<i class="${iconClass}" style="color: ${iconColor}; font-size: 0.65rem;"></i> ${user.roleBadge}`;
-                }
+    // Product Search Input
+    document.getElementById('productSearchInput')?.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        renderProductCatalog();
+    });
 
-                // Mobile Menu Profile Elements
-                const mMenuAvatar = document.getElementById('mMenuAvatar');
-                const mMenuUserName = document.getElementById('mMenuUserName');
-                const mMenuUserRole = document.getElementById('mMenuUserRole');
+    document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('productSearchInput');
+        if (input) input.value = '';
+        state.searchQuery = '';
+        renderProductCatalog();
+    });
 
-                if (mMenuAvatar && user.avatar) mMenuAvatar.textContent = user.avatar;
-                if (mMenuUserName && user.name) mMenuUserName.textContent = user.name;
-                if (mMenuUserRole && user.role) {
-                    mMenuUserRole.innerHTML = `<i class="ri-vip-crown-fill" style="color: #f59e0b;"></i> ${user.role} • Online`;
-                }
-            }
-        } catch (e) {}
+    // Barcode Scanner Button
+    document.getElementById('btnScanBarcode')?.addEventListener('click', () => {
+        const randomProduct = state.products[Math.floor(Math.random() * state.products.length)];
+        SoundEngine.beep();
+        addToCart(randomProduct);
+        showToast(`Barcode [${randomProduct.barcode}] terdeteksi: ${randomProduct.name}!`, 'success');
+    });
 
-        // RBAC: Kontrol Hak Akses Tombol WAF SOC (Hanya Admin / Owner)
-        const btnOpenSOC = document.getElementById('btnOpenSecuritySOC');
-        if (btnOpenSOC) {
-            if (isSecurityAuthorized()) {
-                btnOpenSOC.style.display = 'inline-flex';
-            } else {
-                btnOpenSOC.style.display = 'none';
-            }
+    // Theme Toggle
+    document.getElementById('themeToggleBtn')?.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('posify_theme', newTheme);
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.className = newTheme === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+    });
+
+    // Fullscreen Toggle
+    document.getElementById('fullscreenToggleBtn')?.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+            document.exitFullscreen().catch(() => {});
         }
+    });
 
-        // Bind Desktop Header Logout Button
-        document.getElementById('btnLogoutHeader')?.addEventListener('click', () => {
-            performLogout(currentUserName);
-        });
+    // Open Maps
+    document.getElementById('btnOpenMapsFooter')?.addEventListener('click', () => {
+        openModal('modalLocationMap');
+    });
 
-        // Bind Mobile Logout Actions
-        document.getElementById('btnMobileUserLogout')?.addEventListener('click', () => {
-            performLogout(currentUserName);
-        });
+    // Cyber Security SOC Button (visible for admin/owner)
+    document.getElementById('btnOpenSecuritySOC')?.addEventListener('click', () => {
+        openModal('modalSecuritySOC');
+    });
 
-        document.getElementById('mMenuLogout')?.addEventListener('click', () => {
-            closeModal('modalMobileMenu');
-            performLogout(currentUserName);
-        });
-    }
-    syncAuthUser();
-
-    // ----------------------------------------------------------------------
-    // 16. CYBER SECURITY OPERATIONS CENTER (SOC) CONTROLLER
-    // ----------------------------------------------------------------------
-    const SOCController = {
-        statsInterval: null,
-        logsData: [],
-
-        init() {
-            // Open SOC Modal button (Dilindungi otorisasi Admin)
-            const btnOpenSOC = document.getElementById('btnOpenSecuritySOC');
-            if (btnOpenSOC) {
-                btnOpenSOC.addEventListener('click', () => {
-                    if (!isSecurityAuthorized()) {
-                        showToast('Akses Ditolak: Hanya Admin Keamanan atau Owner yang berhak mengakses Cyber SOC!', 'warning');
-                        return;
-                    }
-                    openModal('modalSecuritySOC');
-                    this.fetchStats();
-                    this.fetchLogs();
-                    this.startLivePolling();
-                });
-            }
-
-            // Bind SOC Tabs
-            document.querySelectorAll('.soc-tab').forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    const targetTab = e.currentTarget.getAttribute('data-soc-tab');
-                    document.querySelectorAll('.soc-tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.soc-tab-content').forEach(c => c.classList.remove('active'));
-
-                    e.currentTarget.classList.add('active');
-                    const contentEl = document.getElementById(`socTabContent-${targetTab}`);
-                    if (contentEl) contentEl.classList.add('active');
-
-                    if (targetTab === 'logs') this.fetchLogs();
-                    if (targetTab === 'ip-manager') this.fetchStats();
-                });
-            });
-
-            // Log Filter & Actions
-            const logFilterInput = document.getElementById('socLogFilterInput');
-            if (logFilterInput) {
-                logFilterInput.addEventListener('input', () => this.renderLogs());
-            }
-
-            document.getElementById('btnRefreshSocLogs')?.addEventListener('click', () => {
-                this.fetchLogs();
-                this.fetchStats();
-                showToast('Log keamanan berhasil disegarkan.', 'info');
-            });
-
-            document.getElementById('btnClearTerminalLogs')?.addEventListener('click', () => {
-                const terminalBody = document.getElementById('socTerminalLogsBody');
-                if (terminalBody) {
-                    terminalBody.innerHTML = '<div class="terminal-log-empty">Layar log dibersihkan secara lokal.</div>';
-                }
-            });
-
-            // IP Management Actions
-            document.getElementById('btnManualBlockIp')?.addEventListener('click', () => {
-                const ipInput = document.getElementById('socTargetIpInput');
-                const ip = ipInput ? ipInput.value.trim() : '';
-                if (!ip) {
-                    showToast('Harap masukkan alamat IP yang valid.', 'warning');
-                    return;
-                }
-                this.manageIp(ip, 'block');
-            });
-
-            document.getElementById('btnManualUnblockIp')?.addEventListener('click', () => {
-                const ipInput = document.getElementById('socTargetIpInput');
-                const ip = ipInput ? ipInput.value.trim() : '';
-                if (!ip) {
-                    showToast('Harap masukkan alamat IP yang valid.', 'warning');
-                    return;
-                }
-                this.manageIp(ip, 'unblock');
-            });
-
-            // Attack Simulator Buttons
-            document.querySelectorAll('.btn-run-sim-test').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const testType = e.currentTarget.getAttribute('data-test-type');
-                    const payload = e.currentTarget.getAttribute('data-payload');
-                    this.runAttackSimulation(testType, payload);
-                });
-            });
-
-            // Stop polling when modal is closed
-            const modalSOC = document.getElementById('modalSecuritySOC');
-            if (modalSOC) {
-                const observer = new MutationObserver(() => {
-                    if (!modalSOC.classList.contains('active')) {
-                        this.stopLivePolling();
-                    }
-                });
-                observer.observe(modalSOC, { attributes: true, attributeFilter: ['class'] });
-            }
-        },
-
-        startLivePolling() {
-            this.stopLivePolling();
-            this.statsInterval = setInterval(() => {
-                this.fetchStats(true);
-            }, 3000);
-        },
-
-        stopLivePolling() {
-            if (this.statsInterval) {
-                clearInterval(this.statsInterval);
-                this.statsInterval = null;
-            }
-        },
-
-        async fetchStats(silent = false) {
-            try {
-                const res = await fetch('/api/security/stats');
-                if (!res.ok) throw new Error('API Unavailable');
-                const data = await res.json();
-
-                // Update Metrics
-                document.getElementById('socTotalRequests').textContent = (data.total_waf_requests || 0).toLocaleString();
-                document.getElementById('socTotalBlocked').textContent = (data.total_blocked || 0).toLocaleString();
-                document.getElementById('socSqliBlocked').textContent = (data.sqli_blocked || 0).toLocaleString();
-                document.getElementById('socXssBlocked').textContent = (data.xss_blocked || 0).toLocaleString();
-                document.getElementById('socBotBlocked').textContent = (data.bot_blocked || 0).toLocaleString();
-                document.getElementById('socDdosBlocked').textContent = (data.ddos_blocked || 0).toLocaleString();
-
-                const blockedCount = (data.blocked_ips_list || []).length;
-                const blockedBadge = document.getElementById('socBlockedIpCount');
-                if (blockedBadge) blockedBadge.textContent = blockedCount;
-
-                const uptimeEl = document.getElementById('socUptimeText');
-                if (uptimeEl && data.uptime_human) uptimeEl.textContent = `Uptime: ${data.uptime_human}`;
-
-                this.renderBlockedIps(data.blocked_ips_list || []);
-            } catch (err) {
-                if (!silent) {
-                    // Fallback preview mode when running on static file:// protocol
-                    document.getElementById('socTotalRequests').textContent = '1,420';
-                    document.getElementById('socTotalBlocked').textContent = '14';
-                    document.getElementById('socSqliBlocked').textContent = '6';
-                    document.getElementById('socXssBlocked').textContent = '5';
-                    document.getElementById('socBotBlocked').textContent = '2';
-                    document.getElementById('socDdosBlocked').textContent = '1';
-                }
-            }
-        },
-
-        async fetchLogs() {
-            try {
-                const res = await fetch('/api/security/logs');
-                if (!res.ok) throw new Error('API Unavailable');
-                const data = await res.json();
-                this.logsData = data.logs || [];
-                this.renderLogs();
-            } catch (err) {
-                // Fallback mock logs
-                this.logsData = [
-                    { timestamp: new Date().toLocaleTimeString(), severity: 'CRITICAL', ip: '192.168.1.105', event_type: 'WAF_ATTACK_PREVENTED', details: "SQL Injection dicegah pada path /login.html?id=1' OR 1=1--" },
-                    { timestamp: new Date(Date.now() - 60000).toLocaleTimeString(), severity: 'CRITICAL', ip: '10.0.0.42', event_type: 'WAF_ATTACK_PREVENTED', details: "Cross-Site Scripting (XSS) dicegah: <script>alert(1)</script>" },
-                    { timestamp: new Date(Date.now() - 180000).toLocaleTimeString(), severity: 'HIGH', ip: '185.220.101.5', event_type: 'MALICIOUS_SCANNER_BLOCKED', details: "Scanner sqlmap/1.5.2 terdeteksi dan diblokir" },
-                    { timestamp: new Date(Date.now() - 300000).toLocaleTimeString(), severity: 'INFO', ip: '127.0.0.1', event_type: 'SERVER_BOOT', details: "WAF Layer v2.5 Online & Menjaga Sistem" }
-                ];
-                this.renderLogs();
-            }
-        },
-
-        renderLogs() {
-            const terminalBody = document.getElementById('socTerminalLogsBody');
-            if (!terminalBody) return;
-
-            const filterText = (document.getElementById('socLogFilterInput')?.value || '').toLowerCase();
-            const filtered = this.logsData.filter(log => {
-                const searchStr = `${log.timestamp} ${log.severity} ${log.ip} ${log.event_type} ${log.details}`.toLowerCase();
-                return searchStr.includes(filterText);
-            });
-
-            if (filtered.length === 0) {
-                terminalBody.innerHTML = '<div class="terminal-log-empty">Tidak ada aktivitas peretasan yang cocok dengan filter.</div>';
-                return;
-            }
-
-            terminalBody.innerHTML = filtered.map(log => `
-                <div class="log-entry-row ${log.severity}">
-                    <span class="log-time">[${log.timestamp}]</span>
-                    <span class="log-ip">[IP: ${log.ip}]</span>
-                    <span class="log-tag">[${log.event_type}]</span>
-                    <span class="log-desc">${log.details}</span>
-                </div>
-            `).join('');
-        },
-
-        renderBlockedIps(ips) {
-            const container = document.getElementById('socBlockedIpListContainer');
-            if (!container) return;
-
-            if (ips.length === 0) {
-                container.innerHTML = '<div class="terminal-log-empty">Tidak ada IP yang sedang diblokir oleh WAF.</div>';
-                return;
-            }
-
-            container.innerHTML = ips.map(ip => `
-                <div class="blocked-ip-item">
-                    <span style="font-weight: 700; color: #ef4444;"><i class="ri-forbid-line"></i> ${ip}</span>
-                    <button class="btn-soc-success btn-unblock-ip-action" data-ip="${ip}" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
-                        <i class="ri-lock-unlock-line"></i> Buka Blokir
-                    </button>
-                </div>
-            `).join('');
-
-            container.querySelectorAll('.btn-unblock-ip-action').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const ip = e.currentTarget.getAttribute('data-ip');
-                    this.manageIp(ip, 'unblock');
-                });
-            });
-        },
-
-        async manageIp(ip, action) {
-            try {
-                const res = await fetch('/api/security/ip-management', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ip, action })
-                });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    showToast(result.message, 'success');
-                    this.fetchStats();
-                    this.fetchLogs();
-                    const ipInput = document.getElementById('socTargetIpInput');
-                    if (ipInput) ipInput.value = '';
-                } else {
-                    showToast(result.message || 'Gagal mengubah status IP.', 'error');
-                }
-            } catch (e) {
-                showToast(`Mode statis: IP ${ip} disimulasikan ${action}.`, 'info');
-            }
-        },
-
-        async runAttackSimulation(testType, payload) {
-            const outBox = document.getElementById('socTestResultOutput');
-            if (outBox) {
-                outBox.innerHTML = '<span style="color: #38bdf8;"><i class="ri-loader-4-line spin"></i> Mengirim payload simulasi ke WAF server...</span>';
-            }
-
-            try {
-                const res = await fetch('/api/security/test-attack', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: testType, payload: payload })
-                });
-                const data = await res.json();
-
-                if (outBox) {
-                    if (data.status === 'blocked') {
-                        outBox.innerHTML = `
-                            <div style="color: #10b981; font-weight: bold; margin-bottom: 4px;">
-                                <i class="ri-shield-check-fill"></i> [STATUS: BERHASIL DITANGKAL] ${data.shield_action}
-                            </div>
-                            <div style="color: #fca5a5;">Detail: ${data.reason}</div>
-                            <div style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px;">Pesan: ${data.message}</div>
-                        `;
-                    } else {
-                        outBox.innerHTML = `<span style="color: #f59e0b;">Payload lolos filter WAF.</span>`;
-                    }
-                }
-                this.fetchStats();
-                this.fetchLogs();
-            } catch (err) {
-                if (outBox) {
-                    outBox.innerHTML = `
-                        <div style="color: #10b981; font-weight: bold;">
-                            <i class="ri-shield-check-fill"></i> [SIMULASI SUKSES] WAF Regex Catch Verified!
-                        </div>
-                        <div style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px;">
-                            Payload "${payload}" berhasil diverifikasi oleh rule WAF Engine.
-                        </div>
-                    `;
-                }
-            }
-        }
-    };
-
-    SOCController.init();
+    console.log('🚀 Sohib Caffe POSify Pro v3.0 fully initialized.');
 });
-
-
-
