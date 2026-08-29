@@ -334,69 +334,404 @@
          ==================================================================== -->
     <div class="customer-self-order-view" id="customerSelfOrderView" style="display: none;">
         <!-- Customer View Top Header -->
-        <header class="customer-header">
-            <div class="cust-header-brand">
-                <div class="cust-logo-circle">
-                    <i class="ri-cup-fill"></i>
-                </div>
-                <div>
-                    <h2>Sohib Caffe & Resto</h2>
-                    <p class="cust-tagline">Autentik Hidangan Arab & Kopi Rempah Timur Tengah</p>
+        <header class="cust-header">
+            <div class="cust-header-left">
+                <div class="cust-brand-badge">
+                    <div class="cust-logo-icon">
+                        <i class="ri-cup-fill"></i>
+                    </div>
+                    <div class="cust-brand-text">
+                        <div class="cust-brand-title">Sohib Caffe & Resto</div>
+                        <div class="cust-brand-sub">صاحب كافيه • Modern Middle-Eastern Dine & Coffee</div>
+                    </div>
                 </div>
             </div>
-            <div class="cust-header-meta">
-                <div class="cust-table-pill" id="custHeaderTablePill">
+
+            <div class="cust-header-center">
+                <button class="cust-table-pill" id="custHeaderTablePill" title="Ketuk untuk ubah nomor meja">
                     <i class="ri-map-pin-user-fill"></i>
-                    <span>Meja: <b id="custActiveTableLabel">Pilih Meja</b></span>
-                </div>
-                <button class="btn-cust-exit-mode" id="btnExitCustomerMode" title="Kembali ke Mode Kasir (Owner/Staff)">
-                    <i class="ri-admin-line"></i> Mode Kasir
+                    <span>Meja: <b id="custActiveTableLabel">Meja T01</b></span>
+                    <i class="ri-arrow-down-s-line" style="font-size: 0.85rem; opacity: 0.7;"></i>
+                </button>
+            </div>
+
+            <div class="cust-header-right">
+                <button class="btn-cust-action-pill btn-cust-call-waiter" id="btnCustCallWaiter" title="Panggil Pelayan / Bantuan">
+                    <i class="ri-notification-3-line"></i>
+                    <span>Panggil Pelayan</span>
+                </button>
+                <button class="btn-cust-icon" id="btnCustThemeToggle" title="Ganti Tema (Gelap/Terang)">
+                    <i class="ri-sun-line" id="custThemeIcon"></i>
+                </button>
+                <button class="btn-cust-action-pill btn-cust-exit-mode" id="btnExitCustomerMode" title="Kembali ke Mode Kasir POS">
+                    <i class="ri-admin-line"></i>
+                    <span>Mode Kasir</span>
                 </button>
             </div>
         </header>
 
-        <!-- Customer Menu Catalog -->
-        <div class="customer-menu-body">
-            <div class="cust-banner-hero">
-                <div class="hero-content">
-                    <span class="hero-badge">🌟 Selamat Datang di Sohib Caffe</span>
-                    <h3>Pesan Langsung dari Meja Anda</h3>
-                    <p>Pilih menu favorit, sesuaikan tingkat manis & topping minuman, pesanan langsung dimasak oleh chef kami.</p>
+        <!-- Customer Menu Body Content -->
+        <div class="cust-menu-container">
+            <!-- Hero Promo Banner -->
+            <div class="cust-hero-banner">
+                <div class="cust-hero-decor"></div>
+                <div class="cust-hero-content">
+                    <div class="cust-hero-tag">
+                        <i class="ri-sparkling-fill"></i> 100% Autentik & Halal Certified
+                    </div>
+                    <h2 class="cust-hero-title">Nikmati Sajian Khas Timur Tengah & Gahwa Terbaik</h2>
+                    <p class="cust-hero-desc">Pesan langsung dari meja tanpa perlu antre di kasir. Pilih menu favorit, sesuaikan rasa & minuman, chef kami segera memasak untuk Anda.</p>
+                    
+                    <div class="cust-hero-features">
+                        <div class="cust-feat-chip"><i class="ri-time-line"></i> Masak Cepat & Fresh</div>
+                        <div class="cust-feat-chip"><i class="ri-qr-code-line"></i> Bayar QRIS / Kasir</div>
+                        <div class="cust-feat-chip"><i class="ri-restaurant-2-line"></i> Rempah Asli Arab</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Customer Categories Nav -->
+            <!-- Customer Search & Filter Bar -->
+            <div class="cust-search-filter-wrap">
+                <div class="cust-search-box">
+                    <i class="ri-search-2-line cust-search-icon"></i>
+                    <input type="text" id="custSearchInput" placeholder="Cari Nasi Mandhi, Kopi Gahwa, Karak, Roti Maryam, Kebab...">
+                    <button class="cust-clear-search" id="custClearSearchBtn" style="display: none;">&times;</button>
+                </div>
+                <div class="cust-filter-stats" id="custFilterStats">
+                    Menampilkan <b id="custProductCount">0</b> Menu
+                </div>
+            </div>
+
+            <!-- Customer Category Scroll -->
             <div class="cust-category-bar" id="custCategoryBar">
-                <button class="cust-cat-pill active" data-category="all">Semua Menu</button>
-                <button class="cust-cat-pill" data-category="makanan">🍛 Nasi & Kebab Arab</button>
-                <button class="cust-cat-pill" data-category="kopi">☕ Kopi Gahwa & Karak</button>
-                <button class="cust-cat-pill" data-category="minuman">🍹 Teh Susu & Jus</button>
-                <button class="cust-cat-pill" data-category="snack">🍰 Maryam & Baklava</button>
-                <button class="cust-cat-pill" data-category="paket">👑 Paket Sultan</button>
+                <button class="cust-cat-pill active" data-category="all">
+                    <i class="ri-apps-2-line"></i>
+                    <span>Semua Menu</span>
+                </button>
+                <button class="cust-cat-pill" data-category="makanan">
+                    <i class="ri-restaurant-line"></i>
+                    <span>Nasi & Hidangan Arab</span>
+                </button>
+                <button class="cust-cat-pill" data-category="kopi">
+                    <i class="ri-cup-fill"></i>
+                    <span>Kopi Gahwa & Karak</span>
+                </button>
+                <button class="cust-cat-pill" data-category="minuman">
+                    <i class="ri-goblet-line"></i>
+                    <span>Teh Aden & Jus</span>
+                </button>
+                <button class="cust-cat-pill" data-category="snack">
+                    <i class="ri-cake-3-line"></i>
+                    <span>Maryam & Camilan</span>
+                </button>
+                <button class="cust-cat-pill" data-category="paket">
+                    <i class="ri-gift-line"></i>
+                    <span>Paket Sultan Nampan</span>
+                </button>
             </div>
 
             <!-- Customer Product Grid -->
-            <div class="customer-product-grid" id="custProductGrid">
-                <!-- Injected via JS -->
+            <div class="cust-product-grid" id="custProductGrid">
+                <!-- Dynamically generated via JS -->
+            </div>
+
+            <!-- Empty State for Customer Search -->
+            <div class="cust-empty-search" id="custEmptySearch" style="display: none;">
+                <div class="cust-empty-icon"><i class="ri-search-eye-line"></i></div>
+                <h3>Menu Tidak Ditemukan</h3>
+                <p>Coba kata kunci lain atau pilih kategori di atas.</p>
+                <button class="btn-primary-action btn-sm" id="btnCustResetSearch">Lihat Semua Menu</button>
             </div>
         </div>
 
-        <!-- Customer Floating Order Cart Drawer Bar -->
+        <!-- Customer Floating Bottom Order Bar -->
         <div class="cust-floating-cart-bar" id="custFloatingCartBar" style="display: none;">
-            <div class="cust-cart-summary">
-                <div class="cust-cart-icon-box">
+            <div class="cust-floating-left">
+                <div class="cust-cart-icon-circle">
                     <i class="ri-shopping-bag-3-fill"></i>
                     <span class="cust-cart-badge" id="custCartBadge">0</span>
                 </div>
-                <div>
+                <div class="cust-cart-summary-text">
                     <div class="cust-cart-total" id="custCartTotal">Rp 0</div>
-                    <div class="cust-cart-items-info" id="custCartItemsInfo">0 item dipilih</div>
+                    <div class="cust-cart-subinfo" id="custCartItemsInfo">0 Menu Dipilih</div>
                 </div>
             </div>
-            <button class="btn-cust-view-order" id="btnCustOpenCartDrawer">
-                <span>Lihat Pesanan & Kirim ke Dapur</span>
+            <button class="btn-cust-open-cart" id="btnCustOpenCartDrawer">
+                <span>Lihat Pesanan</span>
                 <i class="ri-arrow-right-line"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL KHUSUS PELANGGAN 1: CUSTOMER CART DRAWER / SLIDE-OVER
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalCustCartDrawer">
+        <div class="pos-modal-box cust-cart-drawer-box">
+            <div class="modal-head cust-drawer-head">
+                <div class="cust-drawer-title">
+                    <i class="ri-shopping-bag-3-line" style="color: var(--primary-amber);"></i>
+                    <div>
+                        <h3>Daftar Pesanan Meja Anda</h3>
+                        <p class="modal-subtext"><span id="custDrawerTableDisplay">Meja T01</span> • Periksa & kirim langsung ke dapur</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalCustCartDrawer">&times;</button>
+            </div>
+
+            <div class="modal-body-scroll cust-drawer-body">
+                <!-- Customer Details Form in Drawer -->
+                <div class="cust-order-meta-card">
+                    <div class="form-group-cust">
+                        <label><i class="ri-user-3-line"></i> Nama Pemesan:</label>
+                        <input type="text" id="custCustomerNameInput" class="cust-form-input" placeholder="Masukkan nama Anda (cth: Ahmad)">
+                    </div>
+                    <div class="form-group-cust">
+                        <label><i class="ri-restaurant-line"></i> Jenis Pesanan:</label>
+                        <div class="cust-order-type-toggle">
+                            <button type="button" class="cust-type-btn active" data-cust-type="dine-in">
+                                <i class="ri-restaurant-fill"></i> Makan di Tempat (Dine-in)
+                            </button>
+                            <button type="button" class="cust-type-btn" data-cust-type="take-away">
+                                <i class="ri-shopping-bag-3-fill"></i> Bawa Pulang (Take Away)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items in Customer Cart -->
+                <div class="cust-cart-items-wrapper">
+                    <div class="cust-section-title">
+                        <span>Menu yang Dipesan</span>
+                        <button class="cust-btn-clear-cart" id="btnCustClearCart">
+                            <i class="ri-delete-bin-line"></i> Hapus Semua
+                        </button>
+                    </div>
+                    <div class="cust-cart-items-list" id="custCartItemsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Payment Method Choice for Customer -->
+                <div class="cust-payment-choice-card">
+                    <div class="cust-section-title">
+                        <span>Pilih Metode Pembayaran</span>
+                    </div>
+                    <div class="cust-pay-options-grid">
+                        <label class="cust-pay-option active">
+                            <input type="radio" name="custPayMethod" value="cashier" checked>
+                            <div class="cust-pay-option-content">
+                                <div class="cust-pay-icon"><i class="ri-money-dollar-circle-fill"></i></div>
+                                <div>
+                                    <div class="cust-pay-title">Bayar di Kasir</div>
+                                    <div class="cust-pay-sub">Bayar tunai / kartu setelah makan</div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="cust-pay-option">
+                            <input type="radio" name="custPayMethod" value="qris">
+                            <div class="cust-pay-option-content">
+                                <div class="cust-pay-icon" style="color: #10b981;"><i class="ri-qr-code-fill"></i></div>
+                                <div>
+                                    <div class="cust-pay-title">QRIS Instan</div>
+                                    <div class="cust-pay-sub">Scan langsung GoPay/BCA/OVO/DANA</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Embedded QRIS frame if QRIS is selected -->
+                    <div class="cust-qris-display-box" id="custQrisDisplayBox" style="display: none;">
+                        <div class="qris-badge-tag"><i class="ri-shield-check-fill"></i> QRIS Standar Bank Indonesia</div>
+                        <div class="qris-qr-frame">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021226580014ID.LINKAJA.WWW01189360091100000000005204581253033605802ID5919SOHIB+CAFFE+RESTO6009PALEMBANG61053013662070703A016304"
+                                alt="QRIS Sohib Caffe" class="qris-img-tag">
+                        </div>
+                        <div class="qris-amount-tag" id="custQrisAmountTag">Total: Rp 0</div>
+                        <p class="qris-hint">Silakan lakukan scan QRIS di atas. Setelah selesai, klik tombol Kirim Pesanan.</p>
+                    </div>
+                </div>
+
+                <!-- Price Summary Breakdown -->
+                <div class="cust-drawer-pricing">
+                    <div class="cust-price-row">
+                        <span>Subtotal (<span id="custDrawerTotalQty">0</span> Menu)</span>
+                        <span class="val" id="custDrawerSubtotal">Rp 0</span>
+                    </div>
+                    <div class="cust-price-row" id="custDrawerTaxRow">
+                        <span>PB1 / Pajak Resto (10%)</span>
+                        <span class="val" id="custDrawerTax">Rp 0</span>
+                    </div>
+                    <div class="cust-price-divider"></div>
+                    <div class="cust-price-row grand-total">
+                        <span>Total Tagihan</span>
+                        <span class="total-val" id="custDrawerGrandTotal">Rp 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-foot cust-drawer-foot">
+                <button class="btn-secondary" data-close="modalCustCartDrawer">Tambah Menu Lain</button>
+                <button class="btn-cust-confirm-order" id="btnCustSubmitOrder">
+                    <i class="ri-send-plane-fill"></i>
+                    <span>KIRIM PESANAN KE DAPUR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL KHUSUS PELANGGAN 2: PANGGIL PELAYAN (CALL WAITER)
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalCustCallWaiter">
+        <div class="pos-modal-box cust-call-waiter-box">
+            <div class="modal-head">
+                <div class="cust-call-head-title">
+                    <div class="cust-call-icon"><i class="ri-notification-3-fill"></i></div>
+                    <div>
+                        <h3>Panggil Pelayan Resto</h3>
+                        <p class="modal-subtext">Staf Sohib Caffe siap melayani kebutuhan meja Anda</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalCustCallWaiter">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <div class="cust-call-options-grid">
+                    <button class="cust-call-btn" data-call-type="waiter">
+                        <div class="call-btn-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                            <i class="ri-user-voice-fill"></i>
+                        </div>
+                        <div class="call-btn-text">
+                            <h4>Panggil Pelayan ke Meja</h4>
+                            <p>Staf kami akan segera mendatangi meja Anda</p>
+                        </div>
+                    </button>
+
+                    <button class="cust-call-btn" data-call-type="cutlery">
+                        <div class="call-btn-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+                            <i class="ri-restaurant-2-fill"></i>
+                        </div>
+                        <div class="call-btn-text">
+                            <h4>Minta Piring / Sendok / Tisu</h4>
+                            <p>Tambahan perlengkapan makan untuk meja</p>
+                        </div>
+                    </button>
+
+                    <button class="cust-call-btn" data-call-type="refill">
+                        <div class="call-btn-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                            <i class="ri-cup-fill"></i>
+                        </div>
+                        <div class="call-btn-text">
+                            <h4>Tambah Air Hangat / Es / Gula</h4>
+                            <p>Permintaan tambahan minuman atau kondimen</p>
+                        </div>
+                    </button>
+
+                    <button class="cust-call-btn" data-call-type="bill">
+                        <div class="call-btn-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+                            <i class="ri-bill-fill"></i>
+                        </div>
+                        <div class="call-btn-text">
+                            <h4>Minta Cetak Tagihan / Bill</h4>
+                            <p>Pelayan akan membawakan struk ke meja Anda</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary w-100" data-close="modalCustCallWaiter">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL KHUSUS PELANGGAN 3: PILIH NOMOR MEJA (TABLE PICKER)
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalCustPickTable">
+        <div class="pos-modal-box cust-table-picker-box">
+            <div class="modal-head">
+                <div class="cust-call-head-title">
+                    <div class="cust-call-icon" style="background: rgba(217, 119, 6, 0.15); color: var(--primary-amber);">
+                        <i class="ri-layout-grid-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Pilih Posisi Meja Anda</h3>
+                        <p class="modal-subtext">Pastikan nomor meja sesuai dengan stiker di meja Anda</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalCustPickTable">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <div class="cust-table-grid" id="custTablesListGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary w-100" data-close="modalCustPickTable">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL KHUSUS PELANGGAN 4: STATUS LIVE ORDER TRACKER
+         ==================================================================== -->
+    <div class="pos-modal-overlay" id="modalCustOrderTracker">
+        <div class="pos-modal-box cust-tracker-modal-box">
+            <div class="modal-head">
+                <div class="cust-call-head-title">
+                    <div class="cust-call-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                        <i class="ri-checkbox-circle-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Pesanan Berhasil Dikirim! 🎉</h3>
+                        <p class="modal-subtext">Order ID: <b id="custTrackerOrderId">#ORD-9021</b> • <span id="custTrackerTableLabel">Meja T01</span></p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" data-close="modalCustOrderTracker">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <!-- Status Stepper Bar -->
+                <div class="cust-tracker-stepper">
+                    <div class="step-node active" id="trackerStep1">
+                        <div class="step-circle"><i class="ri-check-line"></i></div>
+                        <div class="step-label">Diterima</div>
+                        <div class="step-sub">Sistem POS</div>
+                    </div>
+                    <div class="step-line active"></div>
+                    <div class="step-node active" id="trackerStep2">
+                        <div class="step-circle"><i class="ri-restaurant-fill"></i></div>
+                        <div class="step-label">Dimasak</div>
+                        <div class="step-sub">Dapur & Barista</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-node" id="trackerStep3">
+                        <div class="step-circle"><i class="ri-cup-line"></i></div>
+                        <div class="step-label">Disajikan</div>
+                        <div class="step-sub">Diantar ke Meja</div>
+                    </div>
+                </div>
+
+                <div class="cust-tracker-card">
+                    <div class="tracker-eta-badge">
+                        <i class="ri-time-line"></i> Estimasi Waktu Penyajian: <b>10 - 15 Menit</b>
+                    </div>
+                    <h4 class="tracker-items-head">Ringkasan Menu yang Sedang Disiapkan:</h4>
+                    <div class="tracker-items-list" id="custTrackerItemsList">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <div class="tracker-total-row">
+                        <span>Total Tagihan:</span>
+                        <span class="val" id="custTrackerGrandTotal">Rp 0</span>
+                    </div>
+                    <div class="tracker-pay-note" id="custTrackerPayNote">
+                        <i class="ri-information-line"></i> Pembayaran dipilih: <b>Bayar di Kasir</b>. Silakan selesaikan pembayaran ke kasir saat selesai bersantap.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot cust-tracker-foot">
+                <button class="btn-secondary" id="btnCustOrderMore">Pesan Menu Tambahan</button>
+                <button class="btn-primary-action" data-close="modalCustOrderTracker">Selesai / Pantau Nanti</button>
+            </div>
         </div>
     </div>
 
