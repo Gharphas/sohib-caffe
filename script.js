@@ -1687,8 +1687,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             } else {
                 actionButtonHtml = `
-                    <button class="btn-cust-add" data-id="${prod.id}">
-                        <i class="ri-add-line"></i> ${totalInCart > 0 ? `+ (${totalInCart})` : 'Pesan'}
+                    <button class="btn-cust-add" data-id="${prod.id}" title="Pesan menu ini">
+                        <i class="ri-add-line"></i> <span class="btn-cust-add-text">${totalInCart > 0 ? `+ Pesan (${totalInCart})` : 'Pesan'}</span>
                     </button>
                 `;
             }
