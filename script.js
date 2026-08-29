@@ -1831,7 +1831,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        listEl.innerHTML = state.cart.map(item => {
+        listEl.innerHTML = state.cart.map((item, idx) => {
             const product = state.products.find(p => p.id === item.id) || {};
             const img = product.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&q=80';
             const modText = item.optionsText ? `<div class="cust-item-modifiers"><i class="ri-settings-3-line"></i> ${item.optionsText}</div>` : '';
@@ -1839,21 +1839,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
                 <div class="cust-cart-item-row" data-key="${item.key || item.id}">
                     <div class="cust-item-main-row">
-                        <img src="${img}" alt="${item.name}" class="cust-item-thumb">
+                        <div class="cust-item-thumb-box">
+                            <img src="${img}" alt="${item.name}" class="cust-item-thumb">
+                            <span class="cust-item-index">#${idx + 1}</span>
+                        </div>
                         <div class="cust-item-info">
                             <div class="cust-item-name">${item.name}</div>
+                            <div class="cust-item-unit-price">${formatRupiah(item.price)} / porsi</div>
                             ${modText}
                         </div>
-                        <button class="cust-btn-del-item" data-key="${item.key || item.id}" title="Hapus menu">&times;</button>
+                        <button class="cust-btn-del-item" data-key="${item.key || item.id}" title="Hapus menu dari pesanan">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
                     </div>
-                    <input type="text" class="cust-item-note-input" placeholder="Catatan khusus (cth: jangan pedas, es dipisah...)" value="${item.note || ''}" data-key="${item.key || item.id}">
+
+                    <div class="cust-item-note-wrap">
+                        <i class="ri-edit-2-line cust-note-icon"></i>
+                        <input type="text" class="cust-item-note-input" placeholder="Catatan koki (cth: gak pedas, es dipisah, ekstra sambal)..." value="${item.note || ''}" data-key="${item.key || item.id}">
+                    </div>
+
                     <div class="cust-item-bottom-row">
-                        <span class="cust-item-price">${formatRupiah(item.price * item.qty)}</span>
+                        <div class="cust-item-subtotal-block">
+                            <span class="cust-item-subtotal-lbl">Subtotal:</span>
+                            <span class="cust-item-price">${formatRupiah(item.price * item.qty)}</span>
+                        </div>
                         <div class="cust-item-controls">
                             <div class="cust-card-stepper">
-                                <button class="cust-step-btn cust-drawer-minus" data-key="${item.key || item.id}">&minus;</button>
+                                <button class="cust-step-btn cust-drawer-minus" data-key="${item.key || item.id}" title="Kurangi 1">&minus;</button>
                                 <span class="cust-step-val">${item.qty}</span>
-                                <button class="cust-step-btn cust-drawer-plus" data-key="${item.key || item.id}">+</button>
+                                <button class="cust-step-btn cust-drawer-plus" data-key="${item.key || item.id}" title="Tambah 1">+</button>
                             </div>
                         </div>
                     </div>
